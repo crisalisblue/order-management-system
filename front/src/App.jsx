@@ -1,9 +1,9 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import { Home } from "./pages/Home.jsx";
-import { UserCRUD } from "./pages/UserCRUD.jsx";
+import  UserCRUD  from "./pages/UserCRUD.jsx";
 
-function App() {
+export default function App() {
   return (
     <Router>
       <Routes>
@@ -13,5 +13,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;
