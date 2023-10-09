@@ -27,7 +27,11 @@ public class UserService {
         }
         throw new NotCreatedException("Error in save new User");
     }
-
+    public User updateUser(UserDTO userDTO)
+    {
+        return this.userRepository.
+    }
+    /*
     public UserDTO loginUserWithCredentials(String username, String password){
         if(
             this.checkUserDTO(
@@ -46,7 +50,7 @@ public class UserService {
         throw new UnauthorizedException("Invalid credentials");
 
     }
-
+*/
     public List<UserDTO> getListOfAllUsersInDB(){
         return this
                 .userRepository

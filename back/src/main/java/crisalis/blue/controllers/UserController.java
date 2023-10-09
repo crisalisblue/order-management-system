@@ -23,16 +23,23 @@ public class UserController {
         return this.userService.saveUser(userDTO);
     }
 
-    @GetMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
+    // No se como vamos a implementar el login por ahora lo dejo comentado
+
+    /*@GetMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO loginUser(@RequestParam String username, @RequestParam String password){
         return this.userService.loginUserWithCredentials(username, password);
-    }
+    }*/
+    @PostMapping(value="", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User updateUser(@RequestBody UserDTO userDto){
 
+    }
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDTO> getAllUsers(){
         return this.userService.getListOfAllUsersInDB();
 
     }
+    //@PostMapping(value = "user", produces = MediaType.APPLICATION_JSON_VALUE)
+    //public void createUser()
 
 
 }
