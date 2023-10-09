@@ -7,7 +7,7 @@ export const getAllUsers = async () => {
     console.dir(response.status);
     return response.data;
   } catch (error) {
-    throw error;
+    console.log(error) ;
   }
 };
 
@@ -18,7 +18,7 @@ export const getSingleUser = async (userId) => {
     );
     return response.status;
   } catch (error) {
-    throw error;
+    console.log(error) ;
   }
 };
 
@@ -31,7 +31,7 @@ export const updateSingleUser = async (userId, data) => {
 
     return response.status;
   } catch (error) {
-    throw error;
+    console.log(error) ;
   }
 };
 
@@ -42,6 +42,6 @@ export const deleteSingleUser = async (userId) => {
     );
     return response.status;
   } catch (error) {
-    throw error;
+    console.log(error) ;
   }
 };
