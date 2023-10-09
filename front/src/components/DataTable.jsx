@@ -62,11 +62,9 @@ export default function DataTable(props) {
     },
   ];
 
-
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
-        getRowId={(row) => row.id}
         rows={Array.from(JSON.parse(props.data))}
         columns={columns}
         initialState={{
@@ -75,6 +73,7 @@ export default function DataTable(props) {
           },
         }}
         pageSizeOptions={[5, 10]}
+        disableRowSelectionOnClick
       />
     </div>
   );
