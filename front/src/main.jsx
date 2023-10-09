@@ -1,16 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import * as React from "react";
+import { createRoot } from "react-dom/client";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import App from "./App";
+import theme from "./theme";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
+root.render(
   <React.StrictMode>
-    <Router>
-      <Routes>
-        <Route path='/' Component={App}>
-        </Route>
-      </Routes>
-    </Router>
-  </React.StrictMode>,
-)
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
+  </React.StrictMode>
+);
