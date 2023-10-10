@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-
+import ButtonModal from "./ButtonModal";
 export default function DataTable(props) {
   const columns = [
     { field: "id", headerName: "ID", width: 100 },
@@ -11,51 +11,30 @@ export default function DataTable(props) {
       field: "actions",
       value: null,
       headerName: "Actions",
-      width: 200,
+      width: 230,
       description: "This column has a value getter and is not sortable.",
       sortable: false,
       renderCell: (params) => {
         return (
           <>
-            <button
-              onClick={async () => {
-                try {
-                  const result = await props.singleUser(params.row.id);
-                  console.log(result); // The result of the promise
-                } catch (error) {
-                  console.error(error);
-                }
+            <ButtonModal
+              onClick={props.singleUser}
+              buttonText="Leer"
+              onClickParams={{ id: params.row.id }}
+            ></ButtonModal>
+            <ButtonModal
+              onClick={props.deleteUser}
+              buttonText="Borrar"
+              onClickParams={{ id: params.row.id }}
+            ></ButtonModal>
+            <ButtonModal
+              onClick={props.updateUser}
+              onClickParams={{
+                id: params.row.id,
+                dto: { password: "test2PasswordModifi2cado" },
               }}
-            >
-              Editar
-            </button>
-
-            <button
-              onClick={async () => {
-                try {
-                  const result = await props.deleteUser(params.row.id);
-                  console.log(result); // The result of the promise
-                } catch (error) {
-                  console.error(error);
-                }
-              }}
-            >
-              Borrar
-            </button>
-            <button
-              onClick={async () => {
-                try {
-                  const result = await props.updateUser(params.row.id, {
-                    test: "test",
-                  });
-                  console.log(result); // The result of the promise
-                } catch (error) {
-                  console.error(error);
-                }
-              }}
-            >
-              Update
-            </button>
+              buttonText="Update"
+            ></ButtonModal>
           </>
         );
       },
