@@ -29,9 +29,9 @@ public class UserController {
     public UserDTO loginUser(@RequestParam String username, @RequestParam String password){
         return this.userService.loginUserWithCredentials(username, password);
     }*/
-    @PostMapping(value="", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User updateUser(@RequestBody UserDTO userDto){
-
+    @PutMapping(value="", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User updateUser( @RequestBody UserDTO userDTO){
+        return  userService.updateUser(userDTO);
     }
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDTO> getAllUsers(){

@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +30,14 @@ public class UserService {
     }
     public User updateUser(UserDTO userDTO)
     {
-        return this.userRepository.
+        Optional<User> aux=userRepository.findById(userDTO.getId());;
+        if(aux != null){
+            aux.get().setName(userDTO.getName());
+            aux.get().setName(userDTO.getPassword());
+            aux.get().setName(userDTO.getUsername());
+            return userRepository.save(aux.get());
+        }
+        throw new EmptyElementException("Error");
     }
     /*
     public UserDTO loginUserWithCredentials(String username, String password){
