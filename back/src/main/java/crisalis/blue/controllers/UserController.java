@@ -18,9 +18,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "Save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User saveUser(@RequestBody UserDTO userDTO){
-        return this.userService.saveUser(userDTO);
+    @PostMapping(value = "Created", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User createdUser(@RequestBody UserDTO userDTO){
+        return this.userService.createdUser(userDTO);
     }
 
     // No se como vamos a implementar el login por ahora lo dejo comentado

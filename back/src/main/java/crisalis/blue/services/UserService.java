@@ -22,7 +22,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User saveUser(UserDTO userDTO){
+    public User createdUser(UserDTO userDTO){
         if ( checkUserDTO(userDTO, Boolean.FALSE) ){
             return this.userRepository.save(new User(userDTO));
         }
