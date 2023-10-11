@@ -1,6 +1,9 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import ButtonModal from "./ButtonModal";
+import Button from "@mui/material/Button";
+
+import { Link as RouterLink } from "react-router-dom";
 export default function DataTable(props) {
   const columns = [
     { field: "id", headerName: "ID", width: 100 },
@@ -18,23 +21,21 @@ export default function DataTable(props) {
         return (
           <>
             <ButtonModal
-              onClick={props.singleUser}
-              buttonText="Leer"
-              onClickParams={{ id: params.row.id }}
-            ></ButtonModal>
-            <ButtonModal
               onClick={props.deleteUser}
               buttonText="Borrar"
               onClickParams={{ id: params.row.id }}
             ></ButtonModal>
-            <ButtonModal
-              onClick={props.updateUser}
-              onClickParams={{
+
+            <Button
+              data={{
                 id: params.row.id,
                 dto: { password: "test2PasswordModifi2cado" },
               }}
-              buttonText="Update"
-            ></ButtonModal>
+              component={RouterLink}
+              to="/userCRUD/actualizar"
+            >
+              actualizar
+            </Button>
           </>
         );
       },
