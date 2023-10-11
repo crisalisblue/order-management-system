@@ -7,7 +7,7 @@ export const getAllUsers = async () => {
     console.dir(response.status);
     return response.data;
   } catch (error) {
-    console.log(error) ;
+    console.error(error);
   }
 };
 
@@ -18,20 +18,19 @@ export const getSingleUser = async (userId) => {
     );
     return response.status;
   } catch (error) {
-    console.log(error) ;
+    console.error(error);
   }
 };
 
 export const updateSingleUser = async (userId, data) => {
   try {
-    const response = await axios.put(
+    const response = await axios.patch(
       `https://my-json-server.typicode.com/lucascn21/demo/users/${userId}`,
       data
     );
-
     return response.status;
   } catch (error) {
-    console.log(error) ;
+    console.error(error);
   }
 };
 
@@ -42,6 +41,18 @@ export const deleteSingleUser = async (userId) => {
     );
     return response.status;
   } catch (error) {
-    console.log(error) ;
+    console.error(error);
+  }
+};
+
+export const createSingleUser = async (data) => {
+  try {
+    const response = await axios.post(
+      `https://my-json-server.typicode.com/lucascn21/demo/users`,
+      data
+    );
+    return response.status;
+  } catch (error) {
+    console.error(error);
   }
 };
