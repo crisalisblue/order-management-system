@@ -33,13 +33,11 @@ public class UserController {
     public User updateUser( @RequestBody UserDTO userDTO){
         return  userService.updateUser(userDTO);
     }
-    @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDTO> getAllUsers(){
         return this.userService.getListOfAllUsersInDB();
 
     }
-    //@PostMapping(value = "user", produces = MediaType.APPLICATION_JSON_VALUE)
-    //public void createUser()
 
 
 }
