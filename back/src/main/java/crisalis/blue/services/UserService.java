@@ -31,13 +31,16 @@ public class UserService {
     public User updateUser(UserDTO userDTO)
     {
         Optional<User> aux=userRepository.findById(userDTO.getId());;
-        if(aux != null){
-            aux.get().setName(userDTO.getName());
-            aux.get().setName(userDTO.getPassword());
-            aux.get().setName(userDTO.getUsername());
-            return userRepository.save(aux.get());
+        if(aux.isPresent()){
+            if(checkUserDTO(userDTO,false))
+            {
+                aux.get().setName(userDTO.getName());
+                aux.get().setPassword(userDTO.getPassword());
+                aux.get().setUsername(userDTO.getUsername());
+                return userRepository.save(aux.get());
+            }
         }
-        throw new EmptyElementException("Error");
+        throw new EmptyElementException("El id ingresado no se encuentra");
     }
     /*
     public UserDTO loginUserWithCredentials(String username, String password){
