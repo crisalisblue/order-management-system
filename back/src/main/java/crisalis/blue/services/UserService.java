@@ -63,12 +63,17 @@ public class UserService {
     }
 */
     public List<UserDTO> getListOfAllUsersInDB(){
-        return this
+        List<UserDTO> lista= this
                 .userRepository
                 .findAll()
                 .stream()
                 .map(User::toDTO)
                 .collect(Collectors.toList());
+        if(!lista.isEmpty())
+        {
+            return lista;
+        }
+        throw new EmptyElementException("La lista esta vacia");
     }
 
     private Boolean checkUserDTO(UserDTO userDTO, Boolean isForLogin){
@@ -88,8 +93,16 @@ public class UserService {
         return Boolean.TRUE;
     }
     
-    public void deleteUser(int id){
-        userRepository.deleteById(id);
+    public User deleteUser(int id){
+        if(userRepository.existsById(id)) {
+          Optional<User> aux = userRepository.findById(id);
+          userRepository.deleteById(id);
+          return aux.get();
+
+        }
+        else {
+            throw new EmptyElementException("Id invalido");
+        }
     }
 
 }
