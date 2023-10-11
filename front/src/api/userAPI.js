@@ -44,3 +44,15 @@ export const deleteSingleUser = async (userId) => {
     console.error(error);
   }
 };
+
+export const createSingleUser = async (data) => {
+  try {
+    const response = await axios.post(
+      `https://my-json-server.typicode.com/lucascn21/demo/users`,
+      data
+    );
+    return response.status;
+  } catch (error) {
+    console.error(error);
+  }
+};
