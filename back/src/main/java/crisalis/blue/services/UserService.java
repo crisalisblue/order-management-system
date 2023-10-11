@@ -84,5 +84,9 @@ public class UserService {
 
         return Boolean.TRUE;
     }
+    
+    public void deleteUser(int id){
+        userRepository.deleteById(id);
+    }
 
 }

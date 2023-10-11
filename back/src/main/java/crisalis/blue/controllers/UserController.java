@@ -34,10 +34,16 @@ public class UserController {
         return  userService.updateUser(userDTO);
     }
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+
     public List<UserDTO> getAllUsers(){
         return this.userService.getListOfAllUsersInDB();
 
     }
 
+    @DeleteMapping(value = "{id}")
+    public void deleteUser(@PathVariable("id") int id){
+        userService.deleteUser(id);
+        return;
+    }
 
 }
