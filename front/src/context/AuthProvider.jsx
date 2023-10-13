@@ -8,12 +8,12 @@ export default function AuthProvider({children}){
         username: '',
         password: ''
     });
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState('123');
     const [loading, setLoading] = useState(true);
 
     
     return(
-     <authContext.Provider value={token, user, loading, login}>
+     <authContext.Provider value={{token, user, loading}}>
          {children}
      </authContext.Provider>
     );
