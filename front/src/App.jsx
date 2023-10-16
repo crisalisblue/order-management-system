@@ -15,8 +15,8 @@ export default function App() {
         <Route path="/" Component={Layout}>
           <Route path="home" Component={Home} />
           <Route path="userCRUD" Component={UserCRUD}>
-            <Route path="crear" Component={UserCreate} />
-            <Route path="actualizar" Component={UserUpdate} />
+            <Route path="nuevo" Component={UserCreate} />
+            <Route path=":id/editar" Component={UserUpdate} />
             <Route path="" Component={UsersTable} />
           </Route>
         </Route>
