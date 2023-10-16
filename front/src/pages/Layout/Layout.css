@@ -1,11 +1,11 @@
 #root {
   display: grid;
   height: 100dvh;
-  grid-template-columns: auto;
+  grid-template-columns: 10% auto;
   grid-template-rows: 10% auto 10%;
   grid-template-areas:
-    "nav nav nav"
-    "main main main"
+    "nav main main"
+    "nav main main"
     "footer footer footer";
 }
 

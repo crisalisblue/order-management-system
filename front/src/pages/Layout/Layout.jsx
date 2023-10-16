@@ -1,6 +1,5 @@
 import { Outlet } from "react-router";
 import "./Layout.css";
-import {SidebarDrawer} from "../../components/Navbar/SidebarDrawer.jsx";
 import {Navbar} from "../../components/Navbar/Navbar.jsx";
 
 export const Layout = () => {
