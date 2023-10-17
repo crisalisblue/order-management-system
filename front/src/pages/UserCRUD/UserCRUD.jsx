@@ -1,4 +1,3 @@
-import React from "react";
 import { Typography } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Button from "@mui/material/Button";
@@ -19,7 +18,10 @@ export const UserCRUD = () => {
           Gestor de Usuarios
         </Typography>
       </Grid>
-      <Button component={RouterLink} to="/userCRUD/crear">
+      <Button component={RouterLink} to="/userCRUD">
+        Lista de Usuarios
+      </Button>
+      <Button component={RouterLink} to="/userCRUD/nuevo">
         Crear Usuario
       </Button>
       <Outlet />
