@@ -1,13 +1,6 @@
-import React from "react";
 import DataTable from "../../components/DataTable";
 import Grid from "@mui/material/Unstable_Grid2";
-import {
-  getAllUsers,
-  getSingleUser,
-  deleteSingleUser,
-  updateSingleUser,
-  createSingleUser,
-} from "../../api/UserAPI";
+import { getAllUsers } from "../../api/UserAPI";
 import { useDataFetching } from "../../api/UserAPI_Utils";
 export const UsersTable = () => {
   const { data, loading, error } = useDataFetching(getAllUsers);
@@ -21,13 +14,7 @@ export const UsersTable = () => {
         {loading ? (
           "loading..."
         ) : (
-          <DataTable
-            createUser={createSingleUser}
-            singleUser={getSingleUser}
-            deleteUser={deleteSingleUser}
-            updateUser={updateSingleUser}
-            data={JSON.stringify(data, null)}
-          ></DataTable>
+          <DataTable data={JSON.stringify(data, null)}></DataTable>
         )}
       </Grid>
     </Grid>
