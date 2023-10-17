@@ -1,6 +1,5 @@
-import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import DeleteModal from "./DeleteModal";
+import { DeleteModal } from "./DeleteModal";
 import Button from "@mui/material/Button";
 
 import { Link as RouterLink } from "react-router-dom";
@@ -20,17 +19,8 @@ export default function DataTable(props) {
       renderCell: (params) => {
         return (
           <>
-            <DeleteModal
-              onClick={props.deleteUser}
-              buttonText="Borrar"
-              onClickParams={{ id: params.row.id }}
-            ></DeleteModal>
-
+            <DeleteModal userID={params.row.id}></DeleteModal>
             <Button
-              data={{
-                id: params.row.id,
-                dto: { password: "test2PasswordModifi2cado" },
-              }}
               component={RouterLink}
               to={`/userCRUD/${params.row.id}/editar`}
             >
