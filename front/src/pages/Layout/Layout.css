@@ -4,18 +4,14 @@
   grid-template-columns: 10% auto;
   grid-template-rows: 10% auto 10%;
   grid-template-areas:
-    "nav nav nav"
-    "aside main main"
+    "nav main main"
+    "nav main main"
     "footer footer footer";
 }
 
 nav {
   grid-area: nav;
   background-color: rgb(184, 183, 183);
-}
-aside {
-  grid-area: aside;
-  background-color: rgb(70, 69, 69);
 }
 main {
   grid-area: main;

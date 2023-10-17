@@ -1,11 +1,13 @@
 import { Outlet } from "react-router";
 import "./Layout.css";
+import {Navbar} from "../../components/Navbar/Navbar.jsx";
 
 export const Layout = () => {
   return (
     <>
-      <nav>nav</nav>
-      <aside>aside</aside>
+      <nav>
+          <Navbar/>
+      </nav>
       <main>
         <Outlet />
       </main>
