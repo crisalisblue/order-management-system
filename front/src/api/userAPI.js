@@ -1,9 +1,9 @@
 import axios from "axios";
-
+const apiUrl = "http://localhost:8080/user";
 export const getAllUsers = async () => {
-  const apiUrl = "https://my-json-server.typicode.com/lucascn21/demo/users";
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(`${apiUrl}/List`);
+    console.dir(response);
     console.dir(response.status);
     return response.data;
   } catch (error) {
@@ -22,12 +22,10 @@ export const getSingleUser = async (userId) => {
   }
 };
 
-export const updateSingleUser = async (userId, data) => {
+export const updateSingleUser = async (data) => {
+  console.dir(data);
   try {
-    const response = await axios.patch(
-      `https://my-json-server.typicode.com/lucascn21/demo/users/${userId}`,
-      data
-    );
+    const response = await axios.put(`${apiUrl}/Update`, data);
     return response.status;
   } catch (error) {
     console.error(error);
@@ -36,9 +34,7 @@ export const updateSingleUser = async (userId, data) => {
 
 export const deleteSingleUser = async (userId) => {
   try {
-    const response = await axios.delete(
-      `https://my-json-server.typicode.com/lucascn21/demo/users/${userId}`
-    );
+    const response = await axios.delete(`${apiUrl}/Delete/${userId}`);
     return response.status;
   } catch (error) {
     console.error(error);
@@ -47,10 +43,9 @@ export const deleteSingleUser = async (userId) => {
 
 export const createSingleUser = async (data) => {
   try {
-    const response = await axios.post(
-      `https://my-json-server.typicode.com/lucascn21/demo/users`,
-      data
-    );
+    console.dir(data);
+    const response = await axios.post(`${apiUrl}/Created`, data);
+    console.dir(response);
     return response.status;
   } catch (error) {
     console.error(error);

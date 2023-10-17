@@ -7,13 +7,13 @@ export const UserUpdate = (props) => {
   const userID = useParams().id;
   const { register, handleSubmit, reset, control, setValue } = useForm({
     defaultValues: {
-      id: userID,
+      id: Number(userID),
     },
   });
   const onError = (errors, e) => console.log(errors, e);
   const onSubmit = async (data, e) => {
     console.log(data, e);
-    console.dir(await updateSingleUser(userID, data));
+    console.dir(await updateSingleUser(data));
   };
 
   return (
@@ -24,7 +24,7 @@ export const UserUpdate = (props) => {
         isDisabled={true}
         defaultValue={userID}
       ></CrudTextField>
-      <CrudTextField control={control} label="user"></CrudTextField>
+      <CrudTextField control={control} label="name"></CrudTextField>
       <CrudTextField control={control} label="username"></CrudTextField>
       <CrudTextField control={control} label="password"></CrudTextField>
       <input type="submit" />

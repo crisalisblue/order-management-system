@@ -11,7 +11,7 @@ export const UserCreate = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
-      <CrudTextField control={control} label="user"></CrudTextField>
+      <CrudTextField control={control} label="name"></CrudTextField>
       <CrudTextField control={control} label="username"></CrudTextField>
       <CrudTextField control={control} label="password"></CrudTextField>
       <input type="submit" />
