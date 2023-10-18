@@ -12,6 +12,7 @@ import crisalis.blue.validators.Encrypt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static crisalis.blue.validators.Encrypt.encrypt;
@@ -39,7 +40,7 @@ public class UserService {
             userRepository.save(user);
             return user;
         }
-        throw new NotCreatedException("Error in save new User");
+        throw new NotCreatedException("Error 400 bad request.");
     }
 
     public JwtDTO loginUserWithCredentials(String username, String password) throws Exception {
@@ -64,12 +65,17 @@ public class UserService {
 
 
     public List<UserDTO> getListOfAllUsersInDB(){
-        return this
+        List<UserDTO> lista= this
                 .userRepository
                 .findAll()
                 .stream()
                 .map(User::toDTO)
                 .collect(Collectors.toList());
+        if(!lista.isEmpty())
+        {
+            return lista;
+        }
+        throw new EmptyElementException("Error 404. La lista esta vacia");
     }
 
     private Boolean checkUserDTO(UserDTO userDTO, Boolean isForLogin){
@@ -87,6 +93,18 @@ public class UserService {
         }
 
         return Boolean.TRUE;
+    }
+    
+    public User deleteUser(int id){
+        if(userRepository.existsById(id)) {
+          Optional<User> aux = userRepository.findById(id);
+          userRepository.deleteById(id);
+          return aux.get();
+
+        }
+        else {
+            throw new EmptyElementException("Error 400 bad request.");
+        }
     }
 
 
