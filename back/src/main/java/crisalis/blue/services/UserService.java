@@ -1,5 +1,6 @@
 package crisalis.blue.services;
 
+import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.dto.UserDTO;
 import crisalis.blue.repositories.UserRepository;
 import crisalis.blue.exceptions.custom.EmptyElementException;
@@ -71,6 +72,13 @@ public class UserService {
         }
 
         return Boolean.TRUE;
+    }
+
+    public UserDTO getUserById(Integer id){
+        return this.userRepository.findById(id)
+                .orElseThrow(
+                        ()-> new ResourceNotFoundException("ID Not Found") //Fijarse en ApiExceptionHandler, lo agregue en badRequest, no creo que sea correcto.
+                ).toDTO();
     }
 
 }
