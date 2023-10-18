@@ -22,23 +22,22 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createdUser(UserDTO userDTO){
-        if ( checkUserDTO(userDTO, Boolean.FALSE) ){
-            if(!userRepository.existsById(userDTO.getId()))
-                return this.userRepository.save(new User(userDTO));
+    public UserDTO createdUser(User user){
+        if ( checkUser(user, Boolean.FALSE) ){
+                return this.userRepository.save(new User(user)).toDTO();
         }
         throw new NotCreatedException("Error 400 bad request.");
     }
-    public User updateUser(UserDTO userDTO)
+    public UserDTO updateUser(User user)
     {
-        Optional<User> aux=userRepository.findById(userDTO.getId());;
+        Optional<User> aux=userRepository.findById(user.getId());;
         if(aux.isPresent()){
-            if(checkUserDTO(userDTO,false))
+            if(checkUser(user,false))
             {
-                aux.get().setName(userDTO.getName());
-                aux.get().setPassword(userDTO.getPassword());
-                aux.get().setUsername(userDTO.getUsername());
-                return userRepository.save(aux.get());
+                aux.get().setName(user.getName());
+                aux.get().setPassword(user.getPassword());
+                aux.get().setUsername(user.getUsername());
+                return userRepository.save(aux.get()).toDTO();
             }
         }
         throw new EmptyElementException("Error 400 bad request.");
@@ -77,7 +76,7 @@ public class UserService {
         throw new EmptyElementException("Error 404. La lista esta vacia");
     }
 
-    private Boolean checkUserDTO(UserDTO userDTO, Boolean isForLogin){
+    private Boolean checkUser(User userDTO, Boolean isForLogin){
         if (!isForLogin) {
             if (StringUtils.isEmpty(userDTO.getName())) {
                 throw new EmptyElementException("Name is empty");
@@ -94,15 +93,15 @@ public class UserService {
         return Boolean.TRUE;
     }
     
-    public User deleteUser(int id){
+    public UserDTO deleteUser(int id){
         if(userRepository.existsById(id)) {
           Optional<User> aux = userRepository.findById(id);
           userRepository.deleteById(id);
-          return aux.get();
+          return aux.get().toDTO();
 
         }
         else {
-            throw new EmptyElementException("Error 400 bad request.");
+            throw new EmptyElementException("Error 400 bad request. No existe un usuario con ese id");
         }
     }
 

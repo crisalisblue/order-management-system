@@ -19,8 +19,8 @@ public class UserController {
     }
 
     @PostMapping(value = "created", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User createdUser(@RequestBody UserDTO userDTO){
-        return this.userService.createdUser(userDTO);
+    public UserDTO createdUser(@RequestBody User user){
+        return this.userService.createdUser(user);
     }
 
     // No se como vamos a implementar el login por ahora lo dejo comentado
@@ -30,8 +30,8 @@ public class UserController {
         return this.userService.loginUserWithCredentials(username, password);
     }*/
     @PutMapping(value="update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User updateUser( @RequestBody UserDTO userDTO){
-        return  userService.updateUser(userDTO);
+    public UserDTO updateUser( @RequestBody User user){
+        return  userService.updateUser(user);
     }
 
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,10 +41,10 @@ public class UserController {
 
     }
 
-    @DeleteMapping(value = "delete/{id}")
-    public User deleteUser(@PathVariable("id") int id){
-        User aux = userService.deleteUser(id);
+    /*@DeleteMapping(value="/delete/{id}")
+    public UserDTO deleteUser(@PathVariable(value="id") int id){
+        UserDTO aux = userService.deleteUser(id);
         return aux;
-    }
+    }*/
 
 }
