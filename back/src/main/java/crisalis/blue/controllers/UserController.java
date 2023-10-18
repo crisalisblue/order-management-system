@@ -1,6 +1,7 @@
 package crisalis.blue.controllers;
 
 import crisalis.blue.models.User;
+import crisalis.blue.models.dto.LoginDTO;
 import crisalis.blue.models.dto.UserDTO;
 import crisalis.blue.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,10 +25,11 @@ public class UserController {
             return this.userService.saveUser(userDTO);
     }
 
-    @GetMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String loginUser(HttpServletResponse response, @RequestParam String username, @RequestParam String password) throws Exception {
-        response.addHeader("auth", this.userService.loginUserWithCredentials(username, password));
-        return "Usuario autorizado";
+    @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String loginUser(HttpServletResponse response, @RequestBody LoginDTO loginDTO) throws Exception {
+            response.addHeader("auth", this.userService.loginUserWithCredentials(loginDTO.getUsername(), loginDTO.getPassword()));
+            return "Usuario autorizado";
+        //return this.userService.loginUserWithCredentials(username, password);
     }
 
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
