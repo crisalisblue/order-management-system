@@ -1,8 +1,8 @@
 import { Outlet } from "react-router";
 import "./Layout.css";
-import {Navbar} from "../../components/Navbar/Navbar.jsx";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import NavBar from "../../components/NavBar/NavBar.jsx";
 
 export const Layout = () => {
     const Copyright = (props) => {
@@ -23,7 +23,7 @@ export const Layout = () => {
   return (
     <>
       <nav>
-          <Navbar/>
+          <NavBar/>
       </nav>
       <main>
         <Outlet />

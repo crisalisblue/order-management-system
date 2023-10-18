@@ -9,64 +9,64 @@ import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import {Construction, ContentPaste, Home, Logout} from "@mui/icons-material";
+import {Link as RouterLink} from "react-router-dom";
 
 export const mainListItems = (
     <React.Fragment>
-        <ListItemButton>
+        <ListItemButton component={RouterLink} to="/home">
             <ListItemIcon>
-                <DashboardIcon />
+                <Home/>
             </ListItemIcon>
-            <ListItemText primary="Dashboard" />
+            <ListItemText primary="Inicio" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={RouterLink} to="/pedidos">
             <ListItemIcon>
-                <ShoppingCartIcon />
+                <ContentPaste/>
             </ListItemIcon>
-            <ListItemText primary="Orders" />
+            <ListItemText primary="Pedidos" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={RouterLink} to="/clientes">
             <ListItemIcon>
                 <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Customers" />
+            <ListItemText primary="Clientes" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={RouterLink} to="/productos">
             <ListItemIcon>
-                <BarChartIcon />
+                <ShoppingCartIcon />
             </ListItemIcon>
-            <ListItemText primary="Reports" />
+            <ListItemText primary="Productos" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={RouterLink} to="/servicios">
             <ListItemIcon>
-                <LayersIcon />
+                <Construction />
             </ListItemIcon>
-            <ListItemText primary="Integrations" />
+            <ListItemText primary="Servicios" />
+        </ListItemButton>
+        <ListItemButton component={RouterLink} to="/impuestos">
+            <ListItemIcon>
+                <AssignmentIcon />
+            </ListItemIcon>
+            <ListItemText primary="Impuestos" />
         </ListItemButton>
     </React.Fragment>
 );
 
 export const secondaryListItems = (
     <React.Fragment>
-        <ListSubheader component="div" inset>
-            Saved reports
-        </ListSubheader>
-        <ListItemButton>
+        <ListItemButton component={RouterLink} to="/userCRUD">
             <ListItemIcon>
-                <AssignmentIcon />
+                <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Current month" />
+            <ListItemText primary="Usuarios" />
         </ListItemButton>
-        <ListItemButton>
+
+        <ListItemButton component={RouterLink} to="/login">
             <ListItemIcon>
-                <AssignmentIcon />
+                <Logout/>
             </ListItemIcon>
-            <ListItemText primary="Last quarter" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Year-end sale" />
+            <ListItemText primary="Cerrar Sesion" />
         </ListItemButton>
     </React.Fragment>
 );
