@@ -1,15 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthContext } from "../context/UseAuthContext";
 
-export default function LogedinRoute({children}){
+export default function NotLogedinRoute(){
 
-    const {token} = useAuthContext()
+    const {token, loading} = useAuthContext();
 
-    if(token) return <Navigate to="/"/>
+    if(loading) return <h1>Cargando...</h1>
 
     return(
      <>
-        {children}
+        {!token ? <Outlet/>: <Navigate to={'/'}/>}
      </>
     );
 }

@@ -1,19 +1,33 @@
-import { useState } from "react";
-import { authContext as auth } from "./AuthContext";
+import { useEffect, useState } from "react";
+import { authContext} from "./AuthContext";
+import { getUserToken, saveUserToken } from "../services/LocalStorageService";
+import { login } from "../services/UserService";
 
-const authContext = auth
 
 export default function AuthProvider({children}){
-    const [user, setUser] = useState({
-        username: '',
-        password: ''
-    });
     const [token, setToken] = useState('123');
     const [loading, setLoading] = useState(true);
 
+    const loginUser = (user) => {
+        setLoading(true);
+        return login(user).then( data =>{
+          const token = data.token
+          saveUserToken(token);
+          setToken(token);
+          setLoading(false);
+        })
+        .catch(err => Promise.reject(err));
+    }
+
+    useEffect(() =>{
+        const userToken = getUserToken();
+        setToken(userToken);
+        setLoading(false);
+    }, [])
+  
     
     return(
-     <authContext.Provider value={{token, user, loading}}>
+     <authContext.Provider value={{token, loading, loginUser}}>
          {children}
      </authContext.Provider>
     );

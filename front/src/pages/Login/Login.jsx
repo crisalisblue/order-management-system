@@ -6,31 +6,27 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import "./Login.css";
-
-const Copyright = (props) => {
-  return (
-    <Box className="copyright">
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        align="center"
-        {...props}
-      >
-        {"Copyright © "}
-        Finnegans Equipo Blue {new Date().getFullYear()}
-      </Typography>
-    </Box>
-  );
-};
+import { useAuthContext } from "../../context/UseAuthContext";
+import Copyright from "../../components/Copyrigth";
+import { useState } from "react";
 
 export const Login = () => {
+
+  const {loginUser} = useAuthContext();
+  const [user, setUser] = useState({
+    username: "",
+    password: ""
+  });
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get("email"),
+      username: data.get("username"),
       password: data.get("password"),
     });
+    // setUser(data.get("email"),)
+    loginUser()
   };
 
   return (
@@ -47,10 +43,10 @@ export const Login = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Nombre de usuario"
+            name="username"
+            autoComplete="username"
             autoFocus
           />
           <TextField

@@ -7,6 +7,7 @@ import { Layout } from "./pages/Layout/Layout";
 import { UserCreate } from "./pages/UserCRUD/UserCreate";
 import { UsersTable } from "./pages/UserCRUD/UsersTable";
 import { UserUpdate } from "./pages/UserCRUD/UserUpdate";
+// import NotLogedinRoute from "./routes/NotLogedinRoute";
 
 export default function App() {
   return (
@@ -20,9 +21,9 @@ export default function App() {
             <Route path="" Component={UsersTable} />
           </Route>
         </Route>
-        <Route Component={NotLogedinRoute}>
           <Route path="/login" Component={Login}/>
-        </Route>
+        {/* <Route Component={NotLogedinRoute}>
+        </Route> */}
       </Routes>
     </Router>
   );

@@ -3,13 +3,13 @@ import { useAuthContext } from "../context/UseAuthContext";
 
 export default function LogedinRoute(){
 
-    const {token} = useAuthContext()
+    const {token, loading} = useAuthContext();
 
-    if(!token) return <Navigate to="/login"/>
+    if(loading) return <h1>Cargando...</h1>
 
     return(
      <>
-        <Outlet/> 
+        {token ? <Outlet/>: <Navigate to={'/login'}/>}
      </>
     );
 }
