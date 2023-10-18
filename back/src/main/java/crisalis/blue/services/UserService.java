@@ -24,9 +24,10 @@ public class UserService {
 
     public User createdUser(UserDTO userDTO){
         if ( checkUserDTO(userDTO, Boolean.FALSE) ){
-            return this.userRepository.save(new User(userDTO));
+            if(!userRepository.existsById(userDTO.getId()))
+                return this.userRepository.save(new User(userDTO));
         }
-        throw new NotCreatedException("Error in save new User");
+        throw new NotCreatedException("Error 400 bad request.");
     }
     public User updateUser(UserDTO userDTO)
     {
@@ -40,7 +41,7 @@ public class UserService {
                 return userRepository.save(aux.get());
             }
         }
-        throw new EmptyElementException("El id ingresado no se encuentra");
+        throw new EmptyElementException("Error 400 bad request.");
     }
     /*
     public UserDTO loginUserWithCredentials(String username, String password){
@@ -73,7 +74,7 @@ public class UserService {
         {
             return lista;
         }
-        throw new EmptyElementException("La lista esta vacia");
+        throw new EmptyElementException("Error 404. La lista esta vacia");
     }
 
     private Boolean checkUserDTO(UserDTO userDTO, Boolean isForLogin){
@@ -101,7 +102,7 @@ public class UserService {
 
         }
         else {
-            throw new EmptyElementException("Id invalido");
+            throw new EmptyElementException("Error 400 bad request.");
         }
     }
 
