@@ -19,16 +19,17 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "pass")
-    private String password;
 
     @Column(name = "name")
     private String name;
 
-    public User(UserDTO userDTO){
-        this.name = userDTO.getName();
-        this.username = userDTO.getUsername();
-        this.password = userDTO.getPassword();
+    @Column(name = "password")
+    private String password;
+
+    public User(User user){
+        this.name = user.getName();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
     }
 
     public UserDTO toDTO(){
@@ -38,7 +39,6 @@ public class User {
                         .id(this.id)
                         .name(this.name)
                         .username(this.username)
-                        .password(this.password)
                         .build();
     }
 
