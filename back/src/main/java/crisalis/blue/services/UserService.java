@@ -1,5 +1,6 @@
 package crisalis.blue.services;
 
+import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.jwt.JwtService;
 import crisalis.blue.models.dto.JwtDTO;
 import crisalis.blue.models.dto.UserDTO;
@@ -89,6 +90,11 @@ public class UserService {
         return Boolean.TRUE;
     }
 
-
+    public UserDTO getUserById(Integer id){
+        return this.userRepository.findById(id)
+                .orElseThrow(
+                        ()-> new ResourceNotFoundException("ID Not Found")
+                ).toDTO();
+    }
 
 }

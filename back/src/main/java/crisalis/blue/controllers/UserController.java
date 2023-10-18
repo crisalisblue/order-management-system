@@ -37,5 +37,10 @@ public class UserController {
 
     }
 
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO getUserById(@RequestParam Integer id){
+        return this.userService.getUserById(id);
+    }
+
 
 }
