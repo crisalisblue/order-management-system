@@ -1,6 +1,7 @@
 package crisalis.blue.services;
 
 import crisalis.blue.jwt.JwtService;
+import crisalis.blue.models.dto.JwtDTO;
 import crisalis.blue.models.dto.UserDTO;
 import crisalis.blue.repositories.UserRepository;
 import crisalis.blue.exceptions.custom.EmptyElementException;
@@ -11,7 +12,6 @@ import crisalis.blue.validators.Encrypt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static crisalis.blue.validators.Encrypt.encrypt;
@@ -42,7 +42,7 @@ public class UserService {
         throw new NotCreatedException("Error in save new User");
     }
 
-    public String loginUserWithCredentials(String username, String password) throws Exception {
+    public JwtDTO loginUserWithCredentials(String username, String password) throws Exception {
         if (
                 this.checkUserDTO(
                         UserDTO
@@ -56,8 +56,7 @@ public class UserService {
                     .orElseThrow(
                             () -> new UnauthorizedException("Invalid credentials")
                     ).toDTO();
-            return JwtService.getToken(aux);
-
+               return JwtService.getToken(aux);
         }
         throw new UnauthorizedException("Invalid credentials");
 
