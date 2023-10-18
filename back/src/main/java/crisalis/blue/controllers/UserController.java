@@ -27,8 +27,7 @@ public class UserController {
 
     @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
     public String loginUser(HttpServletResponse response, @RequestBody LoginDTO loginDTO) throws Exception {
-        response.addHeader("auth", this.userService.loginUserWithCredentials(loginDTO.getUsername(), loginDTO.getPassword()));
-        return "Usuario autorizado";
+        return this.userService.loginUserWithCredentials(loginDTO.getUsername(), loginDTO.getPassword());
     }
 
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)

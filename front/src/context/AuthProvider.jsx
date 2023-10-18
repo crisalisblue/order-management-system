@@ -10,8 +10,7 @@ export default function AuthProvider({children}){
 
     const loginUser = (user) => {
         setLoading(true);
-        return login(user).then( data =>{
-          const token = data.token
+        return login(user).then( token =>{
           saveUserToken(token);
           setToken(token);
           setLoading(false);
