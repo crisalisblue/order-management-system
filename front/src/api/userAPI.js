@@ -2,7 +2,7 @@ import axios from "axios";
 const apiUrl = "http://localhost:8080/user";
 export const getAllUsers = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/List`);
+    const response = await axios.get(`${apiUrl}/list`);
     console.dir(response);
     console.dir(response.status);
     return response.data;
@@ -44,10 +44,16 @@ export const deleteSingleUser = async (userId) => {
 export const createSingleUser = async (data) => {
   try {
     console.dir(data);
-    const response = await axios.post(`${apiUrl}/Created`, data);
+    const response = await axios.post(`${apiUrl}`, data);
     console.dir(response);
     return response.status;
   } catch (error) {
     console.error(error);
   }
 };
+
+export const login = (dataBody) => {
+  return axios.post("http://localhost:8080/user/login", dataBody)
+      .then((response) => (response.data))
+      .catch((err) => Promise.reject(err))
+}

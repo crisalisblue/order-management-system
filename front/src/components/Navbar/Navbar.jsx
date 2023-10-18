@@ -2,8 +2,12 @@ import {Divider, Drawer, List, ListItem, ListItemButton, ListItemText} from "@mu
 import {Link as RouterLink} from "react-router-dom";
 import "./Navbar.css";
 import Button from "@mui/material/Button";
+import { useAuthContext } from "../../context/UseAuthContext";
 
 export const Navbar = () => {
+
+    const {logout} = useAuthContext();
+
     return (
         <nav>
             <List>
@@ -37,7 +41,7 @@ export const Navbar = () => {
                 </ListItem>
                 <Divider/>
             </List>
-            <Button disablePadding component={RouterLink} to={"/login"}>Cerrar Sesion</Button>
+            <Button disablePadding onClick={logout}>Cerrar Sesion</Button>
 
         </nav>
     )
