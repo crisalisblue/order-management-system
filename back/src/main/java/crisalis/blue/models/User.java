@@ -35,6 +35,7 @@ public class User {
         return
                 UserDTO
                         .builder()
+                        .id(this.id)
                         .name(this.name)
                         .username(this.username)
                         .password(this.password)

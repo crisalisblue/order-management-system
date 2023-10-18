@@ -21,7 +21,7 @@ public class DemoCrisalisApplication {
 		SpringApplication.run(DemoCrisalisApplication.class, args);
 	}
 
-	/*@Bean
+	@Bean
 	public CorsFilter corsFilter(){
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
@@ -37,7 +37,7 @@ public class DemoCrisalisApplication {
 		return new CorsFilter(source);
 	}
 
-	@Bean
+	/*@Bean
 	CommandLineRunner commandLineRunner(
 			CustomerRepository customerRepository,
 			OrderRepository orderRepository,

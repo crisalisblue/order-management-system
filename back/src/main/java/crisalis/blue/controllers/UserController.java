@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "Created", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "created", consumes = MediaType.APPLICATION_JSON_VALUE)
     public User createdUser(@RequestBody UserDTO userDTO){
         return this.userService.createdUser(userDTO);
     }
@@ -29,19 +29,19 @@ public class UserController {
     public UserDTO loginUser(@RequestParam String username, @RequestParam String password){
         return this.userService.loginUserWithCredentials(username, password);
     }*/
-    @PutMapping(value="Update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value="update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public User updateUser( @RequestBody UserDTO userDTO){
         return  userService.updateUser(userDTO);
     }
 
-    @GetMapping(value = "List", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
 
     public List<UserDTO> getAllUsers(){
         return this.userService.getListOfAllUsersInDB();
 
     }
 
-    @DeleteMapping(value = "Delete/{id}")
+    @DeleteMapping(value = "delete/{id}")
     public User deleteUser(@PathVariable("id") int id){
         User aux = userService.deleteUser(id);
         return aux;
