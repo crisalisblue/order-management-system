@@ -39,6 +39,7 @@ public class User {
                         .name(this.name)
                         .username(this.username)
                         .password(this.password)
+                        .id(this.id)
                         .build();
     }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { authContext} from "./AuthContext";
 import { deleteUserToken, getUserToken, saveUserToken } from "../services/LocalStorageService";
-import { login } from "../services/UserService";
+import { login } from "../api/UserAPI";
 
 
 export default function AuthProvider({children}){

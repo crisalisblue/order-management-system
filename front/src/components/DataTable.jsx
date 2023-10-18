@@ -35,6 +35,7 @@ export default function DataTable(props) {
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
+      getRowId={props.id}
         rows={Array.from(JSON.parse(props.data))}
         columns={columns}
         initialState={{
