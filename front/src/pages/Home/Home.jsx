@@ -1,6 +1,5 @@
-import {TableGrid} from "../../components/TableGrid.jsx";
 import "./Home.css";
-import {HomeTable} from "../../components/HomeTable.jsx";
+import HomeTable from "../../components/HomeTable.jsx";
 
 export const Home = () => {
   return(
