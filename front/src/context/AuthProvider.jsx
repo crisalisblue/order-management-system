@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { authContext} from "./AuthContext";
-import { getUserToken, saveUserToken } from "../services/LocalStorageService";
+import { deleteUserToken, getUserToken, saveUserToken } from "../services/LocalStorageService";
 import { login } from "../services/UserService";
 
 
@@ -9,13 +9,18 @@ export default function AuthProvider({children}){
     const [loading, setLoading] = useState(true);
 
     const loginUser = (user) => {
-        setLoading(true);
-        return login(user).then( token =>{
-          saveUserToken(token);
-          setToken(token);
-          setLoading(false);
-        })
+        setLoading(false);
+        return login(user)
+            .then( token =>{
+                saveUserToken(token);
+                setToken(token);
+})
         .catch(err => Promise.reject(err));
+    }
+
+    const logout =() =>{
+        setToken(null);
+        deleteUserToken()
     }
 
     useEffect(() =>{
@@ -26,7 +31,7 @@ export default function AuthProvider({children}){
   
     
     return(
-     <authContext.Provider value={{token, loading, loginUser}}>
+     <authContext.Provider value={{token, loading, loginUser, logout}}>
          {children}
      </authContext.Provider>
     );
