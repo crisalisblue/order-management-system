@@ -1,11 +1,11 @@
-nav{
+.nav-bar{
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 20px 0;
 }
-svg{
+.nav-svg{
     display: inline-block;
     width: auto;
     height: 30px;
