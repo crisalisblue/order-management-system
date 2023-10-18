@@ -41,10 +41,9 @@ public class UserController {
 
     }
 
-    /*@DeleteMapping(value="/delete/{id}")
+    @DeleteMapping(value="/{id}")
     public UserDTO deleteUser(@PathVariable(value="id") int id){
-        UserDTO aux = userService.deleteUser(id);
-        return aux;
-    }*/
+        return userService.deleteUser(id);
+    }
 
 }

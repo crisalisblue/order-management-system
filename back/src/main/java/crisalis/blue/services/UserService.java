@@ -101,7 +101,7 @@ public class UserService {
 
         }
         else {
-            throw new EmptyElementException("Error 400 bad request. No existe un usuario con ese id");
+            throw new EmptyElementException("No existe un usuario con id " + id + ".");
         }
     }
 
