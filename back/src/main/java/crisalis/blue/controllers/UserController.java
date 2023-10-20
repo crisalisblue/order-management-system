@@ -4,6 +4,7 @@ import crisalis.blue.models.User;
 import crisalis.blue.models.dto.JwtDTO;
 import crisalis.blue.models.dto.LoginDTO;
 import crisalis.blue.models.dto.UserDTO;
+import crisalis.blue.models.dto.UserDTOResponse;
 import crisalis.blue.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
@@ -22,12 +23,12 @@ public class UserController {
     }
 
     @PostMapping(value = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO createdUser(@RequestBody User user) {
+    public UserDTOResponse createdUser(@RequestBody User user) {
         return this.userService.createUser(user);
     }
 
     @PutMapping(value = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO updateUser(@RequestBody User user) throws Exception {
+    public UserDTOResponse updateUser(@RequestBody User user) throws Exception {
         return userService.updateUser(user);
     }
 
@@ -38,13 +39,13 @@ public class UserController {
     }
 
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> getAllUsers() {
+    public List<UserDTOResponse> getAllUsers() {
         return this.userService.getListOfAllUsersInDB();
 
     }
 
     @DeleteMapping(value = "/{id}")
-    public UserDTO deleteUser(@PathVariable(value = "id") int id) {
+    public UserDTOResponse deleteUser(@PathVariable(value = "id") int id) {
         return userService.deleteUser(id);
     }
 

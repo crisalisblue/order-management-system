@@ -4,6 +4,7 @@ import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.jwt.JwtService;
 import crisalis.blue.models.dto.JwtDTO;
 import crisalis.blue.models.dto.UserDTO;
+import crisalis.blue.models.dto.UserDTOResponse;
 import crisalis.blue.repositories.UserRepository;
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
@@ -28,13 +29,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTO createUser(User user){
+    public UserDTOResponse createUser(User user){
         if ( checkUser(user.toDTO(), Boolean.FALSE) ){
-                return this.userRepository.save(new User(user)).toDTO();
+                return this.userRepository.save(new User(user)).toDTOResponse();
         }
         throw new NotCreatedException("Error 400 bad request.");
     }
-    public UserDTO updateUser(User user) throws Exception {
+    public UserDTOResponse updateUser(User user) throws Exception {
         Optional<User> aux=userRepository.findById(user.getId());
         if(aux.isPresent()){
             if(checkUser(user.toDTO(), Boolean.FALSE))
@@ -42,7 +43,7 @@ public class UserService {
                 aux.get().setName(user.getName());
                 aux.get().setPassword(Encrypt.encrypt(user.getPassword()));
                 aux.get().setUsername(user.getUsername());
-                return userRepository.save(aux.get()).toDTO();
+                return userRepository.save(aux.get()).toDTOResponse();
             }
         }
         throw new NotCreatedException("Error in save new User");
@@ -69,12 +70,12 @@ public class UserService {
     }
 
 
-    public List<UserDTO> getListOfAllUsersInDB(){
+    public List<UserDTOResponse> getListOfAllUsersInDB(){
         return this
                 .userRepository
                 .findAll()
                 .stream()
-                .map(User::toDTO)
+                .map(User::toDTOResponse)
                 .collect(Collectors.toList());
     }
 
@@ -95,11 +96,11 @@ public class UserService {
         return Boolean.TRUE;
     }
 
-    public UserDTO deleteUser(int id) {
+    public UserDTOResponse deleteUser(int id) {
         if (userRepository.existsById(id)) {
             Optional<User> aux = userRepository.findById(id);
             userRepository.deleteById(id);
-            return aux.get().toDTO();
+            return aux.get().toDTOResponse();
 
         } else {
             throw new EmptyElementException("No existe un usuario con id " + id + ".");
