@@ -6,7 +6,7 @@ import lombok.*;
 
 @Data
 @Entity
-@Table(name="Usuario")
+@Table(name="user")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -32,13 +32,14 @@ public class User {
         this.password = user.getPassword();
     }
 
+
     public UserDTO toDTO(){
         return
                 UserDTO
                         .builder()
-                        .id(this.id)
                         .name(this.name)
                         .username(this.username)
+                        .id(this.id)
                         .build();
     }
 

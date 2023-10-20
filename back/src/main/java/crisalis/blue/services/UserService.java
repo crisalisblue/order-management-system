@@ -1,24 +1,29 @@
 package crisalis.blue.services;
 
+import crisalis.blue.exceptions.custom.ResourceNotFoundException;
+import crisalis.blue.jwt.JwtService;
+import crisalis.blue.models.dto.JwtDTO;
 import crisalis.blue.models.dto.UserDTO;
 import crisalis.blue.repositories.UserRepository;
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.UnauthorizedException;
 import crisalis.blue.models.User;
+import crisalis.blue.validators.Encrypt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static crisalis.blue.validators.Encrypt.encrypt;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public  UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository) {
+
         this.userRepository = userRepository;
     }
 
@@ -30,50 +35,47 @@ public class UserService {
     }
     public UserDTO updateUser(User user)
     {
-        Optional<User> aux=userRepository.findById(user.getId());;
+        Optional<User> aux=userRepository.findById(user.getId());
         if(aux.isPresent()){
-            if(checkUser(user,false))
+            if(checkUser(user, Boolean.FALSE))
             {
                 aux.get().setName(user.getName());
-                aux.get().setPassword(user.getPassword());
+                aux.get().setPassword(Encrypt.encrypt(user.getPassword()));
                 aux.get().setUsername(user.getUsername());
                 return userRepository.save(aux.get()).toDTO();
             }
         }
-        throw new EmptyElementException("Error 400 bad request.");
+        throw new NotCreatedException("Error in save new User");
     }
-    /*
-    public UserDTO loginUserWithCredentials(String username, String password){
-        if(
-            this.checkUserDTO(
-                    UserDTO
-                        .builder()
-                            .username(username)
-                            .password(password)
-                        .build()
-                , Boolean.TRUE)
-        ){
-            return this.userRepository.findByUsernameAndPassword(username, password)
+
+    public JwtDTO loginUserWithCredentials(String username, String password) throws Exception {
+        if (
+                this.checkUserDTO(
+                        UserDTO
+                                .builder()
+                                .username(username)
+                                .password(password)
+                                .build()
+                        , Boolean.TRUE)
+        ) {
+            UserDTO aux = this.userRepository.findByUsernameAndPassword(username, encrypt(password))
                     .orElseThrow(
-                            ()-> new UnauthorizedException("Invalid credentials")
+                            () -> new UnauthorizedException("Invalid credentials")
                     ).toDTO();
+               return JwtService.getToken(aux);
         }
         throw new UnauthorizedException("Invalid credentials");
 
     }
-*/
+
+
     public List<UserDTO> getListOfAllUsersInDB(){
-        List<UserDTO> lista= this
+        return this
                 .userRepository
                 .findAll()
                 .stream()
                 .map(User::toDTO)
                 .collect(Collectors.toList());
-        if(!lista.isEmpty())
-        {
-            return lista;
-        }
-        throw new EmptyElementException("Error 404. La lista esta vacia");
     }
 
     private Boolean checkUser(User userDTO, Boolean isForLogin){
@@ -92,7 +94,7 @@ public class UserService {
 
         return Boolean.TRUE;
     }
-    
+
     public UserDTO deleteUser(int id){
         if(userRepository.existsById(id)) {
           Optional<User> aux = userRepository.findById(id);
@@ -103,6 +105,13 @@ public class UserService {
         else {
             throw new EmptyElementException("No existe un usuario con id " + id + ".");
         }
+
+
+    public UserDTO getUserById(Integer id){
+        return this.userRepository.findById(id)
+                .orElseThrow(
+                        ()-> new ResourceNotFoundException("ID Not Found")
+                ).toDTO();
     }
 
 }

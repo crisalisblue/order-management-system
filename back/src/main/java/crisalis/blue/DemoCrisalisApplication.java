@@ -1,6 +1,13 @@
 package crisalis.blue;
 
-;
+import crisalis.blue.models.Customer;
+import crisalis.blue.models.Order;
+import crisalis.blue.models.OrderDetail;
+import crisalis.blue.models.Product;
+import crisalis.blue.repositories.CustomerRepository;
+import crisalis.blue.repositories.OrderDetailRepository;
+import crisalis.blue.repositories.OrderRepository;
+import crisalis.blue.repositories.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -37,7 +44,7 @@ public class DemoCrisalisApplication {
 		return new CorsFilter(source);
 	}
 
-	/*@Bean
+	@Bean
 	CommandLineRunner commandLineRunner(
 			CustomerRepository customerRepository,
 			OrderRepository orderRepository,
@@ -111,5 +118,5 @@ public class DemoCrisalisApplication {
 			orderRepository.save(order);
 			
 		};
-	}*/
+	}
 }
