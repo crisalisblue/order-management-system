@@ -1,6 +1,7 @@
 package crisalis.blue.models;
 
 import crisalis.blue.models.dto.UserDTO;
+import crisalis.blue.models.dto.UserDTOResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +37,16 @@ public class User {
     public UserDTO toDTO(){
         return
                 UserDTO
+                        .builder()
+                        .name(this.name)
+                        .password(password)
+                        .username(this.username)
+                        .id(this.id)
+                        .build();
+    }
+    public UserDTOResponse toDTOResponse(){
+        return
+                UserDTOResponse
                         .builder()
                         .name(this.name)
                         .username(this.username)
