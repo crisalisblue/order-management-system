@@ -13,6 +13,7 @@ import crisalis.blue.validators.Encrypt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static crisalis.blue.validators.Encrypt.encrypt;
@@ -27,17 +28,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTO createdUser(User user){
-        if ( checkUser(user, Boolean.FALSE) ){
+    public UserDTO createUser(User user){
+        if ( checkUser(user.toDTO(), Boolean.FALSE) ){
                 return this.userRepository.save(new User(user)).toDTO();
         }
         throw new NotCreatedException("Error 400 bad request.");
     }
-    public UserDTO updateUser(User user)
-    {
+    public UserDTO updateUser(User user) throws Exception {
         Optional<User> aux=userRepository.findById(user.getId());
         if(aux.isPresent()){
-            if(checkUser(user, Boolean.FALSE))
+            if(checkUser(user.toDTO(), Boolean.FALSE))
             {
                 aux.get().setName(user.getName());
                 aux.get().setPassword(Encrypt.encrypt(user.getPassword()));
@@ -50,7 +50,7 @@ public class UserService {
 
     public JwtDTO loginUserWithCredentials(String username, String password) throws Exception {
         if (
-                this.checkUserDTO(
+                this.checkUser(
                         UserDTO
                                 .builder()
                                 .username(username)
@@ -78,7 +78,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    private Boolean checkUser(User userDTO, Boolean isForLogin){
+    private Boolean checkUser(UserDTO userDTO, Boolean isForLogin){
         if (!isForLogin) {
             if (StringUtils.isEmpty(userDTO.getName())) {
                 throw new EmptyElementException("Name is empty");
@@ -95,17 +95,16 @@ public class UserService {
         return Boolean.TRUE;
     }
 
-    public UserDTO deleteUser(int id){
-        if(userRepository.existsById(id)) {
-          Optional<User> aux = userRepository.findById(id);
-          userRepository.deleteById(id);
-          return aux.get().toDTO();
+    public UserDTO deleteUser(int id) {
+        if (userRepository.existsById(id)) {
+            Optional<User> aux = userRepository.findById(id);
+            userRepository.deleteById(id);
+            return aux.get().toDTO();
 
-        }
-        else {
+        } else {
             throw new EmptyElementException("No existe un usuario con id " + id + ".");
         }
-
+    }
 
     public UserDTO getUserById(Integer id){
         return this.userRepository.findById(id)

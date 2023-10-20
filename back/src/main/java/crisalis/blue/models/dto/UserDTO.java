@@ -14,7 +14,8 @@ public class UserDTO {
 
     @JsonProperty("name")
     private String name;
-
+    @JsonProperty("name")
+    private String password;
     @JsonProperty("id")
     private Integer id;
 }
