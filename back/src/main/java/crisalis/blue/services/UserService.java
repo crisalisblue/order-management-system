@@ -27,18 +27,23 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User saveUser(UserDTO userDTO) throws Exception {
-        if (checkUserDTO(userDTO, Boolean.TRUE)) {
-            User user = new User(
-                    userDTO
-                            .builder()
-                            .name(userDTO.getName())
-                            .username(userDTO.getUsername())
-                            .password(Encrypt.encrypt(userDTO.getPassword()))
-                            .build()
-            );
-            userRepository.save(user);
-            return user;
+    public UserDTO createdUser(User user){
+        if ( checkUser(user, Boolean.FALSE) ){
+                return this.userRepository.save(new User(user)).toDTO();
+        }
+        throw new NotCreatedException("Error 400 bad request.");
+    }
+    public UserDTO updateUser(User user)
+    {
+        Optional<User> aux=userRepository.findById(user.getId());
+        if(aux.isPresent()){
+            if(checkUser(user, Boolean.FALSE))
+            {
+                aux.get().setName(user.getName());
+                aux.get().setPassword(Encrypt.encrypt(user.getPassword()));
+                aux.get().setUsername(user.getUsername());
+                return userRepository.save(aux.get()).toDTO();
+            }
         }
         throw new NotCreatedException("Error in save new User");
     }
@@ -73,7 +78,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    private Boolean checkUserDTO(UserDTO userDTO, Boolean isForLogin){
+    private Boolean checkUser(User userDTO, Boolean isForLogin){
         if (!isForLogin) {
             if (StringUtils.isEmpty(userDTO.getName())) {
                 throw new EmptyElementException("Name is empty");
@@ -89,6 +94,18 @@ public class UserService {
 
         return Boolean.TRUE;
     }
+
+    public UserDTO deleteUser(int id){
+        if(userRepository.existsById(id)) {
+          Optional<User> aux = userRepository.findById(id);
+          userRepository.deleteById(id);
+          return aux.get().toDTO();
+
+        }
+        else {
+            throw new EmptyElementException("No existe un usuario con id " + id + ".");
+        }
+
 
     public UserDTO getUserById(Integer id){
         return this.userRepository.findById(id)

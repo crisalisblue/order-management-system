@@ -21,6 +21,16 @@ public class UserController {
         this.userService = userService;
     }
 
+
+    @PostMapping(value = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO createdUser(@RequestBody User user){
+        return this.userService.createdUser(user);
+    }
+
+    @PutMapping(value="update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO updateUser( @RequestBody User user){
+        return  userService.updateUser(user);
+
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public User saveUser(@RequestBody UserDTO userDTO) throws Exception{
             return this.userService.saveUser(userDTO);
@@ -29,6 +39,7 @@ public class UserController {
     @PostMapping(value = "login", produces = MediaType.APPLICATION_JSON_VALUE)
     public JwtDTO loginUser(HttpServletResponse response, @RequestBody LoginDTO loginDTO) throws Exception {
         return this.userService.loginUserWithCredentials(loginDTO.getUsername(), loginDTO.getPassword());
+
     }
 
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -37,9 +48,14 @@ public class UserController {
 
     }
 
+    @DeleteMapping(value="/{id}")
+    public UserDTO deleteUser(@PathVariable(value="id") int id){
+        return userService.deleteUser(id);
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO getUserById(@RequestParam Integer id){
         return this.userService.getUserById(id);
+
     }
 
 
