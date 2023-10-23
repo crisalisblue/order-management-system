@@ -39,7 +39,7 @@ public class User {
                 UserDTO
                         .builder()
                         .name(this.name)
-                        .password(password)
+                        .password(this.password)
                         .username(this.username)
                         .id(this.id)
                         .build();

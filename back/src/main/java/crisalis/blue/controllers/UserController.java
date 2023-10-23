@@ -49,10 +49,9 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO getUserById(@RequestParam Integer id) {
-        return this.userService.getUserById(id);
-
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO getUserById(@PathVariable Integer id) {
+        return this.userService.getUserByIdAndDecryptPassword(id);
     }
 
 }
