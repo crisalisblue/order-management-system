@@ -1,4 +1,9 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
 import { Home } from "./pages/Home/Home.jsx";
 import { UserCRUD } from "./pages/Usuarios/UserCRUD.jsx";
@@ -9,7 +14,7 @@ import { UsersTable } from "./pages/Usuarios/UsersTable";
 import { UserUpdate } from "./pages/Usuarios/UserUpdate";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
-// import NotLogedinRoute from "./routes/NotLogedinRoute";
+import { NotFound } from "./pages/NotFound/NotFound";
 
 export default function App() {
   return (
@@ -28,6 +33,7 @@ export default function App() {
         <Route Component={NotLogedinRoute}>
           <Route path="/login" Component={Login} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
