@@ -14,9 +14,9 @@ export const getAllUsers = async () => {
 export const getSingleUser = async (userId) => {
   try {
     const response = await axios.get(
-      `https://my-json-server.typicode.com/lucascn21/demo/users?id=${userId}`
+      `${apiUrl}/${userId}`
     );
-    return response.status;
+    return response;
   } catch (error) {
     console.error(error);
   }
