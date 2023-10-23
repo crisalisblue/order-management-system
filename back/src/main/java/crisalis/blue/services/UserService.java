@@ -29,13 +29,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTOResponse createUser(User user){
+    public UserDTO createUser(User user) throws Exception {
         if ( checkUser(user.toDTO(), Boolean.FALSE) ){
-                return this.userRepository.save(new User(user)).toDTOResponse();
+            user.setPassword(Encrypt.encrypt(user.getPassword()));
+            return this.userRepository.save(new User(user)).toDTO();
         }
         throw new NotCreatedException("Error 400 bad request.");
     }
-    public UserDTOResponse updateUser(User user) throws Exception {
+    public UserDTO updateUser(User user) throws Exception {
         Optional<User> aux=userRepository.findById(user.getId());
         if(aux.isPresent()){
             if(checkUser(user.toDTO(), Boolean.FALSE))
@@ -43,7 +44,7 @@ public class UserService {
                 aux.get().setName(user.getName());
                 aux.get().setPassword(Encrypt.encrypt(user.getPassword()));
                 aux.get().setUsername(user.getUsername());
-                return userRepository.save(aux.get()).toDTOResponse();
+                return userRepository.save(aux.get()).toDTO();
             }
         }
         throw new NotCreatedException("Error in save new User");
@@ -70,12 +71,20 @@ public class UserService {
     }
 
 
-    public List<UserDTOResponse> getListOfAllUsersInDB(){
+    public List<UserDTO> getListOfAllUsersInDB() throws RuntimeException {
         return this
                 .userRepository
                 .findAll()
                 .stream()
-                .map(User::toDTOResponse)
+                .map(User::toDTO)
+                .map(u -> {
+                    try {
+                        u.setPassword(Encrypt.decrypt(u.getPassword()));
+                        return u;
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 
@@ -96,11 +105,11 @@ public class UserService {
         return Boolean.TRUE;
     }
 
-    public UserDTOResponse deleteUser(int id) {
+    public UserDTO deleteUser(int id) {
         if (userRepository.existsById(id)) {
             Optional<User> aux = userRepository.findById(id);
             userRepository.deleteById(id);
-            return aux.get().toDTOResponse();
+            return aux.get().toDTO();
 
         } else {
             throw new EmptyElementException("No existe un usuario con id " + id + ".");
