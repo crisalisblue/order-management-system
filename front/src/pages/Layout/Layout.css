@@ -4,17 +4,21 @@
   grid-template-columns: 1fr 4fr;
   grid-template-rows: 1fr 4fr 1fr;
   grid-template-areas:
-    "nav . ."
     "nav main main"
-    "nav footer footer";
+    "nav main main"
+    "footer footer footer";
+  background-color: rgb(128, 128, 128);
 }
 
 nav {
   grid-area: nav;
+  background-color: rgb(67, 66, 66);
 }
 main {
   grid-area: main;
+  background-color: rgb(11, 11, 11);
 }
 footer {
+  background-color: rgb(133, 132, 131);
   grid-area: footer;
 }

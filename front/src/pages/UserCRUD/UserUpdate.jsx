@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { updateSingleUser } from "../../api/UserAPI";
-import { CrudTextField } from "../../components/Form/CrudTextField";
 
 export const UserUpdate = (props) => {
   const userID = useParams().id;
@@ -16,18 +15,5 @@ export const UserUpdate = (props) => {
     console.dir(await updateSingleUser(data));
   };
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit, onError)}>
-      <CrudTextField
-        control={control}
-        label="id"
-        isDisabled={true}
-        defaultValue={userID}
-      ></CrudTextField>
-      <CrudTextField control={control} label="name"></CrudTextField>
-      <CrudTextField control={control} label="username"></CrudTextField>
-      <CrudTextField control={control} label="password"></CrudTextField>
-      <input type="submit" />
-    </form>
-  );
+  return <form onSubmit={handleSubmit(onSubmit, onError)}>userUpdate</form>;
 };

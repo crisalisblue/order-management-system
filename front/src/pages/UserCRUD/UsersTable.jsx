@@ -8,15 +8,5 @@ export const UsersTable = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-  return (
-    <Grid component="article" container spacing={1}>
-      <Grid component="section" xs={12}>
-        {loading ? (
-          "loading..."
-        ) : (
-          <DataTable data={JSON.stringify(data, null)}></DataTable>
-        )}
-      </Grid>
-    </Grid>
-  );
+  return <div>UserTable</div>;
 };

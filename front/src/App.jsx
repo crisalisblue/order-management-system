@@ -9,7 +9,6 @@ import { UsersTable } from "./pages/UserCRUD/UsersTable";
 import { UserUpdate } from "./pages/UserCRUD/UserUpdate";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
-// import NotLogedinRoute from "./routes/NotLogedinRoute";
 
 export default function App() {
   return (
