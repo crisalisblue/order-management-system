@@ -18,10 +18,10 @@ export const UserCRUD = () => {
           Gestor de Usuarios
         </Typography>
       </Grid>
-      <Button component={RouterLink} to="/userCRUD">
+      <Button component={RouterLink} to="/usuarios">
         Lista de Usuarios
       </Button>
-      <Button component={RouterLink} to="/userCRUD/nuevo">
+      <Button component={RouterLink} to="/usuarios/nuevo">
         Crear Usuario
       </Button>
       <Outlet />

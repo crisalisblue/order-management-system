@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { UserDelete } from "../pages/UserCRUD/UserDelete";
+import { UserDelete } from "../pages/Usuarios/UserDelete";
 
 export const DeleteModal = ({ userID }) => {
   const [open, setOpen] = React.useState(false);

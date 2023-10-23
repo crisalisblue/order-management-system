@@ -14,7 +14,7 @@ export const UserCreate = () => {
       <CrudTextField control={control} label="name"></CrudTextField>
       <CrudTextField control={control} label="username"></CrudTextField>
       <CrudTextField control={control} label="password"></CrudTextField>
-      <input type="submit" />
+      <input type="submit" value="Crear" />
     </form>
   );
 };
