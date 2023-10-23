@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import { Link as RouterLink } from "react-router-dom";
 export default function DataTable(props) {
   const columns = [
-    { field: "id", headerName: "ID", width: 100 },
     { field: "name", headerName: "Name", width: 130 },
     { field: "username", headerName: "username", width: 130 },
     { field: "password", headerName: "Password", width: 130 },
@@ -22,7 +21,7 @@ export default function DataTable(props) {
             <DeleteModal userID={params.row.id}></DeleteModal>
             <Button
               component={RouterLink}
-              to={`/userCRUD/${params.row.id}/editar`}
+              to={`/usuarios/${params.row.id}/editar`}
             >
               actualizar
             </Button>
@@ -35,7 +34,7 @@ export default function DataTable(props) {
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
-      getRowId={props.id}
+        getRowId={props.id}
         rows={Array.from(JSON.parse(props.data))}
         columns={columns}
         initialState={{
