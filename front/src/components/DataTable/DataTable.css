@@ -1,0 +1,29 @@
+.even {
+  background-color: #f0f0f0; /* Define the background color for even rows */
+}
+
+.odd {
+  background-color: #ffffff; /* Define the background color for odd rows */
+}
+
+.MuiDataGrid-columnHeader,
+.MuiDataGrid-cell {
+  background-color: "blue";
+  color: "white";
+  font-weight: 700;
+}
+/* Apply custom border styles to the DataGrid container */
+.MuiDataGrid-root {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Apply custom border styles to column headers */
+.MuiDataGrid-colCell {
+  border: 1px solid #333;
+}
+
+/* Apply custom border styles to cells */
+.MuiDataGrid-cell {
+  border: 1px solid #eee;
+}

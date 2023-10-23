@@ -1,4 +1,4 @@
-import DataTable from "../../components/DataTable";
+import DataTable from "../../components/DataTable/DataTable";
 import Grid from "@mui/material/Unstable_Grid2";
 import { getAllUsers } from "../../api/UserAPI";
 import { useDataFetching } from "../../api/UserAPI_Utils";

@@ -4,14 +4,24 @@ import { red } from "@mui/material/colors";
 // Create a theme instance.
 const theme = createTheme({
   palette: {
+    mode: "light",
     primary: {
-      main: "#556cd6",
+      main: "#3f51b5",
     },
     secondary: {
-      main: "#19857b",
+      main: "#f50057",
     },
     error: {
       main: red.A400,
+    },
+  },
+  overrides: {
+    MuiDataGrid: {
+      root: {
+        borderColor: 'red',
+        borderRadius: 0,
+        borderWidth: '1px 0 0',
+      },
     },
   },
 });
