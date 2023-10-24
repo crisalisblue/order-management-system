@@ -1,24 +1,23 @@
 #root {
   display: grid;
   height: 100dvh;
-  grid-template-columns: 1fr 4fr;
-  grid-template-rows: 1fr 4fr 1fr;
+  grid-template-columns: 15% auto;
+  grid-template-rows: 10% auto 10%;
   grid-template-areas:
+    "nav header header"
     "nav main main"
-    "nav main main"
-    "footer footer footer";
-  background-color: rgb(128, 128, 128);
+    "nav footer footer";
 }
 
 nav {
   grid-area: nav;
-  background-color: rgb(67, 66, 66);
+}
+header {
+  grid-area: header;
 }
 main {
   grid-area: main;
-  background-color: rgb(11, 11, 11);
 }
 footer {
-  background-color: rgb(133, 132, 131);
   grid-area: footer;
 }
