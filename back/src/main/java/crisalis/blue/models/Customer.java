@@ -1,5 +1,7 @@
 package crisalis.blue.models;
 
+import crisalis.blue.models.dto.CustomerDTO;
+import crisalis.blue.models.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +28,7 @@ public class Customer {
             strategy = GenerationType.SEQUENCE,
             generator = "customer_sequence"
     )
-    private Long idCustomer;
+    private Integer idCustomer;
 
     @Column(
             name = "name",
@@ -43,6 +45,7 @@ public class Customer {
             nullable = false)
     private String dni;
 
+    //Cuit en los modelos lo tenemos como double... deberia ser String ?
     @Column(name = "cuit",
             nullable = true)
     private String cuit;
@@ -62,6 +65,45 @@ public class Customer {
             nullable = false)
     private String type;
 
+    public Customer(Customer customer) {
+        this.idCustomer = customer.getIdCustomer();
+        this.name = customer.getName();
+        this.lastName = customer.getLastName();
+        this.dni = customer.getDni();
+        this.cuit = customer.getCuit();
+        this.activityStartDate = customer.getActivityStartDate();
+        this.businessName = customer.getBusinessName();
+        this.type = customer.getType();
+    }
+
+    public CustomerDTO toDTO(){
+        return
+                CustomerDTO
+                        .builder()
+                        .id(this.idCustomer)
+                        .name(this.name)
+                        .lastName(this.lastName)
+                        .dni(this.dni)
+                        .cuit(this.cuit)
+                        .activityStartDate(this.activityStartDate)
+                        .businessName(this.businessName)
+                        .type(this.type)
+                        .build();
+    }
+    /*
+    return
+                CustomerDTO
+                        .builder()
+                        .id(this.idCustomer)
+                        .name(this.name)
+                        .lastName(this.lastName)
+                        .dni(this.dni)
+                        .cuit(this.cuit)
+                        .activityStartDate(this.activityStartDate)
+                        .businessName(this.businessName)
+                        .type(this.type)
+                        .build();
+    */
 
 
     //Relaciones con Entidades que aun no existen.
@@ -70,7 +112,7 @@ public class Customer {
      //1 cliente con solo 1 persona
     @OneToOne
     @JoinColumn(name = "idPerson")
-    Private Person person
+    private Person person
     */
 
     /*
