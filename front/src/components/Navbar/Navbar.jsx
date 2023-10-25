@@ -15,7 +15,7 @@ export const NavBar = () => {
     <nav
       className={`${
         open ? "w-full" : "w-1/2"
-      } navPointer duration-300 h-full flex flex-col justify-between bg-mytheme-primary`}
+      } navPointer duration-300 h-full flex flex-col justify-between bg-primary`}
     >
       <button className={"flex h-[40px] w-[40px] my-3 mx-auto"} onClick={handleOpen}>
         <svg
