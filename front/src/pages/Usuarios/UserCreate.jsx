@@ -11,6 +11,9 @@ export const UserCreate = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit, onError)}>
       userCreate
+      <input type="text" />
+      <input type="text" />
+      <input type="password" name="" id="" />
       <input type="submit" />
     </form>
   );

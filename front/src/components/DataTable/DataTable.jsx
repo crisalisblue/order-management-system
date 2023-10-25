@@ -17,8 +17,14 @@ export const DataTable = ({ data }) => {
             <td>{item.name}</td>
             <td>{item.password}</td>
             <td>
-              <button>Editar</button>
-              <button>Borrar</button>
+              <a href={`/usuarios/${item.id}/editar`}>Editar</a>
+              <a
+                onClick={() => {
+                  alert("luu");
+                }}
+              >
+                Borrar
+              </a>
             </td>
           </tr>
         ))}
