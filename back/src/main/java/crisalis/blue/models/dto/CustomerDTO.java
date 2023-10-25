@@ -42,4 +42,7 @@ public class CustomerDTO {
     @JsonProperty("cuit")
     private String cuit;
 
+    @JsonProperty("type")
+    private String type;
+
 }
