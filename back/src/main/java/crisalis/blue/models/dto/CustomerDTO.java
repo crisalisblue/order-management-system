@@ -16,7 +16,7 @@ public class CustomerDTO {
 
     //Atributos de Cliente
     @JsonProperty("id")
-    private Integer id;
+    private Long id;
 
 
     //Atributos de Persona

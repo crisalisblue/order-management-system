@@ -18,17 +18,8 @@ import java.util.List;
 @ToString
 public class Customer {
     @Id
-    @SequenceGenerator(
-            name = "customer_sequence",
-            sequenceName = "customer_sequence",
-            allocationSize = 1,
-            initialValue = 10
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "customer_sequence"
-    )
-    private Integer idCustomer;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(
             name = "name",
@@ -66,7 +57,7 @@ public class Customer {
     private String type;
 
     public Customer(Customer customer) {
-        this.idCustomer = customer.getIdCustomer();
+        this.id = customer.getId();
         this.name = customer.getName();
         this.lastName = customer.getLastName();
         this.dni = customer.getDni();
@@ -80,7 +71,7 @@ public class Customer {
         return
                 CustomerDTO
                         .builder()
-                        .id(this.idCustomer)
+                        .id(this.id)
                         .name(this.name)
                         .lastName(this.lastName)
                         .dni(this.dni)
