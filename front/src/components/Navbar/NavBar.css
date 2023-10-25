@@ -1,15 +1,13 @@
-.anim-drawer{
-    transition: all 0.4s ease-out;
-}
+
 .anim-text{
-    animation: fade-in 0.55s ease-in-out;
+    animation: grow 0.2s ease-in;
 }
-@keyframes fade-in {
+@keyframes grow {
     0% {
-        opacity: 0;
+        scale: 0;
 
     }
     100% {
-        opacity: 1;
+        scale: 1;
     }
 }
