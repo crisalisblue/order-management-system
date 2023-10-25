@@ -26,12 +26,12 @@ public class CustomerController {
 
     @PutMapping(value = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDTO updateCustomer(@RequestBody Customer customer) throws Exception {
-        return clientCustomer.updateCustomer(customer);
+        return customerService.updateCustomer(customer);
     }
 
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CustomerDTO> getAllCustomers() {
-        return this.clientCustomer.getListOfAllCustomerInDB();
+        return this.customerService.getListOfAllCustomerInDB();
     }
 
     /*
@@ -45,13 +45,13 @@ public class CustomerController {
     */
     @DeleteMapping(value = "")
     public CustomerDTO deleteCustomer(@RequestParam int id ) {
-        return CustomerService.deleteClient(id);
+        return customerService.deleteClient(id);
     }
 
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     //Si no funciona cambiar int por Integer y fijarse.
     public CustomerDTO getCustomerById(@RequestParam int id) {
-        return this.CustomerService.getCustomerById(id);
+        return this.customerService.getCustomerById(id);
     }
 }
