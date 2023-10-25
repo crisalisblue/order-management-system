@@ -15,5 +15,16 @@ export const UserUpdate = (props) => {
     console.dir(await updateSingleUser(data));
   };
 
-  return <form onSubmit={handleSubmit(onSubmit, onError)}>userUpdate</form>;
+  return (
+    <form
+      className={"flex justify-evenly"}
+      onSubmit={handleSubmit(onSubmit, onError)}
+    >
+      {userID}
+      <input type="text" {...register("name")} />
+      <input type="text" {...register("username")} />
+      <input type="password" {...register("password")} />
+      <input type="submit" />
+    </form>
+  );
 };
