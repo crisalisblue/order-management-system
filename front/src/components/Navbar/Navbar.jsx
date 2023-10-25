@@ -19,7 +19,7 @@ export const NavBar = () => {
     >
       <button className={"flex h-[50px] w-[50px] m-auto"} onClick={handleOpen}>
         <svg
-          className={"h-full cursor-pointer"}
+          className={"h-full cursor-pointer "}
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-amber-50`}
+              } text-mytheme-accent`}
             >
               Inicio
             </span>
@@ -181,7 +181,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-amber-50`}
+              } text-mytheme-accent`}
             >
               Clientes
             </span>
@@ -225,7 +225,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-amber-50`}
+              } text-mytheme-accent`}
             >
               Pedidos
             </span>
@@ -272,7 +272,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-amber-50`}
+              } text-mytheme-accent`}
             >
               Productos
             </span>
@@ -324,7 +324,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-amber-50`}
+              } text-mytheme-accent`}
             >
               Servicios
             </span>
@@ -359,7 +359,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-amber-50`}
+              } text-mytheme-accent`}
             >
               Impuestos
             </span>
@@ -414,7 +414,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-amber-50`}
+              } text-mytheme-accent`}
             >
               Usuarios
             </span>
@@ -470,7 +470,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-amber-50`}
+              } text-mytheme-accent`}
             >
               Cerrar Sesión
             </span>
