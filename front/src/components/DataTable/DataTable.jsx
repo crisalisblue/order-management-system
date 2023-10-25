@@ -1,3 +1,4 @@
+import { DeleteModal } from "../DeleteModal";
 export const DataTable = ({ data }) => {
   return (
     <table className="table-auto">
@@ -17,14 +18,10 @@ export const DataTable = ({ data }) => {
             <td>{item.name}</td>
             <td>{item.password}</td>
             <td>
-              <a href={`/usuarios/${item.id}/editar`}>Editar</a>
-              <a
-                onClick={() => {
-                  alert("luu");
-                }}
-              >
-                Borrar
+              <a href={`/usuarios/${item.id}/editar`}>
+                <button className="btn">Editar</button>
               </a>
+              <DeleteModal></DeleteModal>
             </td>
           </tr>
         ))}
