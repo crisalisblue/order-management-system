@@ -1,12 +1,21 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
-import { Home } from "./pages/Home/Home.jsx";
-import { Usuarios } from "./pages/Usuarios/Usuarios.jsx";
-import { Login } from "./pages";
-import { Layout } from "./pages/Layout/Layout";
-import { UserCreate } from "./pages/Usuarios/UserCreate";
-import { UsersTable } from "./pages/Usuarios/UsersTable";
-import { UserUpdate } from "./pages/Usuarios/UserUpdate";
+
+import {
+  Home,
+  Usuarios,
+  Login,
+  Clientes,
+  Layout,
+  UserCreate,
+  UsersTable,
+  UserUpdate,
+  Pedidos,
+  Servicios,
+  Impuestos,
+  Productos,
+} from "./pages";
+
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 
@@ -22,6 +31,11 @@ export default function App() {
               <Route path=":id/editar" Component={UserUpdate} />
               <Route path="" Component={UsersTable} />
             </Route>
+            <Route path="clientes" Component={Clientes} />
+            <Route path="pedidos" Component={Pedidos} />
+            <Route path="productos" Component={Productos} />
+            <Route path="servicios" Component={Servicios} />
+            <Route path="impuestos" Component={Impuestos} />
           </Route>
         </Route>
         <Route Component={NotLogedinRoute}>
