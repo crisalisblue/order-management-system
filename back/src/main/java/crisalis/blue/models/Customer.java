@@ -1,7 +1,6 @@
 package crisalis.blue.models;
 
 import crisalis.blue.models.dto.CustomerDTO;
-import crisalis.blue.models.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,16 +8,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "customer")
-@Setter
-@Getter
-@AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(
@@ -81,20 +79,6 @@ public class Customer {
                         .type(this.type)
                         .build();
     }
-    /*
-    return
-                CustomerDTO
-                        .builder()
-                        .id(this.idCustomer)
-                        .name(this.name)
-                        .lastName(this.lastName)
-                        .dni(this.dni)
-                        .cuit(this.cuit)
-                        .activityStartDate(this.activityStartDate)
-                        .businessName(this.businessName)
-                        .type(this.type)
-                        .build();
-    */
 
 
     //Relaciones con Entidades que aun no existen.
