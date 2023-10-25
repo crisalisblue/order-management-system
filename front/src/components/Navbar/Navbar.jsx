@@ -15,7 +15,7 @@ export const NavBar = () => {
     <nav
       className={`${
         open ? "w-full" : "w-1/2"
-      } navPointer anim-drawer h-full flex flex-col justify-between bg-amber-300`}
+      } navPointer duration-300 h-full flex flex-col justify-between bg-amber-300`}
     >
       <button className={"flex h-[50px] w-[50px] m-auto"} onClick={handleOpen}>
         <svg
@@ -53,11 +53,11 @@ export const NavBar = () => {
           </g>
         </svg>
       </button>
-      <ul className={"flex flex-col justify-evenly mx-[20px] h-full"}>
-        <li className={"my-2"}>
+      <ul className={"flex flex-col justify-evenly w-full h-full"}>
+        <li>
           <RouterLink
             className={
-              "w-full flex cursor-context-menu items-center justify-around"
+              "w-full flex items-center justify-around"
             }
             to="/home"
           >
@@ -121,17 +121,17 @@ export const NavBar = () => {
             </svg>
             <span
               className={`${
-                open ? "inline" : "hidden"
-              } cursor-pointer anim-text`}
+                open ? "inline anim-text" : "hidden"
+              }`}
             >
               Inicio
             </span>
           </RouterLink>
         </li>
-        <li className={"my-2"}>
+        <li>
           <RouterLink
             className={
-              "w-full h-full flex cursor-context-menu items-center justify-around"
+              "w-full h-full flex items-center justify-around"
             }
             to="/clientes"
           >
@@ -180,17 +180,17 @@ export const NavBar = () => {
             </svg>
             <span
               className={`${
-                open ? "inline" : "hidden"
-              } cursor-pointer anim-text`}
+                open ? "inline anim-text" : "hidden"
+              }`}
             >
               Clientes
             </span>
           </RouterLink>
         </li>
-        <li className={"my-2"}>
+        <li>
           <RouterLink
             className={
-              "w-full h-full flex cursor-context-menu items-center justify-around"
+              "w-full h-full flex items-center justify-around"
             }
             to="/pedidos"
           >
@@ -224,17 +224,17 @@ export const NavBar = () => {
             </svg>
             <span
               className={`${
-                open ? "inline" : "hidden"
-              } cursor-pointer anim-text`}
+                open ? "inline anim-text" : "hidden"
+              }`}
             >
               Pedidos
             </span>
           </RouterLink>
         </li>
-        <li className={"my-2"}>
+        <li>
           <RouterLink
             className={
-              "w-full h-full flex cursor-context-menu items-center justify-around"
+              "w-full h-full flex items-center justify-around"
             }
             to="/productos"
           >
@@ -271,17 +271,17 @@ export const NavBar = () => {
             </svg>
             <span
               className={`${
-                open ? "inline" : "hidden"
-              } cursor-pointer anim-text`}
+                open ? "inline anim-text" : "hidden"
+              }`}
             >
               Productos
             </span>
           </RouterLink>
         </li>
-        <li className={"my-3"}>
+        <li>
           <RouterLink
             className={
-              "w-full h-full flex cursor-context-menu items-center justify-around"
+              "w-full h-full flex items-center justify-around"
             }
             to="/servicios"
           >
@@ -323,17 +323,17 @@ export const NavBar = () => {
             </svg>
             <span
               className={`${
-                open ? "inline" : "hidden"
-              } cursor-pointer anim-text`}
+                open ? "inline anim-text" : "hidden"
+              }`}
             >
               Servicios
             </span>
           </RouterLink>
         </li>
-        <li className={"my-3"}>
+        <li>
           <RouterLink
             className={
-              "w-full h-full flex cursor-context-menu items-center justify-around"
+              "w-full h-full flex items-center justify-around"
             }
             to="/impuestos"
           >
@@ -358,17 +358,17 @@ export const NavBar = () => {
             </svg>
             <span
               className={`${
-                open ? "inline" : "hidden"
-              } cursor-pointer anim-text`}
+                open ? "inline anim-text" : "hidden"
+              }`}
             >
               Impuestos
             </span>
           </RouterLink>
         </li>
-        <li className={"my-3"}>
+        <li>
           <RouterLink
             className={
-              "w-full h-full flex cursor-context-menu items-center justify-around"
+              "w-full h-full flex items-center justify-around"
             }
             to="/usuarios"
           >
@@ -413,17 +413,17 @@ export const NavBar = () => {
             </svg>
             <span
               className={`${
-                open ? "inline" : "hidden"
-              } cursor-pointer anim-text`}
+                open ? "inline anim-text" : "hidden"
+              }`}
             >
               Usuarios
             </span>
           </RouterLink>
         </li>
-        <li className={"my-3"}>
+        <li>
           <RouterLink
             className={
-              "w-full h-full flex cursor-context-menu items-center justify-around"
+              "w-full h-full flex items-center justify-around"
             }
             to="/login"
             onClick={logout}
@@ -469,8 +469,8 @@ export const NavBar = () => {
             </svg>
             <span
               className={`${
-                open ? "inline" : "hidden"
-              } cursor-pointer anim-text`}
+                open ? "inline anim-text" : "hidden"
+              }`}
             >
               Cerrar Sesión
             </span>
