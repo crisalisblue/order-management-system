@@ -3,6 +3,7 @@ package crisalis.blue.controllers;
 import crisalis.blue.models.Customer;
 import crisalis.blue.models.dto.CustomerDTO;
 import crisalis.blue.services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +13,10 @@ import java.util.List;
 @RequestMapping("customer")
 public class CustomerController {
 
+
     private final CustomerService customerService;
 
+    @Autowired
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
@@ -34,15 +37,7 @@ public class CustomerController {
         return this.customerService.getListOfAllCustomerInDB();
     }
 
-    /*
-    //Si no funciona el mapping utilizando el RequestParam, usar este y fijarse
-    // la diferencia
 
-    @DeleteMapping(value = "/{id}")
-    public ClientDTO deleteClient(@PathVariable(value = "id") int id) {
-        return clientService.deleteClient(id);
-    }
-    */
     @DeleteMapping(value = "")
     public CustomerDTO deleteCustomer(@RequestParam int id ) {
         return customerService.deleteClient(id);
