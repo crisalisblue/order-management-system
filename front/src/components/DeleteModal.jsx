@@ -1,23 +1,17 @@
 import React from "react";
+import { UserDelete } from "../pages/Usuarios/UserDelete";
 
-export const DeleteModal = () => {
+export const DeleteModal = ({ itemId }) => {
+  console.dir(itemId);
   return (
     <>
       <button
         className="btn"
-        onClick={() => document.getElementById("my_modal_2").showModal()}
+        onClick={() => document.getElementById("modalBorrar").showModal()}
       >
-        open modal
+        Borrar
       </button>
-      <dialog id="my_modal_2" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">Press ESC key or click outside to close</p>
-        </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
+      <UserDelete userID={itemId}></UserDelete>
     </>
   );
 };
