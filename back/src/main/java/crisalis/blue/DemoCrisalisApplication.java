@@ -75,8 +75,14 @@ public class DemoCrisalisApplication {
 					.save(
 							new Customer(
 									null,
-									"Cliente Ejemplo",
-									"40321234")
+									"Nombre Cliente Ejemplo",
+									"Apellido Cliente Ejemplo",
+									"99999", //dni
+									"1111111", //cuit
+									new Date(),
+									"Razon Social Ejemplo",
+									"Empresa Ejemplo"
+									)
 					);
 			
 					Order order = orderRepository
