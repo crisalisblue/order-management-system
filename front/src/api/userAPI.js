@@ -25,7 +25,7 @@ export const getSingleUser = async (userId) => {
 export const updateSingleUser = async (data) => {
   console.dir(data);
   try {
-    const response = await axios.put(`${apiUrl}/Update`, data);
+    const response = await axios.put(`${apiUrl}/update`, data);
     return response.status;
   } catch (error) {
     console.error(error);
@@ -34,7 +34,7 @@ export const updateSingleUser = async (data) => {
 
 export const deleteSingleUser = async (userId) => {
   try {
-    const response = await axios.delete(`${apiUrl}/Delete/${userId}`);
+    const response = await axios.delete(`${apiUrl}/${userId}`);
     return response.status;
   } catch (error) {
     console.error(error);
@@ -44,7 +44,7 @@ export const deleteSingleUser = async (userId) => {
 export const createSingleUser = async (data) => {
   try {
     console.dir(data);
-    const response = await axios.post(`${apiUrl}`, data);
+    const response = await axios.post(`${apiUrl}/create`, data);
     console.dir(response);
     return response.status;
   } catch (error) {
