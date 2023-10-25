@@ -7,6 +7,7 @@ import crisalis.blue.repositories.CustomerRepository;
 import crisalis.blue.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,19 +31,31 @@ public class CustomerService {
         }
 
     }
-/*
+
     public CustomerDTO updateCustomer(Customer customer) {
+        Customer newCustomer = new Customer(customer);
+
+        return newCustomer.toDTO();
     }
 
     public List<CustomerDTO> getListOfAllCustomerInDB() {
+        List<CustomerDTO> test = new ArrayList<>();
+
+        return test;
     }
 
     public CustomerDTO deleteClient(int id) {
+        Customer newCustomer = null;
+
+        return newCustomer.toDTO();
     }
 
     public CustomerDTO getCustomerById(int id) {
+        Customer newCustomer = null;
 
+
+        return newCustomer.toDTO();
     }
 
- */
+
 }
