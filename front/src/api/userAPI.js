@@ -13,9 +13,7 @@ export const getAllUsers = async () => {
 
 export const getSingleUser = async (userId) => {
   try {
-    const response = await axios.get(
-      `${apiUrl}?id=${userId}`
-    );
+    const response = await axios.get(`${apiUrl}?id=${userId}`);
     return response.status;
   } catch (error) {
     console.error(error);
@@ -53,7 +51,8 @@ export const createSingleUser = async (data) => {
 };
 
 export const login = (dataBody) => {
-  return axios.post("http://localhost:8080/user/login", dataBody)
-      .then((response) => (response.data))
-      .catch((err) => Promise.reject(err))
-}
+  return axios
+    .post("http://localhost:8080/user/login", dataBody)
+    .then((response) => response.data)
+    .catch((err) => Promise.reject(err));
+};
