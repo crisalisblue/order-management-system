@@ -15,7 +15,7 @@ export const NavBar = () => {
     <nav
       className={`${
         open ? "w-full" : "w-1/2"
-      } navPointer duration-300 h-full flex flex-col justify-between bg-amber-300`}
+      } navPointer duration-300 h-full flex flex-col justify-between bg-mytheme-primary`}
     >
       <button className={"flex h-[50px] w-[50px] m-auto"} onClick={handleOpen}>
         <svg
@@ -122,7 +122,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              }`}
+              } text-amber-50`}
             >
               Inicio
             </span>
@@ -181,7 +181,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              }`}
+              } text-amber-50`}
             >
               Clientes
             </span>
@@ -225,7 +225,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              }`}
+              } text-amber-50`}
             >
               Pedidos
             </span>
@@ -272,7 +272,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              }`}
+              } text-amber-50`}
             >
               Productos
             </span>
@@ -324,7 +324,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              }`}
+              } text-amber-50`}
             >
               Servicios
             </span>
@@ -359,7 +359,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              }`}
+              } text-amber-50`}
             >
               Impuestos
             </span>
@@ -414,7 +414,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              }`}
+              } text-amber-50`}
             >
               Usuarios
             </span>
@@ -470,7 +470,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              }`}
+              } text-amber-50`}
             >
               Cerrar Sesión
             </span>

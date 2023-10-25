@@ -1,8 +1,8 @@
 #root {
   display: grid;
   height: 100dvh;
-  grid-template-columns: 15% auto;
-  grid-template-rows: 10% auto 10%;
+  grid-template-columns: 10% auto;
+  grid-template-rows: 5% auto 5%;
   grid-template-areas:
     "nav . ."
     "nav main main"
