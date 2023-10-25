@@ -5,15 +5,24 @@ export default {
     extend: {
       colors: {
         mytheme: {
-          primary: "#111827",
-          secondary: "#ea580c",
-          accent: "#10b981",
-          neutral: "#d1d5db",
-          "base-100": "#1d232a",
-          info: "#3abff8",
-          success: "#36d399",
-          warning: "#fbbd23",
-          error: "#f87272",
+
+          "primary": "#001f3d",
+
+          "secondary": "#4c73a0",
+
+          "accent": "#00a4e6",
+
+          "neutral": "#2a323c",
+
+          "base-100": "#fff",
+
+          "info": "#3abff8",
+
+          "success": "#008a70",
+
+          "warning": "#fbbd23",
+
+          "error": "#f87272",
         },
       },
     },
