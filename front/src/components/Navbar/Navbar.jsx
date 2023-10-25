@@ -17,7 +17,7 @@ export const NavBar = () => {
         open ? "w-full" : "w-1/2"
       } navPointer duration-300 h-full flex flex-col justify-between bg-mytheme-primary`}
     >
-      <button className={"flex h-[50px] w-[50px] m-auto"} onClick={handleOpen}>
+      <button className={"flex h-[40px] w-[40px] my-3 mx-auto"} onClick={handleOpen}>
         <svg
           className={"h-full cursor-pointer "}
           viewBox="0 0 24 24"
@@ -34,30 +34,30 @@ export const NavBar = () => {
             {" "}
             <path
               d="M20 7L4 7"
-              stroke="#000"
+              stroke="#eaffff"
               strokeWidth="1.5"
               strokeLinecap="round"
             ></path>{" "}
             <path
               d="M20 12L4 12"
-              stroke="#000"
+              stroke="#eaffff"
               strokeWidth="1.5"
               strokeLinecap="round"
             ></path>{" "}
             <path
               d="M20 17L4 17"
-              stroke="#000"
+              stroke="#eaffff"
               strokeWidth="1.5"
               strokeLinecap="round"
             ></path>{" "}
           </g>
         </svg>
       </button>
-      <ul className={"flex flex-col justify-evenly w-full h-full"}>
-        <li>
+      <ul className={"flex flex-col justify-evenly items-center w-full h-full"}>
+        <li className={"py-2 w-full hover:bg-mytheme-info duration-300 ease-in-out"}>
           <RouterLink
             className={
-              "w-full flex items-center justify-around"
+              "px-3 py-1 flex items-center justify-around"
             }
             to="/home"
           >
@@ -77,44 +77,44 @@ export const NavBar = () => {
                 {" "}
                 <path
                   d="M22 22L2 22"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 ></path>{" "}
                 <path
                   d="M2 11L6.06296 7.74968M22 11L13.8741 4.49931C12.7784 3.62279 11.2216 3.62279 10.1259 4.49931L9.34398 5.12486"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 ></path>{" "}
                 <path
                   d="M15.5 5.5V3.5C15.5 3.22386 15.7239 3 16 3H18.5C18.7761 3 19 3.22386 19 3.5V8.5"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 ></path>{" "}
                 <path
                   d="M4 22V9.5"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 ></path>{" "}
                 <path
                   d="M20 9.5V13.5M20 22V17.5"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 ></path>{" "}
                 <path
                   d="M15 22V17C15 15.5858 15 14.8787 14.5607 14.4393C14.1213 14 13.4142 14 12 14C10.5858 14 9.87868 14 9.43934 14.4393M9 22V17"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 ></path>{" "}
                 <path
                   d="M14 9.5C14 10.6046 13.1046 11.5 12 11.5C10.8954 11.5 10 10.6046 10 9.5C10 8.39543 10.8954 7.5 12 7.5C13.1046 7.5 14 8.39543 14 9.5Z"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="1.5"
                 ></path>{" "}
               </g>
@@ -122,22 +122,22 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-mytheme-accent`}
+              } text-mytheme-accent ml-2`}
             >
               Inicio
             </span>
           </RouterLink>
         </li>
-        <li>
+        <li className={"py-2 w-full hover:bg-mytheme-info duration-300 ease-in-out"}>
           <RouterLink
             className={
-              "w-full h-full flex items-center justify-around"
+              "px-3 py-1 flex items-center justify-around"
             }
             to="/clientes"
           >
             <svg
               className={"h-[30px] w-[30px] p-0 cursor-pointer"}
-              fill="#000000"
+              fill="#eaffff"
               version="1.1"
               id="Capa_1"
               xmlns="http://www.w3.org/2000/svg"
@@ -181,16 +181,16 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-mytheme-accent`}
+              } text-mytheme-accent ml-2`}
             >
               Clientes
             </span>
           </RouterLink>
         </li>
-        <li>
+        <li className={"py-2 w-full hover:bg-mytheme-info duration-300 ease-in-out"}>
           <RouterLink
             className={
-              "w-full h-full flex items-center justify-around"
+              "px-3 py-1 flex items-center justify-around"
             }
             to="/pedidos"
           >
@@ -210,13 +210,13 @@ export const NavBar = () => {
                 {" "}
                 <path
                   d="M20.2236 12.5257C19.6384 9.40452 19.3458 7.84393 18.2349 6.92196C17.124 6 15.5362 6 12.3606 6H11.6394C8.46386 6 6.87608 6 5.76518 6.92196C4.65428 7.84393 4.36167 9.40452 3.77645 12.5257C2.95353 16.9146 2.54207 19.1091 3.74169 20.5545C4.94131 22 7.17402 22 11.6394 22H12.3606C16.826 22 19.0587 22 20.2584 20.5545C20.9543 19.7159 21.108 18.6252 20.9537 17"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 ></path>{" "}
                 <path
                   d="M9 6V5C9 3.34315 10.3431 2 12 2C13.6569 2 15 3.34315 15 5V6"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 ></path>{" "}
@@ -225,22 +225,22 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-mytheme-accent`}
+              } text-mytheme-accent ml-2`}
             >
               Pedidos
             </span>
           </RouterLink>
         </li>
-        <li>
+        <li className={"py-2 w-full hover:bg-mytheme-info duration-300 ease-in-out"}>
           <RouterLink
             className={
-              "w-full h-full flex items-center justify-around"
+              "px-3 py-1 flex items-center justify-around"
             }
             to="/productos"
           >
             <svg
               className={"h-[30px] w-[30px] p-0 cursor-pointer"}
-              fill="#000000"
+              fill="#eaffff"
               version="1.1"
               id="Layer_1"
               xmlns="http://www.w3.org/2000/svg"
@@ -272,16 +272,16 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-mytheme-accent`}
+              } text-mytheme-accent ml-2`}
             >
               Productos
             </span>
           </RouterLink>
         </li>
-        <li>
+        <li className={"py-2 w-full hover:bg-mytheme-info duration-300 ease-in-out"}>
           <RouterLink
             className={
-              "w-full h-full flex items-center justify-around"
+              " px-3 py-1 flex items-center justify-around"
             }
             to="/servicios"
           >
@@ -294,7 +294,7 @@ export const NavBar = () => {
               height="64px"
               viewBox="0 0 32 32"
               enableBackground="new 0 0 32 32"
-              fill="#000000"
+              fill="#eaffff"
             >
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
               <g
@@ -307,15 +307,15 @@ export const NavBar = () => {
                 <g>
                   {" "}
                   <path
-                    fill="#000"
+                    fill="#eaffff"
                     d="M1.836,23.001c-1.042,0.891-1.672,2.188-1.728,3.559c-0.056,1.37,0.467,2.714,1.435,3.687 c0.935,0.939,2.179,1.457,3.504,1.457c1.424,0,2.778-0.613,3.716-1.681l6.626-7.474l7.739,7.739 c0.916,0.916,2.134,1.421,3.429,1.421c1.296,0,2.514-0.505,3.43-1.421s1.421-2.134,1.421-3.43c0-1.295-0.505-2.513-1.421-3.429 l-8.152-8.152l2.042-2.303c0.604,0.172,1.225,0.259,1.848,0.259c1.903,0,3.659-0.817,4.818-2.242c1.601-1.967,1.8-4.746,0.507-7.08 c-0.291-0.524-1.166-0.503-1.443,0.031l-1.473,2.837c-0.354,0.683-1.248,0.967-1.937,0.612l-1.502-0.782 c-0.341-0.176-0.592-0.475-0.707-0.84c-0.116-0.365-0.082-0.754,0.094-1.094l1.66-3.188c0.133-0.256,0.124-0.556-0.025-0.804 c-0.146-0.242-0.401-0.39-0.75-0.392c-1.903,0-3.66,0.816-4.819,2.241c-1.285,1.579-1.679,3.691-1.079,5.712l-5.612,4.806 L5.739,5.334C6.204,4.658,6.346,3.819,6.08,3.012C5.768,2.065,5.002,1.38,4.033,1.177L1.97,0.744 C1.544,0.653,1.1,0.787,0.793,1.095c-0.309,0.309-0.44,0.749-0.351,1.177l0.433,2.063c0.265,1.266,1.396,2.186,2.69,2.186 c0.537,0,1.038-0.166,1.476-0.47l7.653,7.653L1.836,23.001z M3.565,5.538c-0.706,0-1.521-0.46-1.712-1.373L1.421,2.136 C1.401,2.04,1.431,2.01,1.5,1.941C1.55,1.891,1.615,2,1.73,2c0.011,0,0.022,0,0.034,0l2.063,0.295 C4.444,2.424,4.931,2.724,5.13,3.327C5.319,3.9,5.197,4.507,4.811,4.943L4.643,5.116C4.339,5.386,3.966,5.538,3.565,5.538z M29.279,24.137c0.728,0.727,1.128,1.693,1.128,2.722c0,1.029-0.4,1.996-1.128,2.723c-1.452,1.455-3.99,1.455-5.444,0l-7.782-7.782 l5.117-5.772L29.279,24.137z M20.118,8.242c-0.63-1.786-0.329-3.685,0.805-5.078C21.83,2.05,23.18,1.38,24.712,1.3l-1.518,2.914 c-0.299,0.578-0.356,1.237-0.16,1.857s0.623,1.127,1.2,1.426l1.502,0.782c0.347,0.179,0.733,0.273,1.121,0.273 c0.913,0,1.742-0.503,2.163-1.312l1.315-2.533c0.913,1.905,0.703,4.091-0.568,5.653c-1.347,1.654-3.753,2.286-5.891,1.567 c-0.19-0.063-0.399-0.008-0.534,0.142L8.013,29.36c-0.749,0.854-1.83,1.343-2.966,1.343c-1.057,0-2.05-0.413-2.795-1.162 c-0.783-0.787-1.189-1.832-1.145-2.941s0.534-2.117,1.379-2.839L19.972,8.788C20.129,8.653,20.187,8.437,20.118,8.242z"
                   ></path>{" "}
                   <path
-                    fill="#000"
+                    fill="#eaffff"
                     d="M19.877,21.033l6.026,6.026c0.098,0.098,0.226,0.146,0.354,0.146s0.256-0.049,0.354-0.146 c0.195-0.195,0.195-0.512,0-0.707l-6.026-6.026c-0.195-0.195-0.512-0.195-0.707,0S19.682,20.838,19.877,21.033z"
                   ></path>{" "}
                   <path
-                    fill="#000"
+                    fill="#eaffff"
                     d="M5.065,24.769c-1.103,0-2,0.897-2,2s0.897,2,2,2s2-0.897,2-2S6.168,24.769,5.065,24.769z M5.065,27.769 c-0.552,0-1-0.448-1-1s0.448-1,1-1s1,0.448,1,1S5.617,27.769,5.065,27.769z"
                   ></path>{" "}
                 </g>{" "}
@@ -324,22 +324,22 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-mytheme-accent`}
+              } text-mytheme-accent ml-2`}
             >
               Servicios
             </span>
           </RouterLink>
         </li>
-        <li>
+        <li className={"py-2 w-full hover:bg-mytheme-info duration-300 ease-in-out"}>
           <RouterLink
             className={
-              "w-full h-full flex items-center justify-around"
+              "px-3 py-1 flex items-center justify-around"
             }
             to="/impuestos"
           >
             <svg
               className={"h-[30px] w-[30px] p-0 cursor-pointer"}
-              fill="#000000"
+              fill="#eaffff"
               width="64px"
               height="64px"
               viewBox="0 0 1024 1024"
@@ -359,22 +359,22 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-mytheme-accent`}
+              } text-mytheme-accent ml-2`}
             >
               Impuestos
             </span>
           </RouterLink>
         </li>
-        <li>
+        <li className={"py-2 w-full hover:bg-mytheme-info duration-300 ease-in-out"}>
           <RouterLink
             className={
-              "w-full h-full flex items-center justify-around"
+              "px-3 py-1 flex items-center justify-around"
             }
             to="/usuarios"
           >
             <svg
               className={"h-[30px] w-[30px] p-0 cursor-pointer"}
-              fill="#000000"
+              fill="#eaffff"
               version="1.1"
               id="Layer_1"
               xmlns="http://www.w3.org/2000/svg"
@@ -414,16 +414,16 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-mytheme-accent`}
+              } text-mytheme-accent ml-2`}
             >
               Usuarios
             </span>
           </RouterLink>
         </li>
-        <li>
+        <li className={"py-2 w-full hover:bg-mytheme-info duration-300 ease-in-out"}>
           <RouterLink
             className={
-              "w-full h-full flex items-center justify-around"
+              "px-2 py-1 flex items-center justify-around"
             }
             to="/login"
             onClick={logout}
@@ -446,21 +446,21 @@ export const NavBar = () => {
                 {" "}
                 <path
                   d="M21 12L13 12"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 ></path>{" "}
                 <path
                   d="M18 15L20.913 12.087V12.087C20.961 12.039 20.961 11.961 20.913 11.913V11.913L18 9"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 ></path>{" "}
                 <path
                   d="M16 5V4.5V4.5C16 3.67157 15.3284 3 14.5 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H14.5C15.3284 21 16 20.3284 16 19.5V19.5V19"
-                  stroke="#000"
+                  stroke="#eaffff"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -470,7 +470,7 @@ export const NavBar = () => {
             <span
               className={`${
                 open ? "inline anim-text" : "hidden"
-              } text-mytheme-accent`}
+              } text-mytheme-accent ml-2`}
             >
               Cerrar Sesión
             </span>
