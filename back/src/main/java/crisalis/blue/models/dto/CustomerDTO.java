@@ -40,6 +40,6 @@ public class CustomerDTO {
     private Date activityStartDate;
 
     @JsonProperty("cuit")
-    private Double cuit;
+    private String cuit;
 
 }
