@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ItemDTO {
+public class ItemsDTO {
     @JsonProperty("name")
     private String name;
     @JsonProperty("mountBase")

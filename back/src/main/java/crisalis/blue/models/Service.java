@@ -5,7 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 
 @Entity(name = "Service")
-public class Service extends Items{
+public class Service extends ExchangeGood {
     @Id
     @JoinColumn(name = "id")
     private Long id;

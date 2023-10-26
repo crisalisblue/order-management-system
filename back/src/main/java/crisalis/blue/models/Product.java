@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Product extends Items {
+public class Product extends ExchangeGood {
     @Id
     @JoinColumn(name = "id")
     private Long id;
