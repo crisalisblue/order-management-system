@@ -1,4 +1,4 @@
-import { DeleteModal } from "../DeleteModal";
+import { DeleteModal } from "../DeleteModal/DeleteModal";
 export const DataTable = ({ data }) => {
   return (
     <table className="table table-zebra table-xs">

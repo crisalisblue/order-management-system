@@ -1,6 +1,6 @@
 import { DataTable } from "../../components/DataTable/DataTable";
 import { getAllUsers } from "../../api/UserAPI";
-import { useDataFetching } from "../../api/UserAPI_Utils";
+import { useDataFetching } from "../../api/API_Utils";
 
 export const UsersTable = () => {
   const { data, loading, error } = useDataFetching(getAllUsers);

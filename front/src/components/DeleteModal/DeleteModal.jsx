@@ -1,5 +1,5 @@
 import React from "react";
-import { UserDelete } from "../pages/Usuarios/UserDelete";
+import { UserDelete } from "../../pages/Usuarios/UserDelete";
 
 export const DeleteModal = ({ itemId }) => {
   console.dir(itemId);
