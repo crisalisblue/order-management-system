@@ -2,9 +2,11 @@ package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.models.Customer;
+import crisalis.blue.models.User;
 import crisalis.blue.models.dto.CustomerDTO;
 import crisalis.blue.repositories.CustomerRepository;
 import crisalis.blue.repositories.UserRepository;
+import crisalis.blue.validators.Encrypt;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateJdbcException;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -60,9 +63,13 @@ public class CustomerService {
     }
 
     public List<CustomerDTO> getListOfAllCustomerInDB() {
-        List<CustomerDTO> test = new ArrayList<>();
 
-        return test;
+        return this
+                .customerRepository
+                .findAll()
+                .stream()
+                .map(Customer::toDTO)
+                .collect(Collectors.toList());
     }
 
     public CustomerDTO deleteClient(int id) {
