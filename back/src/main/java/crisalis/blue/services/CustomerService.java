@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -32,10 +33,29 @@ public class CustomerService {
 
     }
 
-    public CustomerDTO updateCustomer(Customer customer) {
-        Customer newCustomer = new Customer(customer);
+    public CustomerDTO updateCustomer(Customer updatedCustomer) throws Exception {
 
-        return newCustomer.toDTO();
+        Optional<Customer> customerOptional = customerRepository.findById(updatedCustomer.getId().intValue());
+
+        if (customerOptional.isPresent()){
+            //Guardamos en customer, los datos del cliente que esta en la base de datos.
+            Customer customer = customerOptional.get();
+
+            //a ese customer le asignamos los nuevos valores recibidos en updatedCustomer
+            customer.setName(updatedCustomer.getName());
+            customer.setLastName(updatedCustomer.getLastName());
+            customer.setDni(updatedCustomer.getDni());
+            customer.setCuit(updatedCustomer.getDni());
+            customer.setActivityStartDate(updatedCustomer.getActivityStartDate());
+            customer.setBusinessName(updatedCustomer.getBusinessName());
+            customer.setType(updatedCustomer.getType());
+
+            //Guardamos el cliente ya actualizado.
+            customerRepository.save(customer);
+
+            return customer.toDTO();
+        }
+        throw new NotCreatedException("Error updating Customer");
     }
 
     public List<CustomerDTO> getListOfAllCustomerInDB() {
