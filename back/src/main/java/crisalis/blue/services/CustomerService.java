@@ -5,9 +5,12 @@ import crisalis.blue.models.Customer;
 import crisalis.blue.models.dto.CustomerDTO;
 import crisalis.blue.repositories.CustomerRepository;
 import crisalis.blue.repositories.UserRepository;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.hibernate5.HibernateJdbcException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +26,10 @@ public class CustomerService {
 
     public CustomerDTO createCustomer(Customer customer) throws Exception{
         try {
-            Customer newCustomer = new Customer(customer);
-            this.customerRepository.save(newCustomer);
-
-            return newCustomer.toDTO();
-        }catch (Error e){
-            throw new NotCreatedException("Error 400 bad request.");
+            this.customerRepository.save(customer);
+            return customer.toDTO();
+        }catch (DataIntegrityViolationException | HibernateJdbcException e){
+            throw new NotCreatedException(e.getMessage());
         }
 
     }
