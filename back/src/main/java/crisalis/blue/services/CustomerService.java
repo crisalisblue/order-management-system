@@ -1,5 +1,6 @@
 package crisalis.blue.services;
 
+import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.models.Customer;
 import crisalis.blue.models.User;
@@ -72,10 +73,13 @@ public class CustomerService {
                 .collect(Collectors.toList());
     }
 
-    public CustomerDTO deleteClient(int id) {
-        Customer newCustomer = null;
+    public String deleteCustomer(int id) {
+        if (customerRepository.existsById(id)){
+            customerRepository.deleteById(id);
+            return "Cliente " + id +" Borrado exitosamente";
+        }
+        throw new EmptyElementException("No existe un usuario con id " + id + ".");
 
-        return newCustomer.toDTO();
     }
 
     public CustomerDTO getCustomerById(int id) {
