@@ -39,8 +39,8 @@ public class CustomerController {
 
 
     @DeleteMapping(value = "")
-    public CustomerDTO deleteCustomer(@RequestParam int id ) {
-        return customerService.deleteClient(id);
+    public String deleteCustomer(@RequestParam int id ) {
+        return customerService.deleteCustomer(id);
     }
 
 
