@@ -32,5 +32,4 @@ public class DemoCrisalisApplication {
 		return new CorsFilter(source);
 	}
 
-
 }
