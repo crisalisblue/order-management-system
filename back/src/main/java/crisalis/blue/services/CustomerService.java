@@ -2,9 +2,11 @@ package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
+import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.Customer;
 import crisalis.blue.models.User;
 import crisalis.blue.models.dto.CustomerDTO;
+import crisalis.blue.models.dto.UserDTO;
 import crisalis.blue.repositories.CustomerRepository;
 import crisalis.blue.repositories.UserRepository;
 import crisalis.blue.validators.Encrypt;
@@ -83,11 +85,11 @@ public class CustomerService {
     }
 
     public CustomerDTO getCustomerById(int id) {
-        Customer newCustomer = null;
 
-
-        return newCustomer.toDTO();
+        return this.customerRepository.findById(id)
+                .orElseThrow(
+                        ()-> new ResourceNotFoundException("Customer not Found")
+                ).toDTO();
     }
-
 
 }
