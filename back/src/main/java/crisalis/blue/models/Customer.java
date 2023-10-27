@@ -34,7 +34,6 @@ public class Customer {
             nullable = false)
     private String dni;
 
-    //Cuit en los modelos lo tenemos como double... deberia ser String ?
     @Column(name = "cuit",
             nullable = true)
     private String cuit;
