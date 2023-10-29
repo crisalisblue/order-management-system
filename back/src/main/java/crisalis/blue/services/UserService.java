@@ -29,7 +29,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTO createUser(User user) throws Exception {
+    public UserDTOResponse createUser(User user) throws Exception {
         if (checkUser(user.toDTO(), Boolean.FALSE)) {
             user.setPassword(Encrypt.encrypt(user.getPassword()));
             return this.userRepository.save(new User(user)).toDTOResponse();
@@ -37,7 +37,7 @@ public class UserService {
         throw new NotCreatedException("Error 400 bad request.");
     }
 
-    public UserDTO updateUser(User user) throws Exception {
+    public UserDTOResponse updateUser(User user) throws Exception {
         Optional<User> aux = userRepository.findById(user.getId());
         if (aux.isPresent()) {
             if (checkUser(user.toDTO(), Boolean.FALSE)) {
@@ -68,7 +68,7 @@ public class UserService {
 
     }
 
-    public List<UserDTO> getListOfAllUsersInDB() throws RuntimeException {
+    public List<UserDTOResponse> getListOfAllUsersInDB() throws RuntimeException {
         return this.userRepository
                 .findAll()
                 .stream()
