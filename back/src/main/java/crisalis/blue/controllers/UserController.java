@@ -23,12 +23,12 @@ public class UserController {
     }
 
     @PostMapping(value = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO createUser(@RequestBody User user) throws Exception {
+    public UserDTOResponse createUser(@RequestBody User user) throws Exception {
         return this.userService.createUser(user);
     }
 
     @PutMapping(value = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO updateUser(@RequestBody User user) throws Exception {
+    public UserDTOResponse updateUser(@RequestBody User user) throws Exception {
         return userService.updateUser(user);
     }
 
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public UserDTO deleteUser(@PathVariable(value = "id") int id) {
+    public UserDTOResponse deleteUser(@PathVariable(value = "id") int id) {
         return userService.deleteUser(id);
     }
 
