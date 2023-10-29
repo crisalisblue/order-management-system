@@ -10,7 +10,10 @@ import org.springframework.http.MediaType;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends ExchangeGood {
+    public class Product extends ExchangeGood {
     @Column(name = "warranty")
     private Boolean garantia;
+
+
+
 }

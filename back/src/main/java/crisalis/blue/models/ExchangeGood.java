@@ -23,6 +23,18 @@ public class ExchangeGood {
     @Column(name = "mountBase")
     private double mountBase;
 
+    public boolean checkEmpty()
+    {
+        if(!this.getName().isEmpty())
+        {
+            if(this.getMountBase() !=0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public ItemsDTO toItemDTO()
     {
         return new ItemsDTO(this.getName(),this.getMountBase());

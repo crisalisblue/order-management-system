@@ -15,4 +15,6 @@ public class ItemsDTO {
     @JsonProperty("mountBase")
     private double mountBase;
 
+
+
 }
