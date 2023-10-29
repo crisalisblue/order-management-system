@@ -1,12 +1,13 @@
 #root {
   display: grid;
   height: 100dvh;
-  grid-template-columns: 10% auto;
+  grid-template-columns: minmax(min-content, max-content) auto;
   grid-template-rows: 5% auto 5%;
   grid-template-areas:
     "nav . ."
     "nav main main"
     "nav footer footer";
+  color: white;
 }
 
 nav {

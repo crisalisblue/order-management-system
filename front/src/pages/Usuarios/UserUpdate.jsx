@@ -22,7 +22,7 @@ export const UserUpdate = (props) => {
       className={"flex justify-evenly"}
       onSubmit={handleSubmit(onSubmit, onError)}
     >
-       <label>name</label>
+      <label>name</label>
       <input type="text" {...register("name")} />
       <label>username</label>
       <input type="text" {...register("username")} />

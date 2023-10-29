@@ -24,11 +24,6 @@ export const UserDelete = (props) => {
             <button type="submit" form="closeModal" className="btn">
               close
             </button>
-            <form
-              id="closeModal"
-              method="dialog"
-              className="modal-backdrop"
-            ></form>
           </section>
         </div>
       </form>

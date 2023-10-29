@@ -11,3 +11,4 @@ export { Pedidos } from "./Pedidos/Pedidos";
 export { Impuestos } from "./Impuestos/Impuestos";
 export { Servicios } from "./Servicios/Servicios";
 export { Productos } from "./Productos/Productos";
+export { NotFound } from "./NotFound/NotFound";

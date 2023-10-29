@@ -19,6 +19,7 @@ import {
   Servicios,
   Impuestos,
   Productos,
+  NotFound
 } from "./pages";
 
 import NotLogedinRoute from "./routes/NotLogedinRoute";
