@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTOResponse> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return this.userService.getListOfAllUsersInDB();
 
     }

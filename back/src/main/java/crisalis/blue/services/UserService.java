@@ -68,11 +68,21 @@ public class UserService {
 
     }
 
-    public List<UserDTOResponse> getListOfAllUsersInDB() throws RuntimeException {
+    public List<UserDTO> getListOfAllUsersInDB() throws RuntimeException {
         return this.userRepository
                 .findAll()
                 .stream()
-                .map(User::toDTOResponse)
+                .map(user -> {
+                    UserDTO userDTO = user.toDTO();
+                    String decryptedPassword = null;
+                    try {
+                        decryptedPassword = Encrypt.decrypt(userDTO.getPassword());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    userDTO.setPassword(decryptedPassword);
+                    return userDTO;
+                })
                 .collect(Collectors.toList());
     }
 
