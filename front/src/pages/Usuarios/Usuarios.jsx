@@ -1,20 +1,12 @@
 import { Outlet } from "react-router-dom";
-import { DynamicLink } from "../../components/DynamicLink/DynamicLink";
 
 export const Usuarios = () => {
   return (
     <>
-      <section className="tabs bg-primary">
-        <DynamicLink
-          name="Lista de Usuarios"
-          expectedUrl="/usuarios"
-        ></DynamicLink>
-        <DynamicLink
-          name="Crear Usuario"
-          expectedUrl="/usuarios/nuevo"
-        ></DynamicLink>
+      <section className="prose overflow-auto max-h-[80dvh] min-w-full">
+        <h1 className="text-primary text-center  m-0 p-0">Usuarios</h1>
+        <Outlet />
       </section>
-      <Outlet />
     </>
   );
 };
