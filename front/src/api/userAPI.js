@@ -14,7 +14,7 @@ export const getAllUsers = async () => {
 export const getSingleUser = async (userId) => {
   try {
     const response = await axios.get(`${apiUrl}?id=${userId}`);
-    return response;
+    return response.status;
   } catch (error) {
     console.error(error);
   }

@@ -1,55 +1,29 @@
-import { DataGrid } from "@mui/x-data-grid";
-import { DeleteModal } from "../DeleteModal";
-import Button from "@mui/material/Button";
-import { Link as RouterLink } from "react-router-dom";
-
-import "./DataTable.css";
-export default function DataTable(props) {
-  const columns = [
-    { field: "name", headerName: "Name", flex: 1 },
-    { field: "username", headerName: "username", flex: 1 },
-    { field: "password", headerName: "Password", flex: 1 },
-    {
-      field: "actions",
-      value: null,
-      headerName: "Actions",
-
-      description: "This column has a value getter and is not sortable.",
-      sortable: false,
-      flex: 1,
-      renderCell: (params) => {
-        return (
-          <>
-            <DeleteModal userID={params.row.id}></DeleteModal>
-            <Button
-              component={RouterLink}
-              to={`/usuarios/${params.row.id}/editar`}
-            >
-              editar
-            </Button>
-          </>
-        );
-      },
-    },
-  ];
-
+import { DeleteModal } from "../DeleteModal/DeleteModal";
+export const DataTable = ({ data }) => {
   return (
-    <div style={{ height: 400, margin: "1rem" }}>
-      <DataGrid
-        getRowId={props.id}
-        rows={Array.from(JSON.parse(props.data))}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        disableRowSelectionOnClick
-        getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-        }
-      />
-    </div>
+    <table className="table table-zebra table-xs">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Password</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item, index) => (
+          <tr key={index}>
+            <td>{item.username}</td>
+            <td>{item.name}</td>
+            <td>{item.password}</td>
+            <td>
+              <a href={`/usuarios/${item.id}/editar`}>
+                <button className="btn">Editar</button>
+              </a>
+              <DeleteModal itemId={item.id}></DeleteModal>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
-}
+};

@@ -25,8 +25,6 @@ export function useDataFetching(apiFunction) {
     };
 
     fetchData();
-
-    // Cleanup function to cancel the fetch if the component unmounts
     return () => {
       isMounted = false;
     };

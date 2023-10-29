@@ -1,16 +1,16 @@
 import { Outlet } from "react-router";
 import "./Layout.css";
-import { Navbar } from "../../components/Navbar/Navbar.jsx";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { NavBar } from "../../components/NavBar/NavBar.jsx";
+import { useLocation } from "react-router-dom";
 
 export const Layout = () => {
+  const location = useLocation();
+  const mainId = location.pathname.substring(1);
+
   return (
     <>
-      <nav>
-        <Navbar />
-      </nav>
-      <main>
+      <NavBar />
+      <main id={mainId}>
         <Outlet />
         <ToastContainer
           position="top-right" // Adjust the position
@@ -33,7 +33,9 @@ export const Layout = () => {
           }}
         />
       </main>
-      <footer>footer</footer>
+      <footer className={"text-center"}>
+        Finnegans Equipo Blue {new Date().getFullYear()}
+      </footer>
     </>
   );
 };
