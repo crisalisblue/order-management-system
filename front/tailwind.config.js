@@ -1,27 +1,24 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/**/**.{js,ts,jsx,tsx}",
+    "./src/components/*.css",
+    "./src/**/*.css",
+  ],
   daisyui: {
     themes: [
       {
         mytheme: {
-          primary: "#272835",
-
-          secondary: "#e83e6b",
-
-          accent: "#ef28db",
-
+          primary: "#001F3D",
+          secondary: "#4C73A0",
+          accent: "#00A4E6",
           neutral: "#272835",
-
-          "base-100": "#392c4e",
-
-          info: "#58caf3",
-
-          success: "#17726b",
-
+          "base-100": "#CCE3ED",
+          info: "#CCE3ED",
+          success: "#008A70",
           warning: "#9c840d",
-
-          error: "#e6655c",
+          error: "#F87272",
         },
       },
       "coffee",
