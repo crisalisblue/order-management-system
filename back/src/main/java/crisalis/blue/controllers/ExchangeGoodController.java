@@ -2,19 +2,18 @@ package crisalis.blue.controllers;
 
 import crisalis.blue.models.ExchangeGood;
 import crisalis.blue.models.dto.ItemsDTO;
-import crisalis.blue.services.ItemsService;
+import crisalis.blue.services.ExchangeGoodService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.util.List;
 
 @RestController
 @RequestMapping("items")
-public class ItemsController {
-    private final ItemsService itemsService;
+public class ExchangeGoodController {
+    private final ExchangeGoodService itemsService;
 
-    public ItemsController (ItemsService itemsService)
+    public ExchangeGoodController(ExchangeGoodService itemsService)
     {
         this.itemsService = itemsService;
     }

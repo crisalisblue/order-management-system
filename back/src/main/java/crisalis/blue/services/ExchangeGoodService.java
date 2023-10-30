@@ -3,7 +3,7 @@ package crisalis.blue.services;
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.ExchangeGood;
 import crisalis.blue.models.dto.ItemsDTO;
-import crisalis.blue.repositories.ItemsRepository;
+import crisalis.blue.repositories.ExchangeGoodRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 
 @Service
 @Data
-public class ItemsService {
-    private ItemsRepository itemsRespository;
+public class ExchangeGoodService {
+    private ExchangeGoodRepository itemsRespository;
 
-    public ItemsService(ItemsRepository itemsRepository)
+    public ExchangeGoodService(ExchangeGoodRepository itemsRepository)
     {
         this.itemsRespository = itemsRepository;
     }
