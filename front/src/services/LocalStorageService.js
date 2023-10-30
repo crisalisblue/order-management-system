@@ -1,12 +1,11 @@
-
 export const saveUserToken = (token) => {
-    window.localStorage.setItem('token', token);
-}
+  window.localStorage.setItem("token", token);
+};
 
 export const getUserToken = () => {
-    return window.localStorage.getItem('token');
-}
+  return window.localStorage.getItem("token");
+};
 
 export const deleteUserToken = () => {
-    window.localStorage.removeItem('token');
-}
+  window.localStorage.removeItem("token");
+};
