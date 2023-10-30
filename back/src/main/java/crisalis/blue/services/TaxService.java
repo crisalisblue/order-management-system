@@ -28,7 +28,7 @@ public class TaxService {
     public TaxDTO createTax(Tax tax) throws Exception{
         try {
             this.taxRepository.save(tax);
-            return tax.ToDTO();
+            return tax.toDTO();
         }catch (DataIntegrityViolationException | HibernateJdbcException e){
             throw new NotCreatedException(e.getMessage());
         }
@@ -48,7 +48,7 @@ public class TaxService {
 
                 taxRepository.save(tax);
 
-                return tax.ToDTO();
+                return tax.toDTO();
             }
 
             throw new NotCreatedException("Error updating Tax");
@@ -70,10 +70,17 @@ public class TaxService {
                     .taxRepository
                     .findAll()
                     .stream()
-                    .map(Tax::ToDTO)
+                    .map(Tax::toDTO)
                     .collect(Collectors.toList());
         } catch (Error e){
             throw new ResourceNotFoundException("Error al conseguir los Impuestos " +e.getMessage());
         }
+    }
+
+    public TaxDTO getTaxById(int id) {
+        return this.taxRepository.findById(id)
+                .orElseThrow(
+                        ()-> new ResourceNotFoundException("Impuesto no encontrado")
+                ).toDTO();
     }
 }
