@@ -3,8 +3,8 @@ import { DeleteModal } from "../DeleteModal/DeleteModal";
 export const DataTable = ({ data }) => {
   return (
     <>
-      <table className="m-0 table table-xs bg-secondary text-primary border-collapse w-full overflow-auto max-h-[400px]">
-        <thead className="min-w-full sticky top-0">
+      <table className="m-0 table table-xs bg-secondary text-primary ">
+        <thead className="min-w-full">
           <tr className="bg-secondary text-primary border-gray-500">
             <th className="w-1/4">Usuario</th>
             <th className="w-1/4">Nombre</th>
@@ -33,12 +33,6 @@ export const DataTable = ({ data }) => {
               </td>
             </tr>
           ))}
-        </tbody>
-      </table>
-
-      <table className="m-0 sticky bottom-0 table table-xs bg-secondary text-primary border-collapse w-full">
-        <tbody>
-          <UserCreate />
         </tbody>
       </table>
     </>

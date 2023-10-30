@@ -5,6 +5,11 @@ export const Usuarios = () => {
     <>
       <article className="bg-gray-500 prose min-w-full">
         <h1 className="text-primary text-center m-0 p-0">Usuarios</h1>
+        <section id="actions" className="flex items-center gap-4 m-4">
+          <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-2 border border-gray-400 rounded shadow">
+            + Agregar Nuevo
+          </button>
+        </section>
         <section id="filters" className="flex items-center gap-4">
           <label htmlFor="filter1" className="mr-4">
             Filtrar Por:
