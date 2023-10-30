@@ -1,4 +1,14 @@
 export { Home } from "./Home/Home";
 export { Layout } from "./Layout/Layout";
 export { Login } from "./Login/Login";
-export { UserCRUD } from "./UserCRUD/UserCRUD";
+export { Usuarios } from "./Usuarios/Usuarios";
+export { Clientes } from "./Clientes/Clientes";
+export { UserCreate } from "./Usuarios/UserCreate";
+export { UserDelete } from "./Usuarios/UserDelete";
+export { UsersTable } from "./Usuarios/UsersTable";
+export { UserUpdate } from "./Usuarios/UserUpdate";
+export { Pedidos } from "./Pedidos/Pedidos";
+export { Impuestos } from "./Impuestos/Impuestos";
+export { Servicios } from "./Servicios/Servicios";
+export { Productos } from "./Productos/Productos";
+export { NotFound } from "./NotFound/NotFound";

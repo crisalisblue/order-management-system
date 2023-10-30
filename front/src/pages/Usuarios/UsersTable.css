@@ -1,0 +1,7 @@
+#usuarios {
+  margin: 1%;
+}
+
+#root:has(#usuarios) {
+  background-color: black;
+}

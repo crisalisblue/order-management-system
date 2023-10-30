@@ -1,15 +1,29 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
-import { Home } from "./pages/Home/Home.jsx";
-import { UserCRUD } from "./pages/UserCRUD/UserCRUD.jsx";
-import { Login } from "./pages";
-import { Layout } from "./pages/Layout/Layout";
-import { UserCreate } from "./pages/UserCRUD/UserCreate";
-import { UsersTable } from "./pages/UserCRUD/UsersTable";
-import { UserUpdate } from "./pages/UserCRUD/UserUpdate";
+
+import {
+  Home,
+  Usuarios,
+  Login,
+  Clientes,
+  Layout,
+  UserCreate,
+  UsersTable,
+  UserUpdate,
+  Pedidos,
+  Servicios,
+  Impuestos,
+  Productos,
+  NotFound,
+} from "./pages";
+
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
-// import NotLogedinRoute from "./routes/NotLogedinRoute";
 
 export default function App() {
   return (
@@ -18,16 +32,22 @@ export default function App() {
         <Route Component={LogedinRoute}>
           <Route path="/" Component={Layout}>
             <Route path="home" Component={Home} />
-            <Route path="userCRUD" Component={UserCRUD}>
+            <Route path="usuarios" Component={Usuarios}>
               <Route path="nuevo" Component={UserCreate} />
               <Route path=":id/editar" Component={UserUpdate} />
               <Route path="" Component={UsersTable} />
             </Route>
+            <Route path="clientes" Component={Clientes} />
+            <Route path="pedidos" Component={Pedidos} />
+            <Route path="productos" Component={Productos} />
+            <Route path="servicios" Component={Servicios} />
+            <Route path="impuestos" Component={Impuestos} />
           </Route>
         </Route>
         <Route Component={NotLogedinRoute}>
           <Route path="/login" Component={Login} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
