@@ -33,7 +33,7 @@ public class TaxController {
         return this.taxService.getAllTaxes();
     }
 
-    @GetMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "")
     public TaxDTO getTaxById(@RequestParam int id) {
         return this.taxService.getTaxById(id);
     }
