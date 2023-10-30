@@ -1,0 +1,10 @@
+.anim-text {
+  opacity: 1;
+  transition: opacity 1.9s ease;
+  visibility: visible;
+}
+
+.gone {
+  opacity: 0;
+  transition: opacity 1.9s ease;
+}

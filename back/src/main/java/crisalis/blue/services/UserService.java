@@ -30,17 +30,17 @@ public class UserService {
     }
 
     public UserDTOResponse createUser(User user) throws Exception {
-        if ( checkUser(user.toDTO(), Boolean.FALSE) ){
+        if (checkUser(user.toDTO(), Boolean.FALSE)) {
             user.setPassword(Encrypt.encrypt(user.getPassword()));
             return this.userRepository.save(new User(user)).toDTOResponse();
         }
         throw new NotCreatedException("Error 400 bad request.");
     }
+
     public UserDTOResponse updateUser(User user) throws Exception {
-        Optional<User> aux=userRepository.findById(user.getId());
-        if(aux.isPresent()){
-            if(checkUser(user.toDTO(), Boolean.FALSE))
-            {
+        Optional<User> aux = userRepository.findById(user.getId());
+        if (aux.isPresent()) {
+            if (checkUser(user.toDTO(), Boolean.FALSE)) {
                 aux.get().setName(user.getName());
                 aux.get().setPassword(Encrypt.encrypt(user.getPassword()));
                 aux.get().setUsername(user.getUsername());
@@ -51,46 +51,52 @@ public class UserService {
     }
 
     public JwtDTO loginUserWithCredentials(String username, String password) throws Exception {
-        if (
-                this.checkUser(
-                        UserDTO
-                                .builder()
-                                .username(username)
-                                .password(password)
-                                .build()
-                        , Boolean.TRUE)
-        ) {
+        if (this.checkUser(
+                UserDTO
+                        .builder()
+                        .username(username)
+                        .password(password)
+                        .build(),
+                Boolean.TRUE)) {
             UserDTO aux = this.userRepository.findByUsernameAndPassword(username, encrypt(password))
                     .orElseThrow(
-                            () -> new UnauthorizedException("Invalid credentials")
-                    ).toDTO();
-               return JwtService.getToken(aux);
+                            () -> new UnauthorizedException("Invalid credentials"))
+                    .toDTO();
+            return JwtService.getToken(aux);
         }
         throw new UnauthorizedException("Invalid credentials");
 
     }
 
-
-    public List<UserDTOResponse> getListOfAllUsersInDB() throws RuntimeException {
-        return this
-                .userRepository
+    public List<UserDTO> getListOfAllUsersInDB() throws RuntimeException {
+        return this.userRepository
                 .findAll()
                 .stream()
-                .map(User::toDTOResponse)
+                .map(user -> {
+                    UserDTO userDTO = user.toDTO();
+                    String decryptedPassword = null;
+                    try {
+                        decryptedPassword = Encrypt.decrypt(userDTO.getPassword());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    userDTO.setPassword(decryptedPassword);
+                    return userDTO;
+                })
                 .collect(Collectors.toList());
     }
 
-    private Boolean checkUser(UserDTO userDTO, Boolean isForLogin){
+    private Boolean checkUser(UserDTO userDTO, Boolean isForLogin) {
         if (!isForLogin) {
             if (StringUtils.isEmpty(userDTO.getName())) {
                 throw new EmptyElementException("Name is empty");
             }
         }
-        if(StringUtils.isEmpty(userDTO.getUsername())){
+        if (StringUtils.isEmpty(userDTO.getUsername())) {
             throw new EmptyElementException("Username is empty");
         }
 
-        if(StringUtils.isEmpty(userDTO.getPassword())){
+        if (StringUtils.isEmpty(userDTO.getPassword())) {
             throw new EmptyElementException("Password is empty");
         }
 
@@ -108,11 +114,24 @@ public class UserService {
         }
     }
 
-    public UserDTOResponse getUserById(Integer id){
+    public UserDTO getUserById(Integer id) {
         return this.userRepository.findById(id)
                 .orElseThrow(
-                        ()-> new ResourceNotFoundException("ID Not Found")
-                ).toDTOResponse();
+                        () -> new ResourceNotFoundException("ID Not Found"))
+                .toDTO();
     }
 
+    public UserDTO getUserByIdAndDecryptPassword(Integer id) {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ID Not Found"));
+        UserDTO userDTO = user.toDTO();
+        try {
+            userDTO.setPassword(Encrypt.decrypt(userDTO.getPassword()));
+        } catch (Exception e) {
+            // Handle the exception, e.g., log it or return an error response
+            e.printStackTrace();
+        }
+
+        return userDTO;
+    }
 }
