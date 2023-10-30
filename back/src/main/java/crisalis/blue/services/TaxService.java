@@ -1,7 +1,9 @@
 package crisalis.blue.services;
 
 
+import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
+import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.Tax;
 import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.TaxRepository;
@@ -49,4 +51,15 @@ public class TaxService {
             throw new NotCreatedException("Error updating Tax");
 
     }
+
+    public String deleteTax(int id){
+
+        if (taxRepository.existsById(id)){
+            taxRepository.deleteById(id);
+            return "Impuesto " + id +" Borrado exitosamente";
+        }
+        throw new ResourceNotFoundException("No existe un impuesto con id " + id + ".");
+    }
+
+    
 }
