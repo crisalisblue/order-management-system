@@ -4,6 +4,7 @@ package crisalis.blue.services;
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
+import crisalis.blue.models.Customer;
 import crisalis.blue.models.Tax;
 import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.TaxRepository;
@@ -11,7 +12,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateJdbcException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TaxService {
@@ -61,5 +64,16 @@ public class TaxService {
         throw new ResourceNotFoundException("No existe un impuesto con id " + id + ".");
     }
 
-    
+    public List<TaxDTO> getAllTaxes(){
+        try {
+            return this
+                    .taxRepository
+                    .findAll()
+                    .stream()
+                    .map(Tax::ToDTO)
+                    .collect(Collectors.toList());
+        } catch (Error e){
+            throw new ResourceNotFoundException("Error al conseguir los Impuestos " +e.getMessage());
+        }
+    }
 }
