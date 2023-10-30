@@ -38,7 +38,7 @@ public class TaxController {
         return this.taxService.getTaxById(id);
     }
 
-    @DeleteMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "")
     public String deleteTax(@RequestParam int id){
         return this.taxService.deleteTax(id);
     }
