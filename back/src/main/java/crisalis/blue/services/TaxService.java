@@ -9,6 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateJdbcException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TaxService {
 
@@ -25,5 +27,26 @@ public class TaxService {
         }catch (DataIntegrityViolationException | HibernateJdbcException e){
             throw new NotCreatedException(e.getMessage());
         }
+    }
+
+    public TaxDTO updateTax(Tax updatedTax) throws Exception{
+
+            Optional<Tax> taxOptional = taxRepository.findById(updatedTax.getId().intValue());
+            if (taxOptional.isPresent()){
+                //Guardamos en tax, los datos del impuesto que esta en la base de datos.
+                Tax tax = taxOptional.get();
+
+                //En tax Asignamos los nuevos valores que reemplazaremos en la db
+                tax.setName(updatedTax.getName());
+                tax.setPercentage(updatedTax.getPercentage());
+                tax.setFixedAmount(updatedTax.getFixedAmount());
+
+                taxRepository.save(tax);
+
+                return tax.ToDTO();
+            }
+
+            throw new NotCreatedException("Error updating Tax");
+
     }
 }
