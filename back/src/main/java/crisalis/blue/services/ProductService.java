@@ -2,6 +2,7 @@ package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.Product;
+import crisalis.blue.models.dto.ProductDTO;
 import crisalis.blue.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,48 +16,45 @@ import java.util.stream.Collectors;
 
 @Service
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class ProductService {
-    private ProductRepository productRepository;
-    public Product crearProducto(Product product)
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository)
+    {
+        this.productRepository = productRepository;
+    }
+    public ProductDTO create(Product product)
     {
         if(product.checkEmpty())
-            return productRepository.save(product);
+            return productRepository.save(product).productToDTO();
         else throw new EmptyElementException("No tiene los campos cargados ");
     }
-    public Product create(Product product)
+
+    public List<ProductDTO> read()
     {
-        if(product.checkEmpty())
-            return productRepository.save(product);
-        else  return null;
+        return productRepository.findAll().stream().map(Product::productToDTO).collect(Collectors.toList());
     }
-    public List<Product> read()
-    {
-        return productRepository.findAll().stream().collect(Collectors.toList());
-    }
-    public Product update(Product product)
+    public ProductDTO update(Product product)
     {
         Optional<Product> aux = productRepository.findById(product.getId());
         if(aux.isPresent())
         {
             if(!product.getName().isEmpty())
                 aux.get().setName(product.getName());
-            if(product.getGarantia() != aux.get().getGarantia())
-                aux.get().setGarantia(product.getGarantia());
             if(product.getMountBase() != aux.get().getMountBase())
                 aux.get().setMountBase(product.getMountBase());
-            return productRepository.save(aux.get());
+            return productRepository.save(aux.get()).productToDTO();
         }
         throw new EmptyElementException("No existe la entrada que se quiso actualizar ");
     }
-    public Product delete(Long id )
+    public ProductDTO delete(Long id )
     {
        Optional<Product> aux = productRepository.findById(id);
        if(aux.isPresent())
        {
            productRepository.deleteById(id);
-           return aux.get();
+           return aux.get().productToDTO();
        }
        throw new EmptyElementException("El id pasado por parámetro no coincide con ninguna de las entradas ");
     }

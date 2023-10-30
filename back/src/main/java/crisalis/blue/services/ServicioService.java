@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ServicioService {
-    private ServicioRepository serviceRepository;
+    private final ServicioRepository serviceRepository;
 
     public ServicioService(ServicioRepository serviceRepository)
     {

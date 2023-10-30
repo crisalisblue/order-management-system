@@ -1,6 +1,7 @@
 package crisalis.blue.controllers;
 
 import crisalis.blue.models.Product;
+import crisalis.blue.models.dto.ProductDTO;
 import crisalis.blue.services.ProductService;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import javax.print.attribute.standard.Media;
 import java.util.List;
 
 @RestController
+@Controller
 @RequestMapping("product")
 public class ProductController {
     private ProductService productService;
@@ -18,22 +20,22 @@ public class ProductController {
         this.productService = productService;
     }
     @PostMapping(value ="create",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Product create(Product product)
+    public ProductDTO create(@RequestBody  Product product)
     {
         return productService.create(product);
     }
     @GetMapping(value="read",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Product> read()
+    public List<ProductDTO> read()
     {
         return productService.read();
     }
     @PutMapping(value="update",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Product update( @RequestBody Product product)
+    public ProductDTO update( @RequestBody Product product)
     {
         return productService.update(product);
     }
     @DeleteMapping(value="delete/{id}")
-    public Product delete(@PathVariable Long id)
+    public ProductDTO delete(@PathVariable(value="id") Long id)
     {
         return productService.delete(id);
     }

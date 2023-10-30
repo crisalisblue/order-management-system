@@ -1,7 +1,7 @@
 package crisalis.blue.models;
 
 
-import crisalis.blue.models.dto.ItemsDTO;
+import crisalis.blue.models.dto.ExchangeGoodDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +25,7 @@ public class ExchangeGood {
 
     public boolean checkEmpty()
     {
-        if(!this.getName().isEmpty())
+        if(!this.getName().equals(""))
         {
             if(this.getMountBase() !=0)
             {
@@ -35,8 +35,8 @@ public class ExchangeGood {
         return false;
     }
 
-    public ItemsDTO toItemDTO()
+    public ExchangeGoodDTO toItemDTO()
     {
-        return new ItemsDTO(this.getName(),this.getMountBase());
+        return new ExchangeGoodDTO(this.getName(),this.getMountBase());
     }
 }
