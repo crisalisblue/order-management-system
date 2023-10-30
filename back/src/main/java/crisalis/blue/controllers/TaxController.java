@@ -35,7 +35,7 @@ public class TaxController {
 
     @GetMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public TaxDTO getTaxById(@RequestParam int id) {
-        return this.taxService.getTaxById();
+        return this.taxService.getTaxById(id);
     }
 
     @DeleteMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
