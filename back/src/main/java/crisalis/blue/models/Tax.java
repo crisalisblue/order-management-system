@@ -31,7 +31,7 @@ public class Tax {
     @Column(name = "fixedAmount")
     private BigInteger fixedAmount;
 
-    public Tax ToDTO(){
+    public TaxDTO ToDTO(){
         return
                 TaxDTO
                         .builder()
