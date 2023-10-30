@@ -41,9 +41,12 @@ public class UserService {
         if(aux.isPresent()){
             if(checkUser(user.toDTO(), Boolean.FALSE))
             {
-                aux.get().setName(user.getName());
-                aux.get().setPassword(Encrypt.encrypt(user.getPassword()));
-                aux.get().setUsername(user.getUsername());
+                if(!user.getName().isEmpty())
+                    aux.get().setName(user.getName());
+                if(!user.getPassword().isEmpty())
+                    aux.get().setPassword(Encrypt.encrypt(user.getPassword()));
+                if(!user.getUsername().isEmpty())
+                    aux.get().setUsername(user.getUsername());
                 return userRepository.save(aux.get()).toDTOResponse();
             }
         }
@@ -82,18 +85,10 @@ public class UserService {
 
     private Boolean checkUser(UserDTO userDTO, Boolean isForLogin){
         if (!isForLogin) {
-            if (StringUtils.isEmpty(userDTO.getName())) {
-                throw new EmptyElementException("Name is empty");
+            if (StringUtils.isEmpty(userDTO.getName()) && StringUtils.isEmpty(userDTO.getUsername()) && StringUtils.isEmpty(userDTO.getPassword())) {
+                throw new EmptyElementException("Todos los elemento son nulos");
             }
         }
-        if(StringUtils.isEmpty(userDTO.getUsername())){
-            throw new EmptyElementException("Username is empty");
-        }
-
-        if(StringUtils.isEmpty(userDTO.getPassword())){
-            throw new EmptyElementException("Password is empty");
-        }
-
         return Boolean.TRUE;
     }
 
