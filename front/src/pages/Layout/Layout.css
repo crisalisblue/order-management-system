@@ -2,11 +2,11 @@
   display: grid;
   height: 100dvh;
   grid-template-columns: minmax(min-content, max-content) auto;
-  grid-template-rows: 5% auto 5%;
+  grid-template-rows: 5% auto;
   grid-template-areas:
-    "nav . ."
-    "nav main main"
-    "nav footer footer";
+    "nav main"
+    "nav main"
+    "nav footer";
   color: white;
 }
 

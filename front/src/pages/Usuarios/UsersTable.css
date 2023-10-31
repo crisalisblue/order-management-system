@@ -5,7 +5,6 @@
 }
 
 #root:has(#usuarios) {
-  background-color: #ffffff;
 }
 
 #usuarios > section > table {

@@ -6,23 +6,25 @@ export const DataTable = ({ data }) => {
       <table className="m-0 table table-xs bg-secondary text-primary ">
         <thead className="min-w-full">
           <tr className="bg-secondary text-primary border-gray-500">
-            <th className="w-1/4">Usuario</th>
-            <th className="w-1/4">Nombre</th>
-            <th className="w-1/4">Contraseña</th>
-            <th className="w-1/4">Acciones</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Contraseña</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item, index) => (
             <tr
-              className="text-accent odd:bg-secondary even:bg-base-100"
+              className="text-accent odd:bg-base-200 even:bg-base-100"
               key={index}
             >
-              <td className="w-1/4 border-r-2 border-gray-500">
+              <td className=" text-center align-middle border-r-2 border-gray-500">
                 {item.username}
               </td>
-              <td className="w-1/4 border-x-2 border-gray-500">{item.name}</td>
-              <td className="w-1/4 border-x-2 border-gray-500 ">
+              <td className=" text-center align-middle border-x-2 border-gray-500">
+                {item.name}
+              </td>
+              <td className=" text-center align-middle border-x-2 border-gray-500 ">
                 {item.password}
               </td>
               <td className="float-right flex gap-20 ">
