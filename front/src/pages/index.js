@@ -5,7 +5,6 @@ export { Usuarios } from "./Usuarios/Usuarios";
 export { Clientes } from "./Clientes/Clientes";
 export { UserCreate } from "./Usuarios/UserCreate";
 export { UserDelete } from "./Usuarios/UserDelete";
-export { UsersTable } from "./Usuarios/UsersTable";
 export { UserUpdate } from "./Usuarios/UserUpdate";
 export { Pedidos } from "./Pedidos/Pedidos";
 export { Impuestos } from "./Impuestos/Impuestos";

@@ -13,7 +13,6 @@ import {
   Clientes,
   Layout,
   UserCreate,
-  UsersTable,
   UserUpdate,
   Pedidos,
   Servicios,
@@ -21,7 +20,7 @@ import {
   Productos,
   NotFound,
 } from "./pages";
-
+import { UsersTable } from "./components/UsersTable/UsersTable";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 
