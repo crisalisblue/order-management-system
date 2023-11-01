@@ -10,3 +10,7 @@
 #usuarios > section > table {
   text-align: center;
 }
+
+#userForm {
+  height: 100%;
+}
