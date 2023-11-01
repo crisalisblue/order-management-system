@@ -10,12 +10,30 @@ import java.util.List;
 
 @Data
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+        name ="type",
+        discriminatorType = DiscriminatorType.STRING
+)
 @Table(name = "customer")
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public abstract class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "customer_sequence",
+            sequenceName = "customer_sequence",
+            allocationSize = 1,
+            initialValue = 1
+
+    )
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator = "customer_sequence"
+    )
     @Column(name = "id")
     private Long id;
 
