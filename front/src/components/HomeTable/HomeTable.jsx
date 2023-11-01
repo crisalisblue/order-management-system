@@ -17,9 +17,9 @@ export const HomeTable = ({ col1, col2, col3, col4, numRows }) => {
                     <td className={`text-center ${(index === data.length - 1) ? "rounded-bl-md" : ""} p-1`}>{index}</td>
                     <td className={"text-center p-1"}>{col2}</td>
                     <td className={"text-center p-1"}>{col3}</td>
-                    <td className={`text-center ${(index === data.length - 1) ? "rounded-br-md" : ""} p-1 flex justify-evenly`}>
-                        <button className={"hover:text-[#008A70] hover:scale-125 duration-300 bolder"}>✎</button>
-                        <button className={"hover:text-red-700 hover:scale-125 duration-300 bolder"}>🗑</button>
+                    <td className={`text-center ${(index === data.length - 1) ? "rounded-br-md" : ""} p-1`}>
+                        <button className={"hover:text-[#008A70] hover:scale-125 duration-300 bolder mx-2"}>✎</button>
+                        <button className={"hover:text-red-700 hover:scale-125 duration-300 bolder mx-2"}>🗑</button>
                     </td>
                 </tr>
             ))}
