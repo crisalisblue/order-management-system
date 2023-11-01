@@ -1,39 +1,57 @@
 import { createSingleUser } from "../../api/UserAPI";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 export const UserCreate = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
-    console.dir(data);
-    console.dir(await createSingleUser(data));
-    navigate(0);
+    try {
+      await createSingleUser(data);
+      Swal.fire({
+        icon: "success",
+        title: "Usuario creado",
+        text: "El usuario se creó exitosamente.",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/usuarios");
+        }
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error al crear usuario",
+        text: "Hubo un problema al crear el usuario.",
+      });
+    }
   };
 
   return (
-    <>
-      <tr className="text-accent odd:bg-secondary even:bg-base-100">
-        <td className="w-1/4">
-          <input type="text" {...register("name")} />
-        </td>
-        <td className="w-1/4">
-          <input type="text" {...register("username")} />
-        </td>
-        <td className="w-1/4">
-          <input type="password" {...register("password")} />
-        </td>
-        <td className="flex">
-          <button
-            className="btn btn-success"
-            type="button"
-            onClick={handleSubmit(onSubmit)}
-          >
-            Agregar
-          </button>
-        </td>
-      </tr>
-    </>
+    <section id="userForm" className="bg-base-200 prose min-w-full">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <table>
+          <tbody>
+            <tr className="text-accent odd:bg-secondary even:bg-base-100">
+              <td>
+                <input type="text" {...register("name")} />
+              </td>
+              <td>
+                <input type="text" {...register("username")} />
+              </td>
+              <td>
+                <input type="password" {...register("password")} />
+              </td>
+              <td>
+                <button className="btn btn-success" type="submit">
+                  Agregar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </section>
   );
 };

@@ -2,26 +2,34 @@ import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { updateSingleUser } from "../../api/UserAPI";
 import { useNavigate } from "react-router";
-export const UserUpdate = (props) => {
+import Swal from "sweetalert2";
+
+export const UserUpdate = () => {
   const navigate = useNavigate();
-  const userID = useParams().id;
-  const { register, handleSubmit, reset, control, setValue } = useForm({
+  const { id } = useParams();
+  const { register, handleSubmit } = useForm({
     defaultValues: {
-      id: Number(userID),
+      id: Number(id),
     },
   });
-  const onError = (errors, e) => console.log(errors, e);
-  const onSubmit = async (data, e) => {
-    console.log(data, e);
-    console.dir(await updateSingleUser(data));
+
+  const onSubmit = async (data) => {
+    await updateSingleUser(data);
+    showSuccessAlert();
     navigate("/usuarios");
   };
 
+  const showSuccessAlert = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Usuario actualizado",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
   return (
-    <form
-      className={"flex justify-evenly"}
-      onSubmit={handleSubmit(onSubmit, onError)}
-    >
+    <form className="flex justify-evenly" onSubmit={handleSubmit(onSubmit)}>
       <label>name</label>
       <input type="text" {...register("name")} />
       <label>username</label>
