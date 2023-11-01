@@ -14,7 +14,7 @@ export const Layout = () => {
       <main id={mainId}>
         <Outlet />
       </main>
-      <footer className={"text-center"}>
+      <footer className={"text-center text-black"}>
         Finnegans Equipo Blue {new Date().getFullYear()}
       </footer>
     </>
