@@ -31,8 +31,10 @@ public class UserService {
 
     public UserDTOResponse createUser(User user) throws Exception {
         if ( checkUser(user.toDTO(), Boolean.FALSE) ){
-            user.setPassword(Encrypt.encrypt(user.getPassword()));
-            return this.userRepository.save(new User(user)).toDTOResponse();
+            if(!userRepository.findByUsername(user.getUsername()).isPresent()) {
+                user.setPassword(Encrypt.encrypt(user.getPassword()));
+                return this.userRepository.save(new User(user)).toDTOResponse();
+            }
         }
         throw new NotCreatedException("Error 400 bad request.");
     }
