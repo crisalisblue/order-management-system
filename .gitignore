@@ -14,10 +14,12 @@ target/
 .sts4-cache
 
 # IntelliJ IDEA
+.back/src/resources/application.properties
 .idea
 *.iws
 *.iml
 *.ipr
+
 
 # NetBeans
 /nbproject/private/
@@ -31,3 +33,7 @@ build/
 
 # VS Code
 .vscode/
+application.properties
+back/src/main/resources/application.properties
+back/src/main/resources/application.properties
+back/src/main/resources/application.properties
