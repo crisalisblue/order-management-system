@@ -9,25 +9,38 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExchangeGood_Customer {
+public class ExchangeGood_Order {
+    // Id Bien de cambio-Pedido
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ExchangeGood_Customer")
     private Long id_ExchangeGood_Customer;
-    @JoinColumn(name = "id_Customer")
+
+    // Id de pedido
+    @JoinColumn(name = "id_Order",referencedColumnName = "id_Order")
     @ManyToOne
-    private Customer id_Customer;
+    private Order id_Order;
+
+    // Id de de bien de cambio
     @JoinColumn(name="id_ExchangeGood")
     @ManyToOne
     private ExchangeGood id_ExchangeGood;
+
+    // monto Item
     @Column(name = "exchangeGood_amount")
     private double exchangeGood_amount;
+
+    // monto de descuento
     @Column(name = "discount_amount")
     private double discount_amount;
+
+    // Descripción de items
     @Column(name= "description_exchangeGood")
     private String description_exchangeGood;
+    // Cantidad
     @Column(name = "amount" )
     private int amount;
+    // Impuestos Aplicados
     @Column(name = "taxes applied")
     private double taxes_applied;
 

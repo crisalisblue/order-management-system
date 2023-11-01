@@ -19,8 +19,8 @@ public class Order {
     @Temporal(TemporalType.DATE)
     @Column(name = "datesOrder")
     private Date datesOrder;
-    @Column(name = "activesOrder")
-    private boolean actives;
+    @Column(name = "totalDescount")
+    private double totalDescount;
     @Column(name = "totalAmount")
     private double totalAmount;
     @OneToOne(cascade=CascadeType.ALL)
@@ -29,7 +29,7 @@ public class Order {
 
     public OrderDTO toOrderDTO()
     {
-        return new OrderDTO(this.getDatesOrder(), this.actives,this.getTotalAmount(),this.getCustomer());
+        return new OrderDTO(this.getDatesOrder(), this.getTotalDescount(),this.getTotalAmount(),this.getCustomer());
     }
 
 
