@@ -33,17 +33,15 @@ public class OrderService {
     }
     public OrderDTO update(Order order)
     {
-        Optional<Order> aux = orderRepository.findById(order.getId());
+        Optional<Order> aux = orderRepository.findById(order.getId_order());
         if(aux.isPresent())
         {
-            if(order.getDateOrder() != null)
-                aux.get().setDateOrder(order.getDateOrder());
+            if(order.getDatesOrder() != null)
+                aux.get().setDatesOrder(order.getDatesOrder());
             if(order.getTotalAmount() != 0.0)
                 aux.get().setTotalAmount(order.getTotalAmount());
             if(order.getCustomer() != null )
                 aux.get().setCustomer(order.getCustomer());
-            if(order.getExchangeGood() != null)
-                aux.get().setExchangeGood(order.getExchangeGood());
             orderRepository.save(aux.get());
         }
         throw new EmptyElementException("No se encontro el registro con ese id ");
@@ -61,16 +59,15 @@ public class OrderService {
     }
     private boolean chekcEmptyOrder(Order order)
     {
-        if(order.getDateOrder() != null)
+        if(order.getDatesOrder() != null)
         {
             if(order.getTotalAmount() != 0.0)
             {
                 if(order.getCustomer() != null)
                 {
-                    if(order.getExchangeGood() != null)
-                    {
+
                         return true;
-                    }
+
                 }
             }
         }

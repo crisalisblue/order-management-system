@@ -3,6 +3,7 @@ package crisalis.blue.models.dto;
 
 import crisalis.blue.models.Customer;
 import crisalis.blue.models.ExchangeGood;
+import crisalis.blue.models.ExchangeGood_Customer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,4 @@ public class OrderDTO {
     private boolean active;
     private double totalAmount;
     private Customer customer;
-    private List<ExchangeGood> exchangeGood;
 }

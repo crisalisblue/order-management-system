@@ -20,37 +20,30 @@ public class Customer {
     private Long id;
 
     @Column(
-            name = "name",
-            nullable = false)
+            name = "name")
     private String name;
 
     @Column(
-            name = "lastName",
-            nullable = false)
+            name = "lastName")
     private String lastName;
 
     @Column(
-            name = "dni",
-            nullable = false)
+            name = "dni")
     private String dni;
 
-    @Column(name = "cuit",
-            nullable = true)
+    @Column(name = "cuit")
     private String cuit;
 
     @Column(
-            name = "activityStartDate",
-            nullable = true)
+            name = "activityStartDate")
     @Temporal(TemporalType.DATE)
     private Date activityStartDate;
 
     //razon social
-    @Column(name = "businessName",
-            nullable = true)
+    @Column(name = "businessName")
     private String businessName;
 
-    @Column(name = "type",
-            nullable = false)
+    @Column(name = "type")
     private String type;
 
     public Customer(Customer customer) {
