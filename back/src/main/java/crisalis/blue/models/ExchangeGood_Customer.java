@@ -1,8 +1,14 @@
 package crisalis.blue.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity(name = "ExchangeGood_Customer")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ExchangeGood_Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
