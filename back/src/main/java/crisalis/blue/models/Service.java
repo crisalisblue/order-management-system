@@ -1,7 +1,6 @@
 package crisalis.blue.models;
 
 import crisalis.blue.models.dto.ServiceDTO;
-import crisalis.blue.models.dto.ServicioDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

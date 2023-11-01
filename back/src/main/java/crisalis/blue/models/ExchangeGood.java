@@ -22,7 +22,6 @@ public class ExchangeGood {
     private String name;
     @Column(name = "mountBase")
     private double mountBase;
-
     public boolean checkEmpty()
     {
         if(!this.getName().equals(""))
