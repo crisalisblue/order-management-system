@@ -1,17 +1,14 @@
 import { useForm } from "react-hook-form";
-import { deleteSingleUser } from "../../api/UserAPI";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-export const UserDelete = (props) => {
+export const UserDelete = ({ onDelete }) => {
   const navigate = useNavigate();
-  const { handleSubmit } = useForm();
-  const formID = `userForm-${props.userID}`;
+  const { handleSubmit } = useForm(); // Use useForm to manage the form state
 
-  const onDelete = async () => {
+  const deleteUser = async () => {
+    onDelete();
     try {
-      await deleteSingleUser(props.userID);
-      closeModal();
       Swal.fire({
         icon: "success",
         title: "Usuario eliminado",
@@ -40,7 +37,7 @@ export const UserDelete = (props) => {
 
   return (
     <dialog id="modalBorrar" className="modal">
-      <form id={formID} onSubmit={handleSubmit(onDelete)}>
+      <form onSubmit={handleSubmit(deleteUser)}>
         <div className="modal-box">
           <h3 className="font-bold text-lg">¿Desea borrar el registro?</h3>
           <p className="py-4"></p>
