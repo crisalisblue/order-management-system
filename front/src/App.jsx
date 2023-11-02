@@ -28,6 +28,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route Component={LogedinRoute}>
           <Route path="/" Component={Layout}>
             <Route path="home" Component={Home} />
