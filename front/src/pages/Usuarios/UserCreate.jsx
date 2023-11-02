@@ -30,28 +30,48 @@ export const UserCreate = () => {
 
   return (
     <section id="userForm" className="bg-base-200 prose min-w-full">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="gap-4 p-4 flex flex-col"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div>
+          <label htmlFor="name">Nombre:</label>
+          <input type="text" {...register("name")} />
+        </div>
+
+        <div>
+          <label htmlFor="username">Usuario:</label>
+          <input type="text" {...register("username")} />
+        </div>
+
+        <div>
+          <label htmlFor="password">Contraseña:</label>
+          <input type="password" {...register("password")} />
+        </div>
+
+        <button className="btn bg-primary text-base-100" type="submit">
+          Agregar
+        </button>
+      </form>
+      <article>
+        <h1>Roles</h1>
         <table>
+          <thead>
+            <th>Rol</th>
+            <th>Seleccionado</th>
+          </thead>
           <tbody>
-            <tr className="text-accent odd:bg-secondary even:bg-base-100">
-              <td>
-                <input type="text" {...register("name")} />
-              </td>
-              <td>
-                <input type="text" {...register("username")} />
-              </td>
-              <td>
-                <input type="password" {...register("password")} />
-              </td>
-              <td>
-                <button className="btn btn-success" type="submit">
-                  Agregar
-                </button>
-              </td>
+            <tr>
+              <td>Administrador</td>
+              <input type="checkbox" name="" id="" />
+            </tr>
+            <tr>
+              <td>Usuario</td>
+              <input type="checkbox" name="" id="" />
             </tr>
           </tbody>
         </table>
-      </form>
+      </article>
     </section>
   );
 };

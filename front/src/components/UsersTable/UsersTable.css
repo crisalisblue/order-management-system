@@ -11,6 +11,13 @@
   text-align: center;
 }
 
+#actions > a {
+  margin-left: auto;
+}
+
 #userForm {
-  height: 100%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  bottom: auto;
+  text-align-last: center;
 }
