@@ -3,8 +3,6 @@ const apiUrl = "http://localhost:8080/user";
 export const getAllUsers = async () => {
   try {
     const response = await axios.get(`${apiUrl}/list`);
-    console.dir(response);
-    console.dir(response.status);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -14,7 +12,7 @@ export const getAllUsers = async () => {
 export const getSingleUser = async (userId) => {
   try {
     const response = await axios.get(`${apiUrl}?id=${userId}`);
-    return response.status;
+    return response.data;
   } catch (error) {
     console.error(error);
   }
@@ -33,6 +31,7 @@ export const updateSingleUser = async (data) => {
 export const deleteSingleUser = async (userId) => {
   try {
     const response = await axios.delete(`${apiUrl}/${userId}`);
+    console.dir(`${apiUrl}/${userId}`)
     return response.status;
   } catch (error) {
     console.error(error);
@@ -41,9 +40,7 @@ export const deleteSingleUser = async (userId) => {
 
 export const createSingleUser = async (data) => {
   try {
-    console.dir(data);
     const response = await axios.post(`${apiUrl}/create`, data);
-    console.dir(response);
     return response.status;
   } catch (error) {
     console.error(error);
