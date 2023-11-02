@@ -17,7 +17,7 @@ public class User {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "username")
+    @Column(name = "username",unique = true)
     private String username;
 
 
