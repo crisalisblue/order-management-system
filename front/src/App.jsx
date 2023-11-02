@@ -15,6 +15,9 @@ import {
   UserCreate,
   UsersTable,
   UserUpdate,
+  CustomerCreate,
+  CustomersTable,
+  CustomerUpdate,
   Pedidos,
   Servicios,
   Impuestos,
@@ -37,7 +40,11 @@ export default function App() {
               <Route path=":id/editar" Component={UserUpdate} />
               <Route path="" Component={UsersTable} />
             </Route>
-            <Route path="clientes" Component={Clientes} />
+            <Route path="clientes" Component={Clientes}>
+              <Route path="nuevo" Component={CustomerCreate} />
+              <Route path=":id/editar" Component={CustomerUpdate} />
+              <Route path="" Component={CustomersTable} />
+            </Route>
             <Route path="pedidos" Component={Pedidos} />
             <Route path="productos" Component={Productos} />
             <Route path="servicios" Component={Servicios} />
