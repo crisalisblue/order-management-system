@@ -1,16 +1,16 @@
-import React from "react";
 import { UserDelete } from "../../pages/Usuarios/UserDelete";
 
-export const DeleteModal = ({ itemId }) => {
+export const DeleteModal = ({ itemID, onDelete }) => {
+  const handleDelete = () => {
+    onDelete(itemID);
+  };
+
   return (
     <>
-      <button
-        className="btn btn-error"
-        onClick={() => document.getElementById("modalBorrar").showModal()}
-      >
+      <button className="btn btn-error" onClick={handleDelete}>
         Borrar
       </button>
-      <UserDelete userID={itemId}></UserDelete>
+      <UserDelete onDelete={onDelete} />
     </>
   );
 };

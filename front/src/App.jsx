@@ -13,7 +13,6 @@ import {
   Clientes,
   Layout,
   UserCreate,
-  UsersTable,
   UserUpdate,
   Pedidos,
   Servicios,
@@ -21,7 +20,7 @@ import {
   Productos,
   NotFound,
 } from "./pages";
-
+import { UsersTable } from "./components/UsersTable/UsersTable";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 
@@ -29,6 +28,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route Component={LogedinRoute}>
           <Route path="/" Component={Layout}>
             <Route path="home" Component={Home} />
