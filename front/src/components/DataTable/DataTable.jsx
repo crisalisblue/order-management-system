@@ -65,9 +65,6 @@ export const DataTable = ({ data }) => {
               key={index}
             >
               <td className=" text-center align-middle border-r-2 border-gray-500">
-                {item.id}
-              </td>
-              <td className=" text-center align-middle border-r-2 border-gray-500">
                 {item.username}
               </td>
               <td className=" text-center align-middle border-x-2 border-gray-500">
