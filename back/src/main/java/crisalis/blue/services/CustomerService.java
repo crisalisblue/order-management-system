@@ -32,8 +32,11 @@ public class CustomerService {
 
     public CustomerDTO createCustomer(Customer customer) throws Exception{
         try {
-            this.customerRepository.save(customer);
-            return customer.toDTO();
+            if(!customerRepository.findByDni(customer.getDni()).isPresent()) {
+                this.customerRepository.save(customer);
+                return customer.toDTO();
+            }
+            else return null;
         }catch (DataIntegrityViolationException | HibernateJdbcException e){
             throw new NotCreatedException(e.getMessage());
         }

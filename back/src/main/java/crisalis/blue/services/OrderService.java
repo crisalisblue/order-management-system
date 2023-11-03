@@ -1,10 +1,13 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
+import crisalis.blue.models.Customer;
 import crisalis.blue.models.Order;
 import crisalis.blue.models.dto.OrderDTO;
+import crisalis.blue.repositories.CustomerRepository;
 import crisalis.blue.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +25,7 @@ public class OrderService {
     {
      if(chekcEmptyOrder(order))
      {
-         return orderRepository.save(order).toOrderDTO();
+             return orderRepository.save(order).toOrderDTO();
      }
      throw new RuntimeException();
 
@@ -31,21 +34,26 @@ public class OrderService {
     {
         return orderRepository.findAll().stream().map(Order::toOrderDTO).collect(Collectors.toList());
     }
-    public OrderDTO update(Order order)
+    public OrderDTO update(  Order order)
     {
         Optional<Order> aux = orderRepository.findById(order.getId_order());
-        if(aux.isPresent())
-        {
-            if(order.getDatesOrder() != null)
+        if(aux.isPresent()) {
+            if (order.getDatesOrder() != null)
                 aux.get().setDatesOrder(order.getDatesOrder());
-            if(order.getTotalAmount() != 0.0)
+            if (order.getTotalAmount() != 0.0)
                 aux.get().setTotalAmount(order.getTotalAmount());
-            if(order.getCustomer() != null )
+            if(order.getTotalDescount() != 0.0)
+                aux.get().setTotalDescount(order.getTotalDescount());
+            if (order.getCustomer() != null) {
                 aux.get().setCustomer(order.getCustomer());
-            orderRepository.save(aux.get());
+            }
+            return orderRepository.save(aux.get()).toOrderDTO();
         }
         throw new EmptyElementException("No se encontro el registro con ese id ");
     }
+
+
+
     public void delete(Long id )
     {
         Optional<Order> aux = orderRepository.findById(id);
@@ -63,12 +71,8 @@ public class OrderService {
         {
             if(order.getTotalAmount() != 0.0)
             {
-                if(order.getCustomer() != null)
-                {
-
                         return true;
 
-                }
             }
         }
         throw new EmptyElementException("Los campos estan vacios ");

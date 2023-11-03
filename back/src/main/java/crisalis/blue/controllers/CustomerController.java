@@ -38,13 +38,13 @@ public class CustomerController {
     }
 
 
-    @DeleteMapping(value = "")
+    @DeleteMapping(value = "delete")
     public String deleteCustomer(@RequestParam int id ) {
         return customerService.deleteCustomer(id);
     }
 
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "read", produces = MediaType.APPLICATION_JSON_VALUE)
     //Si no funciona cambiar int por Integer y fijarse.
     public CustomerDTO getCustomerById(@RequestParam int id) {
         return this.customerService.getCustomerById(id);

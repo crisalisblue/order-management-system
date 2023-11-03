@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Data
 @Entity
@@ -30,6 +31,9 @@ public class Tax {
     //Montofijo
     @Column(name = "fixedAmount")
     private BigInteger fixedAmount;
+    @ManyToMany(mappedBy = "taxList")
+    @Column(name ="exchangeGood")
+    private List<ExchangeGood> exchangeGood;
 
     public TaxDTO toDTO(){
         return

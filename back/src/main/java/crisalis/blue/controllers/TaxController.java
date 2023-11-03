@@ -33,13 +33,13 @@ public class TaxController {
         return this.taxService.getAllTaxes();
     }
 
-    @GetMapping(value = "")
-    public TaxDTO getTaxById(@RequestParam int id) {
+    @GetMapping(value = "get")
+    public TaxDTO getTaxById(@RequestParam Long id) {
         return this.taxService.getTaxById(id);
     }
 
-    @DeleteMapping(value = "")
-    public String deleteTax(@RequestParam int id){
+    @DeleteMapping(value = "delete")
+    public String deleteTax(@RequestParam Long id){
         return this.taxService.deleteTax(id);
     }
 }

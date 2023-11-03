@@ -23,13 +23,14 @@ public class Order {
     private double totalDescount;
     @Column(name = "totalAmount")
     private double totalAmount;
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE,optional = true)
     @JoinColumn(name="customer_id",referencedColumnName = "id")
     private Customer customer;
 
     public OrderDTO toOrderDTO()
     {
-        return new OrderDTO(this.getDatesOrder(), this.getTotalDescount(),this.getTotalAmount(),this.getCustomer());
+
+        return new OrderDTO(this.getDatesOrder(), this.getTotalDescount(),this.getTotalAmount());
     }
 
 

@@ -34,7 +34,9 @@ public class ExchangeGoodService {
             res=true;
         if(exchangeGood.getMountBase() !=0.0)
             res=true;
-        return res;
+        if(!exchangeGood.getTaxList().isEmpty())
+             res=true;
+        return true;
     }
 
     public List<ExchangeGoodDTO> read() {

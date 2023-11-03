@@ -28,7 +28,7 @@ public class Customer {
     private String lastName;
 
     @Column(
-            name = "dni")
+            name = "dni",unique = true)
     private String dni;
 
     @Column(name = "cuit")

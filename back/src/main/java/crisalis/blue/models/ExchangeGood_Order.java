@@ -18,12 +18,12 @@ public class ExchangeGood_Order {
 
     // Id de pedido
     @JoinColumn(name = "id_Order",referencedColumnName = "id_Order")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     private Order id_Order;
 
     // Id de de bien de cambio
     @JoinColumn(name="id_ExchangeGood")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     private ExchangeGood id_ExchangeGood;
 
     // monto Item
