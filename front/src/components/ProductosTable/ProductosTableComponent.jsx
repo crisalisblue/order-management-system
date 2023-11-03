@@ -11,8 +11,8 @@ export const ProductosTableComponent = ({ data }) => {
             </tr>
             </thead>
             <tbody>
-            {data.map((item) => (
-                <tr key={item.id}>
+            {data.map((item , index) => (
+                <tr key={index}>
                     <td>{item.name}</td>
                     <td>{item.mountBase}</td>
                     <td>{item.warranty}</td>
