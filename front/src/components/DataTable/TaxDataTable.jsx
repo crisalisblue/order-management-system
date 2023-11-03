@@ -1,15 +1,15 @@
-import { DeleteModal } from "../DeleteModal/DeleteModal";
+import { TaxDeleteModal } from "../DeleteModal/TaxDeleteModal";
 import { Link } from "react-router-dom";
-import { deleteSingleUser } from "../../api/UserAPI";
+import { deleteSingleTax } from "../../api/TaxAPI";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-export const DataTable = ({ data }) => {
+export const TaxDataTable = ({ data }) => {
   const navigate = useNavigate();
   const handleDelete = (id) => {
     Swal.fire({
       title: "¿Estás seguro?",
-      text: "Una vez eliminado, no podrás recuperar este usuario",
+      text: "Una vez eliminado, no podrás recuperar este impuesto",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -18,7 +18,7 @@ export const DataTable = ({ data }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteSingleUser(id)
+        deleteSingleTax(id)
           .then(() => {
             const Toast = Swal.mixin({
               toast: true,
@@ -29,7 +29,7 @@ export const DataTable = ({ data }) => {
 
             Toast.fire({
               icon: "success",
-              title: "El usuario ha sido eliminado",
+              title: "El impuesto ha sido eliminado",
             });
             setTimeout(() => {
               navigate(0);
@@ -38,10 +38,10 @@ export const DataTable = ({ data }) => {
           .catch((error) => {
             Swal.fire(
               "Error",
-              "Hubo un problema al eliminar el usuario",
+              "Hubo un problema al eliminar el impuesto",
               "error"
             );
-            console.error("Error al eliminar el usuario:", error);
+            console.error("Error al eliminar el impuesto:", error);
           });
       }
     });
@@ -53,9 +53,9 @@ export const DataTable = ({ data }) => {
         <thead className="min-w-full">
           <tr className="bg-secondary text-primary border-gray-500">
             <th>ID</th>
-            <th>Usuario</th>
             <th>Nombre</th>
-            <th>Contraseña</th>
+            <th>Porcentaje</th>
+            <th>Monto fijo</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -66,23 +66,26 @@ export const DataTable = ({ data }) => {
               key={index}
             >
               <td className=" text-center align-middle border-r-2 border-gray-500">
-                {item.username}
+                {item.id}
               </td>
-              <td className=" text-center align-middle border-x-2 border-gray-500">
+              <td className=" text-center align-middle border-r-2 border-gray-500">
                 {item.name}
               </td>
+              <td className=" text-center align-middle border-x-2 border-gray-500">
+                {item.percentage}
+              </td>
               <td className=" text-center align-middle border-x-2 border-gray-500 ">
-                {item.password}
+                {item.fixedAmount}
               </td>
               <td className="flex place-content-evenly">
-                <Link to={`/usuarios/${item.id}/editar`}>
+                <Link to={`/impuestos/${item.id}/editar`}>
                   <button className="btn btn-accent">Editar</button>
                 </Link>
 
-                <DeleteModal
+                <TaxDeleteModal
                   itemID={item.id}
                   onDelete={() => handleDelete(item.id)} // Pasamos el ID a la función de borrado
-                ></DeleteModal>
+                ></TaxDeleteModal>
               </td>
             </tr>
           ))}

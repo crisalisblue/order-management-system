@@ -16,6 +16,7 @@ export const Usuarios = () => {
                 : "hidden"
             } `}
           >
+
             <label htmlFor="filter1" className="mr-4">
               Filtrar:
             </label>
@@ -39,6 +40,7 @@ export const Usuarios = () => {
               <option>Usuario</option>
             </select>
           </section>
+
           <Link to={pathname === `/usuarios` ? `/usuarios/nuevo` : `/usuarios`}>
             <button className="float-right bg-primary text-base-100 hover:bg-gray-100  font-semibold py-1 px-2 border border-gray-400 rounded shadow">
               {pathname === `/usuarios`
@@ -46,6 +48,7 @@ export const Usuarios = () => {
                 : `Lista de Usuarios`}
             </button>
           </Link>
+          
         </section>
       </article>
 
