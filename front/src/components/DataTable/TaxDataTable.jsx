@@ -24,7 +24,7 @@ export const TaxDataTable = ({ data }) => {
               toast: true,
               position: "top",
               showConfirmButton: false,
-              timer: 1500, // Controla la duración del mensaje en milisegundos (en este caso, 1.5 segundos)
+              timer: 1500,
             });
 
             Toast.fire({
@@ -33,7 +33,7 @@ export const TaxDataTable = ({ data }) => {
             });
             setTimeout(() => {
               navigate(0);
-            }, 1500); // Navega a la página '0' después de 1.5 segundos
+            }, 1500);
           })
           .catch((error) => {
             Swal.fire(
@@ -48,43 +48,46 @@ export const TaxDataTable = ({ data }) => {
   };
 
   return (
-    <section className="bg-base-200 prose overflow-auto max-h-[80dvh] min-w-[98%]">
-      <table className="m-0 table table-xs bg-secondary text-primary ">
-        <thead className="min-w-full">
-          <tr className="bg-secondary text-primary border-gray-500">
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Porcentaje</th>
-            <th>Monto fijo</th>
-            <th>Acciones</th>
+    <section className="">
+      <table className="w-5/6 m-auto text-black">
+        <thead>
+          <tr className="bg-[#85B7CA] text-primary border-gray-500">
+            <th className="text-center rounded-tl-md p-1">ID</th>
+            <th className="text-center p-1">Nombre</th>
+            <th className="text-center p-1">Porcentaje</th>
+            <th className="text-center p-1">Monto fijo</th>
+            <th className="text-center rounded-tr-md p-1">Acciones</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item, index) => (
             <tr
-              className="text-accent odd:bg-base-200 even:bg-base-100"
+              className={`${
+                index % 2 === 0 ? "bg-[#BCDEEB]" : "bg-[#DBE8EC]"
+              } drop-shadow-md p-1`}
               key={index}
             >
-              <td className=" text-center align-middle border-r-2 border-gray-500">
+              <td
+                className={`text-center ${
+                  index === data.length - 1 ? "rounded-bl-md" : ""
+                } p-1`}
+              >
                 {item.id}
               </td>
-              <td className=" text-center align-middle border-r-2 border-gray-500">
-                {item.name}
-              </td>
-              <td className=" text-center align-middle border-x-2 border-gray-500">
-                {item.percentage}
-              </td>
-              <td className=" text-center align-middle border-x-2 border-gray-500 ">
-                {item.fixedAmount}
-              </td>
-              <td className="flex place-content-evenly">
+              <td className="text-center p-1">{item.name}</td>
+              <td className="text-center p-1">{item.percentage}</td>
+              <td className="text-center p-1">{item.fixedAmount}</td>
+              <td
+                className={`text-center flex justify-evenly${
+                  index === data.length - 1 ? "rounded-br-md justify-evenly" : ""
+                } p-1`}
+              >
                 <Link to={`/impuestos/${item.id}/editar`}>
                   <button className="btn btn-accent">Editar</button>
                 </Link>
-
                 <TaxDeleteModal
                   itemID={item.id}
-                  onDelete={() => handleDelete(item.id)} // Pasamos el ID a la función de borrado
+                  onDelete={() => handleDelete(item.id)}
                 ></TaxDeleteModal>
               </td>
             </tr>
