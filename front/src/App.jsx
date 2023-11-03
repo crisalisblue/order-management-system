@@ -24,6 +24,10 @@ import {
 
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
+import {ProdcuctCreate} from "./pages/Productos/ProductosCreate.jsx";
+import {ProductosUpdate} from "./pages/Productos/ProductosUpdate.jsx";
+import {ProductosTable} from "./pages/Productos/ProductosTable.jsx";
+
 
 export default function App() {
   return (
@@ -39,7 +43,11 @@ export default function App() {
             </Route>
             <Route path="clientes" Component={Clientes} />
             <Route path="pedidos" Component={Pedidos} />
-            <Route path="productos" Component={Productos} />
+            <Route path="productos" Component={Productos}>
+                <Route path="nuevo" Component={ProdcuctCreate} />
+                <Route path=":id/editar" Component={ProductosUpdate} />
+                <Route path="" Component={ProductosTable} />
+            </Route>
             <Route path="servicios" Component={Servicios} />
             <Route path="impuestos" Component={Impuestos} />
           </Route>
