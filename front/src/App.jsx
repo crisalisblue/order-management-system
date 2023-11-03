@@ -19,11 +19,14 @@ import {
   CustomerUpdate,
   Pedidos,
   Servicios,
-  Impuestos,
+  Taxes,
+  TaxCreate,
+  TaxUpdate,
   Productos,
   NotFound,
 } from "./pages";
 import { UsersTable } from "./components/UsersTable/UsersTable";
+import { TaxesTable } from "./components/TaxTable/TaxesTable";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 
@@ -48,7 +51,11 @@ export default function App() {
             <Route path="pedidos" Component={Pedidos} />
             <Route path="productos" Component={Productos} />
             <Route path="servicios" Component={Servicios} />
-            <Route path="impuestos" Component={Impuestos} />
+            <Route path="impuestos" Component={Taxes}>
+              <Route path="nuevo" Component={TaxCreate} />
+              <Route path=":id/editar" Component={TaxUpdate} />
+              <Route path="" Component={TaxesTable} />
+            </Route>
           </Route>
         </Route>
         <Route Component={NotLogedinRoute}>
