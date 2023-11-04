@@ -54,7 +54,7 @@ export const DataTable = ({ data }) => {
           <tr className={"bg-[#85B7CA] text-primary border-gray-500"}>
             <th className={"text-center rounded-tl-md p-1"}>Usuario</th>
             <th className={"text-center p-1"}>Nombre</th>
-            <th className={"text-center p-1"}>Contraseña</th>
+
             <th className={"text-center rounded-tr-md p-1"}>Acciones</th>
           </tr>
         </thead>
@@ -74,7 +74,7 @@ export const DataTable = ({ data }) => {
                 {item.username}
               </td>
               <td className="text-center p-1">{item.name}</td>
-              <td className="text-center p-1">{item.password}</td>
+
               <td
                 className={`text-center flex justify-evenly ${
                   index === data.length - 1 ? "rounded-br-md" : ""
