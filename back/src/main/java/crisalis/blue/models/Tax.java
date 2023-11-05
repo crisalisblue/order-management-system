@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -14,33 +14,30 @@ import java.math.BigInteger;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Tax {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "id")
+        private Long id;
 
-    @Column(
-            name = "name",
-            nullable = false)
-    private String name;
+        @Column(name = "name", nullable = false)
+        private String name;
 
-    @Column(name = "percentage")
-    private BigInteger percentage;
+        @Column(name = "percentage")
+        private BigDecimal percentage;
 
-    //Montofijo
-    @Column(name = "fixedAmount")
-    private BigInteger fixedAmount;
+        // Montofijo
+        @Column(name = "fixedAmount")
+        private BigDecimal fixedAmount;
 
-    public TaxDTO toDTO(){
-        return
-                TaxDTO
-                        .builder()
-                        .id(this.id)
-                        .name(this.name)
-                        .percentage(this.percentage)
-                        .fixedAmount(this.fixedAmount)
-                        .build();
-    }
+        public TaxDTO toDTO() {
+                return TaxDTO
+                                .builder()
+                                .id(this.id)
+                                .name(this.name)
+                                .percentage(this.percentage)
+                                .fixedAmount(this.fixedAmount)
+                                .build();
+        }
 
-    //Falta agregar relacion con otras tablas...
+        // Falta agregar relacion con otras tablas...
 }
