@@ -14,12 +14,11 @@ import java.util.Date;
 @Builder
 public class CustomerDTO {
 
-    //Atributos de Cliente
+    // Atributos de Cliente
     @JsonProperty("id")
     private Long id;
 
-
-    //Atributos de Persona
+    // Atributos de Persona
     @JsonProperty("name")
     private String name;
 
@@ -29,10 +28,9 @@ public class CustomerDTO {
     @JsonProperty("dni")
     private String dni;
 
+    // Atributos de Empresa
 
-    //Atributos de Empresa
-
-    //cuit
+    // cuit
     @JsonProperty("businessName")
     private String businessName;
 

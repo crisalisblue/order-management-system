@@ -17,7 +17,7 @@ public class DemoCrisalisApplication {
 	}
 
 	@Bean
-	public CorsFilter corsFilter(){
+	public CorsFilter corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
@@ -28,7 +28,7 @@ public class DemoCrisalisApplication {
 		config.addAllowedMethod("POST");
 		config.addAllowedMethod("PUT");
 		config.addAllowedMethod("DELETE");
-		source.registerCorsConfiguration( "/**", config);
+		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
 

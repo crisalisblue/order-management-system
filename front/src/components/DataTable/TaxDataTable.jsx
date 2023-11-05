@@ -1,15 +1,15 @@
-import { DeleteModal } from "../DeleteModal/DeleteModal";
+import { TaxDeleteModal } from "../DeleteModal/TaxDeleteModal";
 import { Link } from "react-router-dom";
-import { deleteSingleUser } from "../../api/UserAPI";
+import { deleteSingleTax } from "../../api/TaxAPI";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-export const DataTable = ({ data }) => {
+export const TaxDataTable = ({ data }) => {
   const navigate = useNavigate();
   const handleDelete = (id) => {
     Swal.fire({
       title: "¿Estás seguro?",
-      text: "Una vez eliminado, no podrás recuperar este usuario",
+      text: "Una vez eliminado, no podrás recuperar este impuesto",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -18,7 +18,7 @@ export const DataTable = ({ data }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteSingleUser(id)
+        deleteSingleTax(id)
           .then(() => {
             const Toast = Swal.mixin({
               toast: true,
@@ -29,7 +29,7 @@ export const DataTable = ({ data }) => {
 
             Toast.fire({
               icon: "success",
-              title: "El usuario ha sido eliminado",
+              title: "El impuesto ha sido eliminado",
             });
             setTimeout(() => {
               navigate(0);
@@ -38,10 +38,10 @@ export const DataTable = ({ data }) => {
           .catch((error) => {
             Swal.fire(
               "Error",
-              "Hubo un problema al eliminar el usuario",
+              "Hubo un problema al eliminar el impuesto",
               "error"
             );
-            console.error("Error al eliminar el usuario:", error);
+            console.error("Error al eliminar el impuesto:", error);
           });
       }
     });
@@ -49,13 +49,14 @@ export const DataTable = ({ data }) => {
 
   return (
     <section className="">
-      <table className={"w-5/6 m-auto text-black"}>
-        <thead className="min-w-full">
-          <tr className={"bg-[#85B7CA] text-primary border-gray-500"}>
-            <th className={"text-center rounded-tl-md p-1"}>Usuario</th>
-            <th className={"text-center p-1"}>Nombre</th>
-            <th className={"text-center p-1"}>Contraseña</th>
-            <th className={"text-center rounded-tr-md p-1"}>Acciones</th>
+      <table className="w-5/6 m-auto text-black">
+        <thead>
+          <tr className="bg-[#85B7CA] text-primary border-gray-500">
+            <th className="text-center rounded-tl-md p-1">ID</th>
+            <th className="text-center p-1">Nombre</th>
+            <th className="text-center p-1">Porcentaje</th>
+            <th className="text-center p-1">Monto fijo</th>
+            <th className="text-center rounded-tr-md p-1">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -71,22 +72,23 @@ export const DataTable = ({ data }) => {
                   index === data.length - 1 ? "rounded-bl-md" : ""
                 } p-1`}
               >
-                {item.username}
+                {item.id}
               </td>
               <td className="text-center p-1">{item.name}</td>
-              <td className="text-center p-1">{item.password}</td>
+              <td className="text-center p-1">{item.percentage}</td>
+              <td className="text-center p-1">{item.fixedAmount}</td>
               <td
-                className={`text-center flex justify-evenly ${
-                  index === data.length - 1 ? "rounded-br-md" : ""
+                className={`text-center flex justify-evenly${
+                  index === data.length - 1 ? "rounded-br-md justify-evenly" : ""
                 } p-1`}
               >
-                <Link to={`/usuarios/${item.id}/editar`}>
+                <Link to={`/impuestos/${item.id}/editar`}>
                   <button className="btn btn-accent">Editar</button>
                 </Link>
-                <DeleteModal
+                <TaxDeleteModal
                   itemID={item.id}
                   onDelete={() => handleDelete(item.id)}
-                ></DeleteModal>
+                ></TaxDeleteModal>
               </td>
             </tr>
           ))}

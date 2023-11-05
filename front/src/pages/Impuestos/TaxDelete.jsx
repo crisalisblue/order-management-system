@@ -2,17 +2,17 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-export const UserDelete = ({ onDelete }) => {
+export const TaxDelete = ({ onDelete }) => {
   const navigate = useNavigate();
   const { handleSubmit } = useForm(); // Use useForm to manage the form state
 
-  const deleteUser = async () => {
+  const deleteTax = async () => {
     onDelete();
     try {
       Swal.fire({
         icon: "success",
-        title: "Usuario eliminado",
-        text: "El usuario se ha eliminado exitosamente.",
+        title: "Impuesto eliminado",
+        text: "El impuesto  se ha eliminado exitosamente.",
       }).then((result) => {
         if (result.isConfirmed) {
           closeModal();
@@ -22,8 +22,8 @@ export const UserDelete = ({ onDelete }) => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Error al eliminar usuario",
-        text: "Hubo un problema al eliminar el usuario.",
+        title: "Error al eliminar impuesto",
+        text: "Hubo un problema al eliminar el impuesto.",
       });
     }
   };
@@ -37,7 +37,7 @@ export const UserDelete = ({ onDelete }) => {
 
   return (
     <dialog id="modalBorrar" className="modal">
-      <form onSubmit={handleSubmit(deleteUser)}>
+      <form onSubmit={handleSubmit(deleteTax)}>
         <div className="modal-box">
           <h3 className="font-bold text-lg">¿Desea borrar el registro?</h3>
           <p className="py-4"></p>

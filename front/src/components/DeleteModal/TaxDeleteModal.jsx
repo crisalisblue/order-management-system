@@ -1,6 +1,6 @@
-import { UserDelete } from "../../pages/Usuarios/UserDelete";
+import { TaxDelete } from "../../pages/Impuestos/TaxDelete";
 
-export const DeleteModal = ({ itemID, onDelete }) => {
+export const TaxDeleteModal = ({ itemID, onDelete }) => {
   const handleDelete = () => {
     onDelete(itemID);
   };
@@ -10,7 +10,7 @@ export const DeleteModal = ({ itemID, onDelete }) => {
       <button className="btn btn-error" onClick={handleDelete}>
         Borrar
       </button>
-      <UserDelete onDelete={onDelete} />
+      <TaxDelete onDelete={onDelete} />
     </>
   );
 };
