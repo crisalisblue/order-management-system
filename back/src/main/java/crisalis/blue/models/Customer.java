@@ -22,10 +22,10 @@ public class Customer {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "lastName", nullable = true)
     private String lastName;
 
-    @Column(name = "dni", nullable = false)
+    @Column(name = "dni", nullable = true)
     private String dni;
 
     @Column(name = "cuit", nullable = true)
@@ -38,7 +38,7 @@ public class Customer {
     // razon social
     @Column(name = "businessName", nullable = true)
     private String businessName;
-
+    //probablemente saquemos esto
     @Column(name = "type", nullable = false)
     private String type;
 
