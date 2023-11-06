@@ -37,37 +37,18 @@ public abstract class Customer {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "lastName", nullable = false)
-    private String lastName;
-
-    @Column(name = "dni", nullable = false)
-    private String dni;
-
-    @Column(name = "cuit", nullable = true)
-    private String cuit;
-
-    @Column(name = "activityStartDate", nullable = true)
-    @Temporal(TemporalType.DATE)
-    private Date activityStartDate;
-
-    // razon social
-    @Column(name = "businessName", nullable = true)
-    private String businessName;
+    @Column(name = "address", nullable = false)
+    private String address;
 
     @Column(name = "type", nullable = false)
     private String type;
 
+
+
+
     public Customer(Customer customer) {
         this.id = customer.getId();
-        this.name = customer.getName();
-        this.lastName = customer.getLastName();
-        this.dni = customer.getDni();
-        this.cuit = customer.getCuit();
-        this.activityStartDate = customer.getActivityStartDate();
-        this.businessName = customer.getBusinessName();
+        this.address = customer.getAddress();
         this.type = customer.getType();
     }
 
@@ -75,26 +56,12 @@ public abstract class Customer {
         return CustomerDTO
                 .builder()
                 .id(this.id)
-                .name(this.name)
-                .lastName(this.lastName)
-                .dni(this.dni)
-                .cuit(this.cuit)
-                .activityStartDate(this.activityStartDate)
-                .businessName(this.businessName)
+                .address(this.address)
                 .type(this.type)
                 .build();
     }
 
     // Relaciones con Entidades que aun no existen.
-
-    /*
-     * //1 cliente con solo 1 persona
-     * 
-     * @OneToOne
-     * 
-     * @JoinColumn(name = "idPerson")
-     * private Person person
-     */
 
     /*
      * 1 idcliente a N suscripciones, 1 suscripcion a 1 cliente
