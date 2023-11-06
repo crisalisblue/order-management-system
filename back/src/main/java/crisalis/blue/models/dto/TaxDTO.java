@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -21,8 +21,8 @@ public class TaxDTO {
     private String name;
 
     @JsonProperty("percentage")
-    private BigInteger percentage;
+    private BigDecimal percentage;
 
     @JsonProperty("fixedAmount")
-    private BigInteger fixedAmount;
+    private BigDecimal fixedAmount;
 }
