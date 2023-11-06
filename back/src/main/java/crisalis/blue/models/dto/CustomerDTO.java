@@ -18,6 +18,12 @@ public class CustomerDTO {
     @JsonProperty("id")
     private Long id;
 
+    @JsonProperty("address")
+    private String address;
+
+    @JsonProperty("type")
+    private String type;
+
     // Atributos de Persona
     @JsonProperty("name")
     private String name;
@@ -40,7 +46,6 @@ public class CustomerDTO {
     @JsonProperty("cuit")
     private String cuit;
 
-    @JsonProperty("type")
-    private String type;
+
 
 }
