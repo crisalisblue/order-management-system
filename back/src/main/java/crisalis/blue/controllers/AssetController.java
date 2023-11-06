@@ -1,8 +1,8 @@
 package crisalis.blue.controllers;
 
-import crisalis.blue.models.ExchangeGood;
-import crisalis.blue.models.dto.ExchangeGoodDTO;
-import crisalis.blue.services.ExchangeGoodService;
+import crisalis.blue.models.Asset;
+import crisalis.blue.models.dto.AssestDTO;
+import crisalis.blue.services.AssetService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,27 +10,27 @@ import java.util.List;
 
 @RestController
 @RequestMapping("exchangeGood")
-public class ExchangeGoodController {
-    private final ExchangeGoodService itemsService;
+public class AssetController {
+    private final AssetService itemsService;
 
-    public ExchangeGoodController(ExchangeGoodService itemsService)
+    public AssetController(AssetService itemsService)
     {
         this.itemsService = itemsService;
     }
     @PostMapping(value="create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ExchangeGood post(@RequestBody ExchangeGood productoCambio )
+    public Asset post(@RequestBody Asset productoCambio )
     {
         return itemsService.create(productoCambio);
     }
     @GetMapping(value="read", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ExchangeGoodDTO> read() {return itemsService.read();}
+    public List<AssestDTO> read() {return itemsService.read();}
     @PutMapping(value="update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ExchangeGoodDTO update(@RequestBody ExchangeGood exchangeGood)
+    public AssestDTO update(@RequestBody Asset exchangeGood)
     {
         return itemsService.update(exchangeGood);
     }
     @DeleteMapping(value="delete/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ExchangeGoodDTO delete(@PathVariable  Long id )
+    public AssestDTO delete(@PathVariable  Long id )
     {
         return itemsService.delete(id);
     }

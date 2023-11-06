@@ -16,16 +16,28 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
-
-    public OrderService(OrderRepository orderRepository)
+    private final CustomerRepository customerRepository;
+    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository)
     {
         this.orderRepository = orderRepository;
+        this.customerRepository = customerRepository;
     }
     public OrderDTO create(Order order)
     {
-     if(chekcEmptyOrder(order))
-     {
-             return orderRepository.save(order).toOrderDTO();
+        Optional<Customer> optionalCustomer = null;
+        if(chekcEmptyOrder(order))
+        {
+            if(order.getCustomer().getId() != null)
+            {
+             if( customerRepository.findById(order.getCustomer().getId()).isPresent())
+             {
+                 optionalCustomer = customerRepository.findById(order.getCustomer().getId());
+                 order.setCustomer(optionalCustomer.get());
+             }
+            }
+            else
+                order.setCustomer(null);
+            return orderRepository.save(order).toOrderDTO();
      }
      throw new RuntimeException();
 
@@ -40,13 +52,14 @@ public class OrderService {
         if(aux.isPresent()) {
             if (order.getDatesOrder() != null)
                 aux.get().setDatesOrder(order.getDatesOrder());
-            if (order.getTotalAmount() != 0.0)
+            if (order.getTotalAmount().intValue() != 0)
                 aux.get().setTotalAmount(order.getTotalAmount());
-            if(order.getTotalDescount() != 0.0)
+            if(order.getTotalDescount().intValue() != 0)
                 aux.get().setTotalDescount(order.getTotalDescount());
-            if (order.getCustomer() != null) {
-                aux.get().setCustomer(order.getCustomer());
-            }
+            if (order.getCustomer().getId() != null) {
+                aux.get().setCustomer(customerRepository.findById(order.getCustomer().getId()).get());
+            }else
+                aux.get().setCustomer(null);
             return orderRepository.save(aux.get()).toOrderDTO();
         }
         throw new EmptyElementException("No se encontro el registro con ese id ");
@@ -69,7 +82,7 @@ public class OrderService {
     {
         if(order.getDatesOrder() != null)
         {
-            if(order.getTotalAmount() != 0.0)
+            if(order.getTotalAmount().intValue() != 0.0)
             {
                         return true;
 

@@ -1,32 +1,28 @@
 package crisalis.blue.models.dto;
 
 
-import crisalis.blue.models.Customer;
-import crisalis.blue.models.ExchangeGood;
-import crisalis.blue.models.ExchangeGood_Order;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO {
 
     @Temporal(TemporalType.DATE)
     private Date DateOrder;
-    private double totalDescount;
-    private double totalAmount;
-    private Long customer;
+    private BigDecimal totalDescount;
+    private BigDecimal totalAmount;
+    private Long customer_id;
 
-    public OrderDTO(Date dateOrder, double totalDescount, double totalAmount) {
+    public OrderDTO(Date dateOrder, BigDecimal totalDescount, BigDecimal totalAmount,Long customer_id) {
         DateOrder = dateOrder;
         this.totalDescount = totalDescount;
         this.totalAmount = totalAmount;
+        this.customer_id = customer_id;
     }
 }

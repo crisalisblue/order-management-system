@@ -1,9 +1,9 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
-import crisalis.blue.models.ExchangeGood;
-import crisalis.blue.models.dto.ExchangeGoodDTO;
-import crisalis.blue.repositories.ExchangeGoodRepository;
+import crisalis.blue.models.Asset;
+import crisalis.blue.models.dto.AssestDTO;
+import crisalis.blue.repositories.AssetRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Data
-public class ExchangeGoodService {
-    private final ExchangeGoodRepository itemsRespository;
+public class AssetService {
+    private final AssetRepository itemsRespository;
 
-    public ExchangeGoodService(ExchangeGoodRepository itemsRepository) {
+    public AssetService(AssetRepository itemsRepository) {
         this.itemsRespository = itemsRepository;
     }
 
-    public ExchangeGood create(ExchangeGood items) {
+    public Asset create(Asset items) {
         if (checkItem(items)) {
             return itemsRespository.save(items);
         } else {
@@ -28,7 +28,7 @@ public class ExchangeGoodService {
         }
     }
 
-    private boolean checkItem(ExchangeGood exchangeGood) {
+    private boolean checkItem(Asset exchangeGood) {
         boolean res = false;
         if(!exchangeGood.getName().isEmpty())
             res=true;
@@ -39,12 +39,12 @@ public class ExchangeGoodService {
         return true;
     }
 
-    public List<ExchangeGoodDTO> read() {
-        return this.itemsRespository.findAll().stream().map(ExchangeGood::toItemDTO).collect(Collectors.toList());
+    public List<AssestDTO> read() {
+        return this.itemsRespository.findAll().stream().map(Asset::toItemDTO).collect(Collectors.toList());
     }
 
-    public ExchangeGoodDTO update(ExchangeGood exchangeGood) {
-        Optional<ExchangeGood> aux = itemsRespository.findById(exchangeGood.getId());
+    public AssestDTO update(Asset exchangeGood) {
+        Optional<Asset> aux = itemsRespository.findById(exchangeGood.getId());
         if (aux.isPresent()) {
             if (!exchangeGood.getName().isEmpty())
                 aux.get().setName(exchangeGood.getName());
@@ -55,9 +55,9 @@ public class ExchangeGoodService {
         else throw new EmptyElementException("El elemento que se quiere actualizar no existe en la base de datos");
     }
 
-    public ExchangeGoodDTO delete(Long id)
+    public AssestDTO delete(Long id)
     {
-        Optional<ExchangeGood> aux = itemsRespository.findById(id);
+        Optional<Asset> aux = itemsRespository.findById(id);
         if(aux.isPresent())
         {
             itemsRespository.deleteById(id);

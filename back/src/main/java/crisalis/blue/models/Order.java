@@ -3,7 +3,9 @@ package crisalis.blue.models;
 import crisalis.blue.models.dto.OrderDTO;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.aspectj.weaver.ast.Or;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
@@ -20,17 +22,25 @@ public class Order {
     @Column(name = "datesOrder")
     private Date datesOrder;
     @Column(name = "totalDescount")
-    private double totalDescount;
+    private BigDecimal totalDescount;
     @Column(name = "totalAmount")
-    private double totalAmount;
+    private BigDecimal totalAmount;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE,optional = true)
     @JoinColumn(name="customer_id",referencedColumnName = "id")
     private Customer customer;
 
     public OrderDTO toOrderDTO()
     {
-
-        return new OrderDTO(this.getDatesOrder(), this.getTotalDescount(),this.getTotalAmount());
+        OrderDTO orderDTO = new OrderDTO();
+        if(this.getDatesOrder() != null)
+            orderDTO.setDateOrder(this.getDatesOrder());
+        if(this.getTotalDescount().intValue() != 0)
+            orderDTO.setTotalDescount(this.getTotalDescount());
+        if(this.getTotalAmount().intValue() != 0)
+            orderDTO.setTotalAmount(this.getTotalAmount());
+        if(this.getCustomer() != null)
+            orderDTO.setCustomer_id(this.getCustomer().getId());
+        return orderDTO;
     }
 
 

@@ -1,8 +1,8 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
-import crisalis.blue.models.ExchangeGood_Order;
-import crisalis.blue.repositories.ExchangeGood_Order_Repository;
+import crisalis.blue.models.Asset_Order;
+import crisalis.blue.repositories.Asset_Order_Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,26 +10,26 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ExchangeGood_Order_Service {
-    private final ExchangeGood_Order_Repository exchangeGoodOrderRepository;
+public class Asset_Order_Service {
+    private final Asset_Order_Repository exchangeGoodOrderRepository;
 
-    public ExchangeGood_Order_Service(ExchangeGood_Order_Repository exchangeGoodOrderRepository)
+    public Asset_Order_Service(Asset_Order_Repository exchangeGoodOrderRepository)
     {
         this.exchangeGoodOrderRepository = exchangeGoodOrderRepository;
     }
-    public ExchangeGood_Order create(ExchangeGood_Order exchangeGoodOrder)
+    public Asset_Order create(Asset_Order exchangeGoodOrder)
     {
         if(checkIsEmpty(exchangeGoodOrder))
             return exchangeGoodOrderRepository.save(exchangeGoodOrder);
         else throw new EmptyElementException("Campos vacios");
     }
-    public List<ExchangeGood_Order> read()
+    public List<Asset_Order> read()
     {
         return exchangeGoodOrderRepository.findAll().stream().collect(Collectors.toList());
     }
-    public ExchangeGood_Order update(ExchangeGood_Order exchangeGoodOrder)
+    public Asset_Order update(Asset_Order exchangeGoodOrder)
     {
-        Optional<ExchangeGood_Order> aux = exchangeGoodOrderRepository.
+        Optional<Asset_Order> aux = exchangeGoodOrderRepository.
                 findById(exchangeGoodOrder.getId_ExchangeGood_Customer());
         if(aux.isPresent())
         {
@@ -55,7 +55,7 @@ public class ExchangeGood_Order_Service {
             throw new EmptyElementException("El id no existe");
     }
 
-    private boolean checkIsEmpty(ExchangeGood_Order exchangeGoodOrder) {
+    private boolean checkIsEmpty(Asset_Order exchangeGoodOrder) {
         if(exchangeGoodOrder.getId_Order() != null)
             if(!exchangeGoodOrder.getDescription_exchangeGood().isEmpty()){
                 if(exchangeGoodOrder.getExchangeGood_amount() !=0.0)

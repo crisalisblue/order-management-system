@@ -33,7 +33,7 @@ public class Tax {
     private BigInteger fixedAmount;
     @ManyToMany(mappedBy = "taxList")
     @Column(name ="exchangeGood")
-    private List<ExchangeGood> exchangeGood;
+    private List<Asset> exchangeGood;
 
     public TaxDTO toDTO(){
         return

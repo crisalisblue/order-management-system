@@ -78,7 +78,7 @@ public class CustomerService {
                 .collect(Collectors.toList());
     }
 
-    public String deleteCustomer(int id) {
+    public String deleteCustomer(Long id) {
         if (customerRepository.existsById(id)){
             customerRepository.deleteById(id);
             return "Cliente " + id +" Borrado exitosamente";

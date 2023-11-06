@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceDTO extends ExchangeGoodDTO {
+public class ServiceDTO extends AssestDTO {
     private double support_charge;
     private boolean asset;
 

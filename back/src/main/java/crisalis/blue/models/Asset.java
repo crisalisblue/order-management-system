@@ -1,11 +1,9 @@
 package crisalis.blue.models;
 
 
-import crisalis.blue.models.dto.ExchangeGoodDTO;
+import crisalis.blue.models.dto.AssestDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -13,7 +11,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 
-public  class ExchangeGood {
+public  class Asset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="id")
@@ -41,8 +39,8 @@ public  class ExchangeGood {
         return false;
     }
 
-    public ExchangeGoodDTO toItemDTO()
+    public AssestDTO toItemDTO()
     {
-        return new ExchangeGoodDTO(this.getName(),this.getMountBase());
+        return new AssestDTO(this.getName(),this.getMountBase());
     }
 }

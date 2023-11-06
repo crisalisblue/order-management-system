@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExchangeGood_Order {
+public class Asset_Order {
     // Id Bien de cambio-Pedido
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class ExchangeGood_Order {
     // Id de de bien de cambio
     @JoinColumn(name="id_ExchangeGood")
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
-    private ExchangeGood id_ExchangeGood;
+    private Asset id_ExchangeGood;
 
     // monto Item
     @Column(name = "exchangeGood_amount")

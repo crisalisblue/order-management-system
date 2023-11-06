@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Service extends ExchangeGood {
+public class Service extends Asset {
 
     @Column(name = "support_charge")
     private double support_charge;

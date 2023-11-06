@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO extends ExchangeGoodDTO {
+public class ProductDTO extends AssestDTO {
     private String garantia;
 }

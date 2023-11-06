@@ -39,7 +39,7 @@ public class CustomerController {
 
 
     @DeleteMapping(value = "delete")
-    public String deleteCustomer(@RequestParam int id ) {
+    public String deleteCustomer(@RequestParam Long id ) {
         return customerService.deleteCustomer(id);
     }
 

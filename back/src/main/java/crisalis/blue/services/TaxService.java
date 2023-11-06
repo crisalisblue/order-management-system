@@ -1,14 +1,11 @@
 package crisalis.blue.services;
 
 
-import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
-import crisalis.blue.models.Customer;
-import crisalis.blue.models.ExchangeGood;
 import crisalis.blue.models.Tax;
 import crisalis.blue.models.dto.TaxDTO;
-import crisalis.blue.repositories.ExchangeGoodRepository;
+import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.TaxRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateJdbcException;
@@ -22,9 +19,9 @@ import java.util.stream.Collectors;
 public class TaxService {
 
     private final TaxRepository taxRepository;
-    private final ExchangeGoodRepository exchangeGoodRepository;
+    private final AssetRepository exchangeGoodRepository;
 
-    public TaxService(TaxRepository taxRepository, ExchangeGoodRepository exchangeGoodRepository){
+    public TaxService(TaxRepository taxRepository, AssetRepository exchangeGoodRepository){
         this.taxRepository = taxRepository;
         this.exchangeGoodRepository = exchangeGoodRepository;
     }

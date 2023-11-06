@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends ExchangeGood {
+public class Product extends Asset {
     @Column(name = "warranty")
     private String warranty;
 
