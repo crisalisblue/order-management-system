@@ -38,8 +38,8 @@ public class Order {
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name = "order_items")
     private List<Item> items;
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
-    private List<CalculatedTax> calculatedTaxes;
+    /*@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+    private List<CalculatedTax> calculatedTaxes;*/
 
 
 
@@ -59,7 +59,7 @@ public class Order {
         if(this.getSubTotal().intValue() != 0)
             orderDTO.setSubTotal(this.getSubTotal());
         orderDTO.setActive(this.active);
-        if(this.getCalculatedTaxes() != null )
+        /*if(this.getCalculatedTaxes() != null )
         {
             if(!this.getCalculatedTaxes().isEmpty())
             {
@@ -68,7 +68,7 @@ public class Order {
                     orderDTO.getIdTaxes().add(this.getCalculatedTaxes().get(j).getId());
                 }
             }
-        }
+        }*/
         if(this.getItems() != null)
         {
             if(!this.getItems().isEmpty())

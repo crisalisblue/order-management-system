@@ -2,7 +2,7 @@ package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.Asset;
-import crisalis.blue.models.Item;
+import crisalis.blue.models.Product;
 import crisalis.blue.models.Tax;
 import crisalis.blue.models.dto.AssetDTO;
 import crisalis.blue.repositories.AssetRepository;
@@ -27,8 +27,16 @@ public class AssetService {
     }
 
     public AssetDTO create(AssetDTO assetDTO) {
+        Asset asset=null;
         if (checkItem(assetDTO)) {
-            Asset asset = new Asset();
+            if(assetDTO.getType().equals("Product"))
+            {
+                asset = new Product();
+            }
+            else
+            {
+                asset = new crisalis.blue.models.Service();
+            }
             if(!assetDTO.getName().isEmpty())
                 asset.setName(assetDTO.getName());
             if(assetDTO.getBaseAmount() !=null && assetDTO.getBaseAmount().intValue() != 0)

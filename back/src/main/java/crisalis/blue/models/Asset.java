@@ -10,15 +10,16 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity(name = "asset")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data
 
-public  class Asset {
+public abstract class Asset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(value = "id")
     @Column(name ="id")
     private Long id ;
+    private String type;
     @JsonProperty(value = "name")
     @Column(name = "name")
     private String name;

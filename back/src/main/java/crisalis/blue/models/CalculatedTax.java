@@ -11,7 +11,7 @@ import org.aspectj.weaver.ast.Or;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Entity
+//@Entity
 @Table(name="calculatedTax")
 @Data
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class CalculatedTax {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @JsonProperty(value = "idTax")
+    /*@JsonProperty(value = "idTax")
     @Column(name = "idTax")
     private Long idTax;
     @JsonProperty(value = "idOrder")
@@ -30,9 +30,6 @@ public class CalculatedTax {
     private Order idOrder;
     @Column(name ="taxesAmount")
     private BigDecimal taxesAmount;
+*/
 
-    public CalculatedTaxDTO CalculatedTaxToDTO()
-    {
-        return null;
-    }
 }

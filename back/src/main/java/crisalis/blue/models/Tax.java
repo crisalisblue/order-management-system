@@ -32,9 +32,9 @@ public class Tax {
     //Montofijo
     @Column(name = "baseAmount")
     private BigInteger baseAmount;
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
-    @Column(name ="taxCalculated")
-    private List<CalculatedTax> calculatedTax;
+    //@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+    //@Column(name ="taxCalculated")
+    //private List<CalculatedTax> calculatedTax;
     @ManyToMany(mappedBy = "taxList")
     private List<Asset> assets;
     public TaxDTO toDTO(){
@@ -46,7 +46,7 @@ public class Tax {
                         .percentage(this.percentage)
                         .baseAmount(this.baseAmount)
                         .assetList(this.assets.stream().map(Asset::getId).collect(Collectors.toList()))
-                        .ordersList(this.calculatedTax.stream().map(CalculatedTax::getId).collect(Collectors.toList()))
+                        //.ordersList(this.calculatedTax.stream().map(CalculatedTax::getId).collect(Collectors.toList()))
                         .build();
     }
 

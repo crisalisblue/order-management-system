@@ -21,7 +21,8 @@ public class AssetDTO {
     private BigDecimal baseAmount;
     @JsonProperty("taxList")
     private List<Long> taxDTOList;
-
+    @JsonProperty("type")
+    private String type;
     public AssetDTO()
     {
         taxDTOList = new ArrayList<Long>();

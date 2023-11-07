@@ -42,8 +42,8 @@ public class OrderService {
 
             return orderRepository.save(new Order(null,order.getTotalDiscount(),order.getDateOrder()
                     ,order.getActive(),order.getSubTotal(), order.getTotalPrice()
-                    ,customer,buscarAsset(order.getIdItem()),
-                    buscarTaxes(order.getIdTaxes()))).toOrderDTO();
+                    ,customer,buscarAsset(order.getIdItem())/*,
+                    buscarTaxes(order.getIdTaxes())*/)).toOrderDTO();
      }
      throw new RuntimeException();
 
@@ -103,7 +103,8 @@ public class OrderService {
             if(order.getTotalDiscount().intValue() != 0)
                 aux.get().setTotalDiscount(order.getTotalDiscount());
             if (order.getCustomerId() != null) {
-                aux.get().setCustomer(customerRepository.findById(order.getCustomerId()).get());
+                if(customerRepository.existsById(order.getCustomerId()))
+                    aux.get().setCustomer(customerRepository.findById(order.getCustomerId()).get());
             }else
                 aux.get().setCustomer(null);
             return orderRepository.save(aux.get()).toOrderDTO();

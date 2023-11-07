@@ -35,8 +35,8 @@ public class TaxService {
 
     public TaxDTO createTax(TaxDTO tax) throws Exception{
         try {
-            Tax taxAux = new Tax(null,tax.getName(),tax.getBaseAmount(),tax.getPercentage(),
-                    buscarOrders(tax.getOrdersList()),buscarAsset(tax.getAssetList()));
+            Tax taxAux = new Tax(null,tax.getName(),tax.getBaseAmount(),tax.getPercentage()/*,
+                    buscarOrders(tax.getOrdersList())*/,buscarAsset(tax.getAssetList()));
            return this.taxRepository.save(taxAux).toDTO();
         }catch (DataIntegrityViolationException | HibernateJdbcException e){
             throw new NotCreatedException(e.getMessage());

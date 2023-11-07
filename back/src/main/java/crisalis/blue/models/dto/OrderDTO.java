@@ -25,10 +25,10 @@ public class OrderDTO {
     private Boolean active;
     private Long customerId;
     private List<Long> idItem;
-    private List<Long> idTaxes;
+    //private List<Long> idTaxes;
     public OrderDTO()
     {
         idItem = new ArrayList<Long>();
-        idTaxes = new ArrayList<Long>();
+       // idTaxes = new ArrayList<Long>();
     }
 }
