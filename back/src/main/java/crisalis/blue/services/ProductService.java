@@ -39,8 +39,8 @@ public class ProductService {
         {
             if(!product.getName().isEmpty())
                 aux.get().setName(product.getName());
-            if(product.getMountBase() != aux.get().getMountBase())
-                aux.get().setMountBase(product.getMountBase());
+            if(product.getBaseAmount() != aux.get().getBaseAmount())
+                aux.get().setBaseAmount(product.getBaseAmount());
             return productRepository.save(aux.get()).productToDTO();
         }
         throw new EmptyElementException("No existe la entrada que se quiso actualizar ");

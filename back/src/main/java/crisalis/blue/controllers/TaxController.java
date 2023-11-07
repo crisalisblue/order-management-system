@@ -19,16 +19,16 @@ public class TaxController {
     public TaxController(TaxService taxService) {this.taxService = taxService;}
 
     @PostMapping(value = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TaxDTO createTax(@RequestBody Tax tax) throws Exception {
+    public TaxDTO createTax(@RequestBody TaxDTO tax) throws Exception {
         return this.taxService.createTax(tax);
     }
 
     @PutMapping(value = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TaxDTO updateTax(@RequestBody Tax tax) throws Exception{
+    public TaxDTO updateTax(@RequestBody TaxDTO tax) throws Exception{
         return this.taxService.updateTax(tax);
     }
 
-    @GetMapping(value = "list")
+    @GetMapping(value = "read")
     public List<TaxDTO> getAllTaxes(){
         return this.taxService.getAllTaxes();
     }

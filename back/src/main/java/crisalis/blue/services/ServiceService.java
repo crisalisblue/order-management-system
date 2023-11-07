@@ -37,7 +37,7 @@ public class ServiceService {
     public boolean checkServicios(Service service)
     {
 
-        if(service.getSupport_charge() > 0)
+        if(service.getSupportFree() > 0)
         {
             return true;
         }

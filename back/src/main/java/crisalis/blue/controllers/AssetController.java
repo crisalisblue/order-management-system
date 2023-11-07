@@ -1,7 +1,6 @@
 package crisalis.blue.controllers;
 
-import crisalis.blue.models.Asset;
-import crisalis.blue.models.dto.AssestDTO;
+import crisalis.blue.models.dto.AssetDTO;
 import crisalis.blue.services.AssetService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -9,30 +8,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("exchangeGood")
+@RequestMapping("asset")
 public class AssetController {
-    private final AssetService itemsService;
+    private final AssetService assetService;
 
     public AssetController(AssetService itemsService)
     {
-        this.itemsService = itemsService;
+        this.assetService = itemsService;
     }
     @PostMapping(value="create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Asset post(@RequestBody Asset productoCambio )
+    public AssetDTO create(@RequestBody AssetDTO assetDTO )
     {
-        return itemsService.create(productoCambio);
+        return assetService.create(assetDTO);
     }
     @GetMapping(value="read", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AssestDTO> read() {return itemsService.read();}
+    public List<AssetDTO> read() {return assetService.read();}
     @PutMapping(value="update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssestDTO update(@RequestBody Asset exchangeGood)
+    public AssetDTO update(@RequestBody AssetDTO assetDTO)
     {
-        return itemsService.update(exchangeGood);
+        return assetService.update(assetDTO);
     }
     @DeleteMapping(value="delete/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssestDTO delete(@PathVariable  Long id )
+    public void delete(@PathVariable  Long id )
     {
-        return itemsService.delete(id);
+         assetService.delete(id);
     }
 }
 

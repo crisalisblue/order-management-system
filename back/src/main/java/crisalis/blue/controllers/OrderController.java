@@ -18,7 +18,7 @@ public class OrderController {
         this.orderService = orderService;
     }
     @PostMapping(value ="create",produces = MediaType.APPLICATION_JSON_VALUE)
-    public OrderDTO create(@RequestBody Order order)
+    public OrderDTO create(@RequestBody OrderDTO order)
     {
        return  orderService.create(order);
     }
@@ -28,7 +28,7 @@ public class OrderController {
         return orderService.read();
     }
     @PutMapping(value="update",produces=MediaType.APPLICATION_JSON_VALUE)
-    public OrderDTO update(@RequestBody  Order order )
+    public OrderDTO update(@RequestBody  OrderDTO order )
     {
         return orderService.update(order);
     }

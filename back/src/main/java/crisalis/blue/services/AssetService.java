@@ -2,11 +2,15 @@ package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.Asset;
-import crisalis.blue.models.dto.AssestDTO;
+import crisalis.blue.models.Item;
+import crisalis.blue.models.Tax;
+import crisalis.blue.models.dto.AssetDTO;
 import crisalis.blue.repositories.AssetRepository;
+import crisalis.blue.repositories.TaxRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,54 +18,81 @@ import java.util.stream.Collectors;
 @Service
 @Data
 public class AssetService {
-    private final AssetRepository itemsRespository;
+    private final AssetRepository assetRepository;
+    private final TaxRepository taxRepository;
 
-    public AssetService(AssetRepository itemsRepository) {
-        this.itemsRespository = itemsRepository;
+    public AssetService(AssetRepository itemsRepository,TaxRepository taxRepository) {
+        this.assetRepository = itemsRepository;
+        this.taxRepository = taxRepository;
     }
 
-    public Asset create(Asset items) {
-        if (checkItem(items)) {
-            return itemsRespository.save(items);
+    public AssetDTO create(AssetDTO assetDTO) {
+        if (checkItem(assetDTO)) {
+            Asset asset = new Asset();
+            if(!assetDTO.getName().isEmpty())
+                asset.setName(assetDTO.getName());
+            if(assetDTO.getBaseAmount() !=null && assetDTO.getBaseAmount().intValue() != 0)
+                asset.setBaseAmount(assetDTO.getBaseAmount());
+            if(assetDTO.getTaxDTOList()!=null)
+                asset.setTaxList(buscarTax(assetDTO.getTaxDTOList()));
+            return assetRepository.save(asset).toAssetDTO();
         } else {
             throw new EmptyElementException("Error el nombre del producto o el monto base del mismo estan vacios ");
         }
     }
-
-    private boolean checkItem(Asset exchangeGood) {
+    private List<Tax> buscarTax(List<Long>listTax)
+    {
+        List<Tax> listR = new ArrayList<>();
+        Long actual = null;
+        if(listTax !=null)
+        {
+            if(!listTax.isEmpty())
+            {
+               for(int j=0; j<listTax.size(); j++)
+               {
+                   actual = listTax.get(j);
+                   if(taxRepository.existsById(actual))
+                   {
+                       listR.add(taxRepository.findById(actual).get());
+                   }
+               }
+            }
+        }
+        return listR;
+    }
+    private boolean checkItem(AssetDTO assetDTO) {
         boolean res = false;
-        if(!exchangeGood.getName().isEmpty())
+        if(!assetDTO.getName().isEmpty())
             res=true;
-        if(exchangeGood.getMountBase() !=0.0)
+        if(assetDTO.getBaseAmount().intValue() !=0)
             res=true;
-        if(!exchangeGood.getTaxList().isEmpty())
+        if(assetDTO.getTaxDTOList() !=null)
              res=true;
-        return true;
+        return res;
     }
 
-    public List<AssestDTO> read() {
-        return this.itemsRespository.findAll().stream().map(Asset::toItemDTO).collect(Collectors.toList());
+    public List<AssetDTO> read() {
+        return this.assetRepository.findAll().stream().map(Asset::toAssetDTO).collect(Collectors.toList());
     }
 
-    public AssestDTO update(Asset exchangeGood) {
-        Optional<Asset> aux = itemsRespository.findById(exchangeGood.getId());
+    public AssetDTO update(AssetDTO assetDTO) {
+        Optional<Asset> aux = assetRepository.findById(assetDTO.getId());
         if (aux.isPresent()) {
-            if (!exchangeGood.getName().isEmpty())
-                aux.get().setName(exchangeGood.getName());
-            if (exchangeGood.getMountBase() != 0.0)
-                aux.get().setMountBase(exchangeGood.getMountBase());
-            return this.itemsRespository.save(aux.get()).toItemDTO();
+            if (!assetDTO.getName().isEmpty())
+                aux.get().setName(assetDTO.getName());
+            if (assetDTO.getBaseAmount().intValue() != 0)
+                aux.get().setBaseAmount(assetDTO.getBaseAmount());
+            return this.assetRepository.save(aux.get()).toAssetDTO();
         }
         else throw new EmptyElementException("El elemento que se quiere actualizar no existe en la base de datos");
     }
 
-    public AssestDTO delete(Long id)
+    public void delete(Long id)
     {
-        Optional<Asset> aux = itemsRespository.findById(id);
+        Optional<Asset> aux = assetRepository.findById(id);
         if(aux.isPresent())
         {
-            itemsRespository.deleteById(id);
-            return aux.get().toItemDTO();
+            assetRepository.deleteById(id);
         }
         else throw new EmptyElementException("El id que se paso es invalido, no existe una entrada con ese elemento  ");
     }

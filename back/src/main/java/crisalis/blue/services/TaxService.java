@@ -1,16 +1,21 @@
 package crisalis.blue.services;
 
 
+import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
+import crisalis.blue.models.Asset;
+import crisalis.blue.models.Order;
 import crisalis.blue.models.Tax;
 import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.AssetRepository;
+import crisalis.blue.repositories.OrderRepository;
 import crisalis.blue.repositories.TaxRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateJdbcException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,23 +24,61 @@ import java.util.stream.Collectors;
 public class TaxService {
 
     private final TaxRepository taxRepository;
-    private final AssetRepository exchangeGoodRepository;
+    private final AssetRepository assetRepository;
+    private final OrderRepository orderRepository;
 
-    public TaxService(TaxRepository taxRepository, AssetRepository exchangeGoodRepository){
+    public TaxService(TaxRepository taxRepository, AssetRepository assetRepository,OrderRepository orderRepository){
         this.taxRepository = taxRepository;
-        this.exchangeGoodRepository = exchangeGoodRepository;
+        this.assetRepository = assetRepository;
+        this.orderRepository = orderRepository;
     }
 
-    public TaxDTO createTax(Tax tax) throws Exception{
+    public TaxDTO createTax(TaxDTO tax) throws Exception{
         try {
-            this.taxRepository.save(tax);
-            return tax.toDTO();
+            Tax taxAux = new Tax(null,tax.getName(),tax.getBaseAmount(),tax.getPercentage(),
+                    buscarOrders(tax.getOrdersList()),buscarAsset(tax.getAssetList()));
+           return this.taxRepository.save(taxAux).toDTO();
         }catch (DataIntegrityViolationException | HibernateJdbcException e){
             throw new NotCreatedException(e.getMessage());
         }
     }
+    private List<Asset> buscarAsset(List<Long>listAsset)
+    {
+        if(listAsset != null) {
+            if (!listAsset.isEmpty()) {
+                List<Asset> listR = new ArrayList<Asset>();
+                Long actual = null;
 
-    public TaxDTO updateTax(Tax updatedTax) throws Exception{
+                for (int j = 0; j < listAsset.size(); j++) {
+                    actual = listAsset.get(j);
+                    if (assetRepository.existsById(actual)) {
+                        listR.add(assetRepository.findById(actual).get());
+                    }
+                }
+                return listR;
+            }
+
+        }
+        return null;
+    }
+    private List<Order> buscarOrders(List<Long> listOrders)
+    {
+        if(listOrders != null) {
+            if (!listOrders.isEmpty()) {
+                List<Order> listR = new ArrayList<>();
+                Long actual = null;
+                for (int j = 0; j < listOrders.size(); j++) {
+                    actual = listOrders.get(j);
+                    if (orderRepository.existsById(actual)) {
+                        listR.add(orderRepository.findById(actual).get());
+                    }
+                }
+                return listR;
+            }
+        }
+            return null;
+    }
+    public TaxDTO updateTax(TaxDTO updatedTax) throws Exception{
 
             Optional<Tax> taxOptional = taxRepository.findById(updatedTax.getId());
             if (taxOptional.isPresent()) {
@@ -44,7 +87,6 @@ public class TaxService {
                 //En tax Asignamos los nuevos valores que reemplazaremos en la db
                 tax.setName(updatedTax.getName());
                 tax.setPercentage(updatedTax.getPercentage());
-                tax.setFixedAmount(updatedTax.getFixedAmount());
                 taxRepository.save(tax);
 
                 return tax.toDTO();

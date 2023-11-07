@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +24,10 @@ public class TaxDTO {
     @JsonProperty("percentage")
     private BigInteger percentage;
 
-    @JsonProperty("fixedAmount")
-    private BigInteger fixedAmount;
-    private AssestDTO exchangeGoodDTO;
+    @JsonProperty("baseAmount")
+    private BigInteger baseAmount;
+    @JsonProperty("assets")
+    private List<Long> assetList;
+    @JsonProperty("orders")
+    private List<Long> ordersList;
 }

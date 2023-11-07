@@ -8,18 +8,14 @@ import lombok.NoArgsConstructor;
 
 @Entity(name ="Product")
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Product extends Asset {
-    @Column(name = "warranty")
-    private String warranty;
+
 
     public ProductDTO productToDTO()
     {
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName(this.getName());
-        productDTO.setMountBase(this.getMountBase());
-        productDTO.setGarantia(this.warranty);
+        productDTO.setBaseAmount(this.getBaseAmount());
         return productDTO;
     }
 

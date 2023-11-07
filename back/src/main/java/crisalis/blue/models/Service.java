@@ -12,13 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Service extends Asset {
 
-    @Column(name = "support_charge")
-    private double support_charge;
-    @Column(name = "asset")
-    private boolean asset;
+    @Column(name = "supportFree")
+    private double supportFree;
     public ServiceDTO servicieToDto()
     {
-        return new ServiceDTO(this.support_charge,this.asset);
+        return new ServiceDTO(this.supportFree);
     }
 
 

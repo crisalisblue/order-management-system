@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
 @Table(name = "tax")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Tax {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +30,13 @@ public class Tax {
     private BigInteger percentage;
 
     //Montofijo
-    @Column(name = "fixedAmount")
-    private BigInteger fixedAmount;
+    @Column(name = "baseAmount")
+    private BigInteger baseAmount;
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+    @Column(name ="taxCalculated")
+    private List<CalculatedTax> calculatedTax;
     @ManyToMany(mappedBy = "taxList")
-    @Column(name ="exchangeGood")
-    private List<Asset> exchangeGood;
-
+    private List<Asset> assets;
     public TaxDTO toDTO(){
         return
                 TaxDTO
@@ -42,7 +44,9 @@ public class Tax {
                         .id(this.id)
                         .name(this.name)
                         .percentage(this.percentage)
-                        .fixedAmount(this.fixedAmount)
+                        .baseAmount(this.baseAmount)
+                        .assetList(this.assets.stream().map(Asset::getId).collect(Collectors.toList()))
+                        .ordersList(this.calculatedTax.stream().map(CalculatedTax::getId).collect(Collectors.toList()))
                         .build();
     }
 
