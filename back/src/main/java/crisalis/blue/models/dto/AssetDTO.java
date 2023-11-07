@@ -23,6 +23,8 @@ public class AssetDTO {
     private List<Long> taxDTOList;
     @JsonProperty("type")
     private String type;
+    @JsonProperty("supportFree")
+    private BigDecimal supportFree;
     public AssetDTO()
     {
         taxDTOList = new ArrayList<Long>();

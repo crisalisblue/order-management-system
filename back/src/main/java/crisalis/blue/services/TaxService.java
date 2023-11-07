@@ -1,15 +1,14 @@
 package crisalis.blue.services;
 
 
-import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.Asset;
-import crisalis.blue.models.Order;
+import crisalis.blue.models.CalculatedTax;
 import crisalis.blue.models.Tax;
 import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.AssetRepository;
-import crisalis.blue.repositories.OrderRepository;
+import crisalis.blue.repositories.CalculatedTaxRepository;
 import crisalis.blue.repositories.TaxRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateJdbcException;
@@ -25,18 +24,18 @@ public class TaxService {
 
     private final TaxRepository taxRepository;
     private final AssetRepository assetRepository;
-    private final OrderRepository orderRepository;
+    private final CalculatedTaxRepository calculatedTaxRepository;
 
-    public TaxService(TaxRepository taxRepository, AssetRepository assetRepository,OrderRepository orderRepository){
+    public TaxService(TaxRepository taxRepository, AssetRepository assetRepository,CalculatedTaxRepository calculatedTaxRepository){
         this.taxRepository = taxRepository;
         this.assetRepository = assetRepository;
-        this.orderRepository = orderRepository;
+        this.calculatedTaxRepository = calculatedTaxRepository;
     }
 
     public TaxDTO createTax(TaxDTO tax) throws Exception{
         try {
-            Tax taxAux = new Tax(null,tax.getName(),tax.getBaseAmount(),tax.getPercentage()/*,
-                    buscarOrders(tax.getOrdersList())*/,buscarAsset(tax.getAssetList()));
+            Tax taxAux = new Tax(null,tax.getName(),tax.getBaseAmount(),tax.getPercentage(),
+                    buscarCalculatedTaxes(tax.getCalculatedTaxes()), buscarAsset(tax.getAssetList()));
            return this.taxRepository.save(taxAux).toDTO();
         }catch (DataIntegrityViolationException | HibernateJdbcException e){
             throw new NotCreatedException(e.getMessage());
@@ -61,16 +60,16 @@ public class TaxService {
         }
         return null;
     }
-    private List<Order> buscarOrders(List<Long> listOrders)
+    private List<CalculatedTax> buscarCalculatedTaxes(List<Long> listCalculated)
     {
-        if(listOrders != null) {
-            if (!listOrders.isEmpty()) {
-                List<Order> listR = new ArrayList<>();
+        if(listCalculated != null) {
+            if (!listCalculated.isEmpty()) {
+                List<CalculatedTax> listR = new ArrayList<>();
                 Long actual = null;
-                for (int j = 0; j < listOrders.size(); j++) {
-                    actual = listOrders.get(j);
-                    if (orderRepository.existsById(actual)) {
-                        listR.add(orderRepository.findById(actual).get());
+                for (int j = 0; j < listCalculated.size(); j++) {
+                    actual = listCalculated.get(j);
+                    if (calculatedTaxRepository.existsById(actual)) {
+                        listR.add(calculatedTaxRepository.findById(actual).get());
                     }
                 }
                 return listR;

@@ -6,12 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class TaxDTO {
 
@@ -22,12 +23,18 @@ public class TaxDTO {
     private String name;
 
     @JsonProperty("percentage")
-    private BigInteger percentage;
+    private BigDecimal percentage;
 
     @JsonProperty("baseAmount")
-    private BigInteger baseAmount;
+    private BigDecimal baseAmount;
     @JsonProperty("assets")
     private List<Long> assetList;
-    @JsonProperty("orders")
-    private List<Long> ordersList;
+    @JsonProperty("calculatedTax")
+    private List<Long> calculatedTaxes;
+
+    public TaxDTO()
+    {
+        assetList = new ArrayList<>();
+        calculatedTaxes = new ArrayList<>();
+    }
 }

@@ -74,16 +74,18 @@ public class ItemService {
             if(item.getDiscountAmount().intValue() != 0)
                 optionalItem.get().setDiscountAmount(item.getDiscountAmount());
             // El id de la orden
-            if(item.getIdOrder() != 0) {
+            if(item.getIdOrder()!=null && item.getIdOrder() != 0) {
                 Optional<Order> optionalOrder = orderRepository.findById(item.getIdOrder());
                 if(optionalOrder.isPresent())
                     optionalItem.get().setOrder(optionalOrder.get());
             }
             // El id del item
-            if(item.getIdAsset() != 0) {
+            if(item.getIdAsset()!=null) {
                 Optional<Asset> optinalAsset = assetRepository.findById(item.getIdAsset());
                 if(optinalAsset.isPresent())
                     optionalItem.get().setAsset(optinalAsset.get());
+                else
+                    optionalItem.get().setAsset(null);
             }
             // Precio item
             if(item.getItemPrice().intValue() != 0)

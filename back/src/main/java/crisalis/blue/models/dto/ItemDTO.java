@@ -14,7 +14,7 @@ public class ItemDTO {
     private Long idItem;
     @JsonProperty(value = "idOrder")
     private Long idOrder;
-    @JsonProperty(value = "asset")
+    @JsonProperty(value = "idAsset")
     private Long idAsset;
     @JsonProperty(value = "itemPrice")
     private BigDecimal itemPrice;

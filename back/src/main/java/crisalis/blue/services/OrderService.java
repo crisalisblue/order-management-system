@@ -16,14 +16,14 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final ItemRepository itemRepository;
-    private final TaxRepository taxRepository;
+    private final CalculatedTaxRepository calculatedTaxRepository;
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
-                        ItemRepository itemRepository,TaxRepository taxRepository)
+                        ItemRepository itemRepository,CalculatedTaxRepository calculatedTaxRepository)
     {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
-        this.taxRepository = taxRepository;
+        this.calculatedTaxRepository = calculatedTaxRepository;
     }
     public OrderDTO create(OrderDTO order)
     {
@@ -31,19 +31,19 @@ public class OrderService {
         Customer customer = null;
         if(chekcEmptyOrder(order))
         {
-            if(order.getCustomerId() != null)
+            if(order.getIdCustomer() != null)
             {
-             if( customerRepository.findById(order.getCustomerId()).isPresent())
+             if( customerRepository.findById(order.getIdCustomer()).isPresent())
              {
-                 optionalCustomer = customerRepository.findById(order.getCustomerId());
+                 optionalCustomer = customerRepository.findById(order.getIdCustomer());
                  customer = optionalCustomer.get();
              }
             }
 
             return orderRepository.save(new Order(null,order.getTotalDiscount(),order.getDateOrder()
-                    ,order.getActive(),order.getSubTotal(), order.getTotalPrice()
-                    ,customer,buscarAsset(order.getIdItem())/*,
-                    buscarTaxes(order.getIdTaxes())*/)).toOrderDTO();
+                    ,order.getActive(), order.getTotalPrice(),order.getSubTotal()
+                    ,customer,buscarAsset(order.getIdItem()),
+                    buscarTaxes(order.getIdCalculatedTaxes()))).toOrderDTO();
      }
      throw new RuntimeException();
 
@@ -68,18 +68,18 @@ public class OrderService {
        }
        return null;
     }
-    private List<Tax> buscarTaxes(List<Long>idTaxes)
+    private List<CalculatedTax> buscarTaxes(List<Long>idTaxes)
     {
         if(idTaxes != null)
         {
             if(!idTaxes.isEmpty())
             {
-                List<Tax> listTaxes = new ArrayList<Tax>();
+                List<CalculatedTax> listTaxes = new ArrayList<CalculatedTax>();
                 Long actual = null;
                 for(int j=0; j<idTaxes.size();j++)
                 {
                     actual = idTaxes.get(j);
-                    Optional<Tax> optionalTax = taxRepository.findById(actual);
+                    Optional<CalculatedTax> optionalTax = calculatedTaxRepository.findById(actual);
                     if(optionalTax.isPresent())
                         listTaxes.add(optionalTax.get());
                 }
@@ -98,13 +98,15 @@ public class OrderService {
         if(aux.isPresent()) {
             if (order.getDateOrder() != null)
                 aux.get().setDatesOrder(order.getDateOrder());
-            if (order.getTotalPrice().intValue() != 0)
+            if (order.getTotalPrice()!=null && order.getTotalPrice().intValue() != 0)
                 aux.get().setTotalPrice(order.getTotalPrice());
-            if(order.getTotalDiscount().intValue() != 0)
+            if(order.getSubTotal()!=null && order.getSubTotal().intValue() != 0)
+                aux.get().setSubTotal(order.getSubTotal());
+            if(order.getTotalDiscount()!=null && order.getTotalDiscount().intValue() != 0)
                 aux.get().setTotalDiscount(order.getTotalDiscount());
-            if (order.getCustomerId() != null) {
-                if(customerRepository.existsById(order.getCustomerId()))
-                    aux.get().setCustomer(customerRepository.findById(order.getCustomerId()).get());
+            if (order.getIdCustomer() != null) {
+                if(customerRepository.existsById(order.getIdCustomer()))
+                    aux.get().setCustomer(customerRepository.findById(order.getIdCustomer()).get());
             }else
                 aux.get().setCustomer(null);
             return orderRepository.save(aux.get()).toOrderDTO();

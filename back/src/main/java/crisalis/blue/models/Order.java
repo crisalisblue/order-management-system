@@ -32,14 +32,20 @@ public class Order {
     private BigDecimal totalPrice;
     @Column(name= "subTotal")
     private BigDecimal subTotal;
+
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE,optional = true)
     @JoinColumn(name="customer_id",referencedColumnName = "id")
     private Customer customer;
+
+
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name = "order_items")
     private List<Item> items;
-    /*@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
-    private List<CalculatedTax> calculatedTaxes;*/
+
+
+    @OneToMany(mappedBy = "idOrder")
+    private List<CalculatedTax> calculatedTaxes;
 
 
 
@@ -55,20 +61,20 @@ public class Order {
         if(this.getTotalPrice().intValue() != 0)
             orderDTO.setTotalPrice(this.getTotalPrice());
         if(this.getCustomer() != null)
-            orderDTO.setCustomerId(this.getCustomer().getId());
+            orderDTO.setIdCustomer(this.getCustomer().getId());
         if(this.getSubTotal().intValue() != 0)
             orderDTO.setSubTotal(this.getSubTotal());
         orderDTO.setActive(this.active);
-        /*if(this.getCalculatedTaxes() != null )
+        if(this.getCalculatedTaxes() != null )
         {
             if(!this.getCalculatedTaxes().isEmpty())
             {
                 for(int j = 0; j<this.getCalculatedTaxes().size(); j++)
                 {
-                    orderDTO.getIdTaxes().add(this.getCalculatedTaxes().get(j).getId());
+                    orderDTO.getIdCalculatedTaxes().add(this.getCalculatedTaxes().get(j).getId());
                 }
             }
-        }*/
+        }
         if(this.getItems() != null)
         {
             if(!this.getItems().isEmpty())

@@ -28,8 +28,8 @@ public class AssetController {
     {
         return assetService.update(assetDTO);
     }
-    @DeleteMapping(value="delete/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public void delete(@PathVariable  Long id )
+    @DeleteMapping(value="delete",produces = MediaType.APPLICATION_JSON_VALUE)
+    public void delete(@RequestParam  Long id )
     {
          assetService.delete(id);
     }

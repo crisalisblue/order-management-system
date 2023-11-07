@@ -72,21 +72,11 @@ public class UserService {
 
     }
 
-    public List<UserDTO> getListOfAllUsersInDB() throws RuntimeException {
+    public List<UserDTOResponse> getListOfAllUsersInDB() throws RuntimeException {
         return this.userRepository
                 .findAll()
                 .stream()
-                .map(user -> {
-                    UserDTO userDTO = user.toDTO();
-                    String decryptedPassword = null;
-                    try {
-                        decryptedPassword = Encrypt.decrypt(userDTO.getPassword());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    userDTO.setPassword(decryptedPassword);
-                    return userDTO;
-                })
+                .map(User::toDTOResponse)
                 .collect(Collectors.toList());
     }
 
@@ -99,25 +89,24 @@ public class UserService {
         return Boolean.TRUE;
     }
 
-    public UserDTOResponse deleteUser(int id) {
+    public void deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             Optional<User> aux = userRepository.findById(id);
             userRepository.deleteById(id);
-            return aux.get().toDTOResponse();
 
         } else {
             throw new EmptyElementException("No existe un usuario con id " + id + ".");
         }
     }
 
-    public UserDTO getUserById(Integer id) {
+    public UserDTO getUserById(Long id) {
         return this.userRepository.findById(id)
                 .orElseThrow(
                         () -> new ResourceNotFoundException("ID Not Found"))
                 .toDTO();
     }
 
-    public UserDTO getUserByIdAndDecryptPassword(Integer id) {
+    public UserDTO getUserByIdAndDecryptPassword(Long id) {
         User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ID Not Found"));
         UserDTO userDTO = user.toDTO();

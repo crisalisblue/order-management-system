@@ -28,7 +28,7 @@ public class TaxController {
         return this.taxService.updateTax(tax);
     }
 
-    @GetMapping(value = "read")
+    @GetMapping(value = "read",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TaxDTO> getAllTaxes(){
         return this.taxService.getAllTaxes();
     }

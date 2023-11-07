@@ -1,10 +1,11 @@
 package crisalis.blue.models;
 
-import crisalis.blue.models.dto.ServiceDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Entity(name = "service")
 @Data
@@ -13,11 +14,8 @@ import lombok.NoArgsConstructor;
 public class Service extends Asset {
 
     @Column(name = "supportFree")
-    private double supportFree;
-    public ServiceDTO servicieToDto()
-    {
-        return new ServiceDTO(this.supportFree);
-    }
+    private BigDecimal supportFree;
+
 
 
 }

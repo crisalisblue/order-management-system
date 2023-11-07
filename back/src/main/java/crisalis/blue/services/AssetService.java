@@ -27,22 +27,28 @@ public class AssetService {
     }
 
     public AssetDTO create(AssetDTO assetDTO) {
-        Asset asset=null;
+        Asset asset =null;
         if (checkItem(assetDTO)) {
-            if(assetDTO.getType().equals("Product"))
-            {
-                asset = new Product();
+            if(assetDTO.getType()!=null) {
+                if (assetDTO.getType().equals("Product"))
+                    asset = new Product();
+
+                else
+                    asset = new crisalis.blue.models.Service();
+                asset.setType(assetDTO.getType());
             }
-            else
-            {
-                asset = new crisalis.blue.models.Service();
-            }
-            if(!assetDTO.getName().isEmpty())
+            if(assetDTO.getName()!=null && !assetDTO.getName().isEmpty())
                 asset.setName(assetDTO.getName());
+
             if(assetDTO.getBaseAmount() !=null && assetDTO.getBaseAmount().intValue() != 0)
                 asset.setBaseAmount(assetDTO.getBaseAmount());
             if(assetDTO.getTaxDTOList()!=null)
                 asset.setTaxList(buscarTax(assetDTO.getTaxDTOList()));
+            if(asset instanceof crisalis.blue.models.Service)
+            {
+                if(assetDTO.getSupportFree() !=null && assetDTO.getSupportFree().intValue() != 0  )
+                    ((crisalis.blue.models.Service) asset).setSupportFree(assetDTO.getSupportFree());
+            }
             return assetRepository.save(asset).toAssetDTO();
         } else {
             throw new EmptyElementException("Error el nombre del producto o el monto base del mismo estan vacios ");
@@ -90,6 +96,12 @@ public class AssetService {
                 aux.get().setName(assetDTO.getName());
             if (assetDTO.getBaseAmount().intValue() != 0)
                 aux.get().setBaseAmount(assetDTO.getBaseAmount());
+            if(assetDTO.getType() !=null && assetDTO.getType().isEmpty())
+                aux.get().setType(assetDTO.getType());
+            if(assetDTO.getSupportFree() != null && assetDTO.getSupportFree().intValue() != 0) {
+                if (aux.get() instanceof crisalis.blue.models.Service)
+                    ((crisalis.blue.models.Service) aux.get()).setSupportFree(assetDTO.getSupportFree());
+            }
             return this.assetRepository.save(aux.get()).toAssetDTO();
         }
         else throw new EmptyElementException("El elemento que se quiere actualizar no existe en la base de datos");

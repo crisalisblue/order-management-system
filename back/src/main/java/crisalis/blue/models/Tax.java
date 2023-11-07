@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,27 +28,46 @@ public class Tax {
     private String name;
 
     @Column(name = "percentage")
-    private BigInteger percentage;
+    private BigDecimal percentage;
 
     //Montofijo
     @Column(name = "baseAmount")
-    private BigInteger baseAmount;
-    //@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
-    //@Column(name ="taxCalculated")
-    //private List<CalculatedTax> calculatedTax;
+    private BigDecimal baseAmount;
+    @OneToMany(mappedBy = "idTax")
+    private List<CalculatedTax> calculatedTax;
     @ManyToMany(mappedBy = "taxList")
     private List<Asset> assets;
     public TaxDTO toDTO(){
-        return
-                TaxDTO
-                        .builder()
-                        .id(this.id)
-                        .name(this.name)
-                        .percentage(this.percentage)
-                        .baseAmount(this.baseAmount)
-                        .assetList(this.assets.stream().map(Asset::getId).collect(Collectors.toList()))
-                        //.ordersList(this.calculatedTax.stream().map(CalculatedTax::getId).collect(Collectors.toList()))
-                        .build();
+        TaxDTO taxDTO = new TaxDTO();
+        if(this.getId() != 0)
+            taxDTO.setId(this.getId());
+        if(this.getName()!= null && !this.getName().isEmpty())
+            taxDTO.setName(this.getName());
+        if(this.getBaseAmount()!=null && this.getBaseAmount().intValue()!=0)
+            taxDTO.setBaseAmount(this.getBaseAmount());
+        if(this.getPercentage()!=null && this.getPercentage().intValue() !=0)
+            taxDTO.setPercentage(this.getPercentage());
+        if(this.getAssets() != null && !this.getAssets().isEmpty())
+        {
+            for(int j=0; j<this.getAssets().size();j++)
+            {
+                if(this.getAssets().get(j)!=null)
+                {
+                    taxDTO.getAssetList().add(this.getAssets().get(j).getId());
+                }
+            }
+        }
+        if(this.getCalculatedTax() !=null && !this.getCalculatedTax().isEmpty())
+        {
+            for(int j=0; j<this.getCalculatedTax().size(); j++)
+            {
+                if(this.getCalculatedTax().get(j)!=null)
+                {
+                    taxDTO.getCalculatedTaxes().add(this.getCalculatedTax().get(j).getId());
+                }
+            }
+        }
+        return taxDTO;
     }
 
     //Falta agregar relacion con otras tablas...

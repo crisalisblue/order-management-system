@@ -1,5 +1,6 @@
 package crisalis.blue.services;
 
+import crisalis.blue.models.CalculatedTax;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
 import crisalis.blue.repositories.CalculatedTaxRepository;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,6 @@ public class CalculatedTaxService {
     {
         this.calculatedTaxRepository = calculatedTaxRepository;
     }
-    public CalculatedTaxDTO create(CalculatedTaxDTO calculatedTaxDTO)
-    {
-        return null;
-    }
-    public List<CalculatedTaxDTO> read()
-    {
-        return null;
-        // calculatedTaxRepository.findAll().stream().map(CalculatedTax::toCalculateTaxDTO)
-    }
+
+
 }

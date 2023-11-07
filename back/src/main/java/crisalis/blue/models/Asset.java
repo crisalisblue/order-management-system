@@ -26,10 +26,10 @@ public abstract class Asset {
     @JsonProperty(value = "baseAmount")
     @Column(name = "baseAmount")
     private BigDecimal baseAmount;
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(
             name = "asset_tax",
-            joinColumns = @JoinColumn(name="id_item",referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name="id_asset",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name="tax_id",referencedColumnName = "id")
     )
     private List<Tax> taxList;
@@ -54,6 +54,8 @@ public abstract class Asset {
             assetDTO.setName(this.getName());
         if(this.getBaseAmount()!=null && this.getBaseAmount().intValue() != 0)
             assetDTO.setBaseAmount(this.getBaseAmount());
+        if(this.getType()!=null &&!this.getType().isEmpty())
+            assetDTO.setType(this.getType());
         if(this.getTaxList() != null)
         {
             if(!this.getTaxList().isEmpty())
@@ -63,6 +65,10 @@ public abstract class Asset {
                     assetDTO.getTaxDTOList().add(this.getTaxList().get(j).getId());
                 }
             }
+        }
+        if(this instanceof  Service) {
+            Service service = (Service) this;
+            assetDTO.setSupportFree(service.getSupportFree());
         }
         return assetDTO;
     }

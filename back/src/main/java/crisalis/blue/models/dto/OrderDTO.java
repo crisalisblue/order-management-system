@@ -23,9 +23,9 @@ public class OrderDTO {
     private BigDecimal totalPrice;
     private BigDecimal subTotal;
     private Boolean active;
-    private Long customerId;
+    private Long idCustomer;
     private List<Long> idItem;
-    //private List<Long> idTaxes;
+    private List<Long> idCalculatedTaxes;
     public OrderDTO()
     {
         idItem = new ArrayList<Long>();
