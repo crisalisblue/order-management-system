@@ -38,9 +38,6 @@ public class Customer {
     // razon social
     @Column(name = "businessName", nullable = true)
     private String businessName;
-    //probablemente saquemos esto
-    @Column(name = "type", nullable = false)
-    private String type;
 
     public Customer(Customer customer) {
         this.id = customer.getId();
@@ -50,7 +47,7 @@ public class Customer {
         this.cuit = customer.getCuit();
         this.activityStartDate = customer.getActivityStartDate();
         this.businessName = customer.getBusinessName();
-        this.type = customer.getType();
+
     }
 
     public CustomerDTO toDTO() {
@@ -63,7 +60,6 @@ public class Customer {
                 .cuit(this.cuit)
                 .activityStartDate(this.activityStartDate)
                 .businessName(this.businessName)
-                .type(this.type)
                 .build();
     }
 
