@@ -10,11 +10,4 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
-    Customer save(Customer customer);
-
-    Optional<Customer> findById(Integer id);
-
-    void deleteById(Integer id);
-
-    List<Customer> findAll();
 }

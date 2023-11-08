@@ -1,5 +1,8 @@
 package crisalis.blue.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import crisalis.blue.models.dto.CustomerDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +24,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+
 public abstract class Customer {
     @Id
     @SequenceGenerator(
@@ -40,26 +44,33 @@ public abstract class Customer {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "type", nullable = false)
+    @Column(insertable = false,
+            updatable = false)
     private String type;
 
 
-
-
-    public Customer(Customer customer) {
+    /*public Customer(CustomerDTO customer) {
         this.id = customer.getId();
         this.address = customer.getAddress();
         this.type = customer.getType();
+    }*/
+
+    protected Customer (CustomerDTO dto){
+        setId(dto.getId());
+        setAddress(dto.getAddress());
     }
 
-    public CustomerDTO toDTO() {
-        return CustomerDTO
-                .builder()
-                .id(this.id)
-                .address(this.address)
-                .type(this.type)
-                .build();
+
+    protected abstract CustomerDTO completeSpecificAttrib(CustomerDTO dto);
+
+    public CustomerDTO toDTO(){
+        CustomerDTO dto = new CustomerDTO();
+        dto.setId(id);
+        dto.setAddress(address);
+        dto = completeSpecificAttrib(dto);
+        return dto;
     }
+
 
     // Relaciones con Entidades que aun no existen.
 

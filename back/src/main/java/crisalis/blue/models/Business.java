@@ -1,5 +1,6 @@
 package crisalis.blue.models;
 
+import crisalis.blue.models.dto.CustomerDTO;
 import lombok.*;
 
 import java.util.Date;
@@ -11,11 +12,11 @@ import java.util.Date;
 @AllArgsConstructor
 public class Business extends Customer {
 
-    public Business(Long id, String address, String businessName, Date activityStartDate, String cuit, Person per){
-        super(id, address, "Business");
-        this.businessName = businessName;
-        this.activityStartDate = activityStartDate;
-        this.cuit = cuit;
+    public Business(CustomerDTO dto){
+        super(dto);
+        setBusinessName(dto.getBusinessName());
+        setActivityStartDate(dto.getActivityStartDate());
+        setCuit(dto.getCuit());
         this.per = per;
     }
 
@@ -23,4 +24,13 @@ public class Business extends Customer {
     private Date activityStartDate;
     private String cuit;
     private Person per;
+
+    @Override
+    protected CustomerDTO completeSpecificAttrib(CustomerDTO dto) {
+        dto.setType("BUS");
+        dto.setBusinessName(this.businessName);
+        dto.setActivityStartDate(this.activityStartDate);
+        dto.setCuit(this.cuit);
+        return dto;
+    }
 }

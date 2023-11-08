@@ -1,5 +1,6 @@
 package crisalis.blue.models;
 
+import crisalis.blue.models.dto.CustomerDTO;
 import lombok.*;
 
 @Getter
@@ -9,14 +10,24 @@ import lombok.*;
 @AllArgsConstructor
 public class Person extends Customer {
 
-    public Person(Long id, String address, String name, String lastName, String dni){
-        super(id, address, "Person");
-        this.name = name;
-        this.lastName = lastName;
-        this.dni = dni;
-    }
+   public Person(CustomerDTO dto){
+       super(dto);
+       setName(dto.getName());
+       setLastName(dto.getLastName());
+       setDni(dto.getDni());
+   }
 
     private String name;
     private String lastName;
     private String dni;
+
+
+    @Override
+    protected CustomerDTO completeSpecificAttrib(CustomerDTO dto) {
+        dto.setType("PER");
+        dto.setName(this.name);
+        dto.setLastName(this.lastName);
+        dto.setDni(this.dni);
+        return dto;
+    }
 }
