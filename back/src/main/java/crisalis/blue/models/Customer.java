@@ -22,10 +22,10 @@ public class Customer {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "lastName", nullable = true)
     private String lastName;
 
-    @Column(name = "dni", nullable = false)
+    @Column(name = "dni", nullable = true)
     private String dni;
 
     @Column(name = "cuit", nullable = true)
@@ -39,9 +39,6 @@ public class Customer {
     @Column(name = "businessName", nullable = true)
     private String businessName;
 
-    @Column(name = "type", nullable = false)
-    private String type;
-
     public Customer(Customer customer) {
         this.id = customer.getId();
         this.name = customer.getName();
@@ -50,7 +47,7 @@ public class Customer {
         this.cuit = customer.getCuit();
         this.activityStartDate = customer.getActivityStartDate();
         this.businessName = customer.getBusinessName();
-        this.type = customer.getType();
+
     }
 
     public CustomerDTO toDTO() {
@@ -63,7 +60,6 @@ public class Customer {
                 .cuit(this.cuit)
                 .activityStartDate(this.activityStartDate)
                 .businessName(this.businessName)
-                .type(this.type)
                 .build();
     }
 

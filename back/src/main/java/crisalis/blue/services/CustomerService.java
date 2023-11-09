@@ -55,7 +55,6 @@ public class CustomerService {
             customer.setCuit(updatedCustomer.getDni());
             customer.setActivityStartDate(updatedCustomer.getActivityStartDate());
             customer.setBusinessName(updatedCustomer.getBusinessName());
-            customer.setType(updatedCustomer.getType());
 
             // Guardamos el cliente ya actualizado.
             customerRepository.save(customer);
