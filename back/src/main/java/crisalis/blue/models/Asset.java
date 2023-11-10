@@ -37,6 +37,7 @@ public abstract class Asset {
     private List<Tax> taxList;
 
 
+
     public AssetDTO toAssetDTO()
     {
         AssetDTO assetDTO = new AssetDTO();

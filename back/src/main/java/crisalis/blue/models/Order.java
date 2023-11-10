@@ -40,7 +40,7 @@ public class Order {
     private Customer customer;
 
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "idOrder")
     private List<Item> items;
 
 
@@ -64,7 +64,7 @@ public class Order {
             orderDTO.setSubTotal(this.getSubTotal());
         orderDTO.setActive(this.active);
 
-        if(this.getItems() != null && !this.getItems().isEmpty())
+       if(this.getItems() != null && !this.getItems().isEmpty())
         {
             orderDTO.setItemDTO(this.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList()));
         }

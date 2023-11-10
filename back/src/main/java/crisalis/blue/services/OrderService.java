@@ -39,6 +39,7 @@ public class OrderService {
                 order.setTotalPrice(orderDTO.getTotalPrice());
             }
             else throw new EmptyElementException("Datos nulos");
+            //Esto lo tengo que modificar
             Optional<Customer> optionalCustomer = Optional.empty();
             if (orderDTO.getCustomerDTO() != null) {
                 if(orderDTO.getCustomerDTO().getId() != null && orderDTO.getCustomerDTO().getId().intValue() != 0)
@@ -52,9 +53,15 @@ public class OrderService {
                         order.setCustomer(customer);
                 }
             }
-            if(orderDTO.getItemDTO() != null && !orderDTO.getItemDTO().isEmpty())
+            order = orderRepository.save(order);
+            if(orderDTO.getItemDTO() != null && !orderDTO.getItemDTO().isEmpty()) {
                 order.setItems(orderDTO.getItemDTO().stream().map(ItemDTO::toItem).collect(Collectors.toList()));
-            return orderRepository.save(order).toOrderDTO();
+                for (int j = 0; j < order.getItems().size(); j++) {
+                    order.getItems().get(j).setIdOrder(order);
+                    itemRepository.save(order.getItems().get(j));
+                }
+            }
+            return order.toOrderDTO();
         }
      throw new RuntimeException();
 

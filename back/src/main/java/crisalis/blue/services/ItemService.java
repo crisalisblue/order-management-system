@@ -36,6 +36,7 @@ public class ItemService {
             item.setItemQuantity(itemDTO.getItemQuantity());
             item.setDiscountAmount(itemDTO.getDiscountAmount());
             item.setAsset(itemDTO.getAssetDTO().assetDTOtoAsset());
+            item.setIdOrder(itemDTO.getOrderDTO().toOrder());
             return itemRepository.save(item).toItemDTO();
         }else throw new EmptyElementException("Campos vacios");
     }
@@ -93,8 +94,12 @@ public class ItemService {
                 {
                         if(item.getItemPrice().intValue() != 0 )
                         {
-                            if(item.getDiscountAmount().intValue() != 0)
-                                return item.getTotalPrice().intValue() != 0;
+                            if(item.getDiscountAmount().intValue() != 0){
+                                if(item.getAssetDTO() != null) {
+                                    return item.getTotalPrice().intValue() != 0;
+                                }
+                            }
+
                         }
                     }
                 }

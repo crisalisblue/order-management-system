@@ -25,6 +25,10 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Asset asset;
 
+    @ManyToOne
+    @JoinColumn(name="id_order")
+    private Order idOrder;
+
     // monto Item
     private BigDecimal itemPrice;
     // Descripción de items

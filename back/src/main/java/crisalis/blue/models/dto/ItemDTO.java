@@ -16,6 +16,8 @@ public class ItemDTO {
     private Long idItem;
     @JsonProperty(value = "idAsset")
     private AssetDTO assetDTO;
+    @JsonProperty(value = "orderDTO")
+    private OrderDTO orderDTO;
     @JsonProperty(value = "itemPrice")
     private BigDecimal itemPrice;
     @JsonProperty(value = "itemDitails")
@@ -37,6 +39,7 @@ public class ItemDTO {
         item.setItemPrice(this.getItemPrice());
         item.setDiscountAmount(this.getDiscountAmount());
         item.setTotalPrice(this.getTotalPrice());
+        item.setItemDetails(this.getItemDitails());
         item.setWarrantyYears(this.getWarrantyYears());
         return item;
     }

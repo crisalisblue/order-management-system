@@ -44,7 +44,7 @@ public class AssetDTO {
             product.setName(this.getName());
             product.setType(this.getType());
             product.setBaseAmount(this.getBaseAmount());
-            //product.setTaxList(this.getTaxDTOList());
+            product.setTaxList(this.getTaxDTOList().stream().map(TaxDTO::toTax).collect(Collectors.toList()));
             return product;
         }else
         {
@@ -55,7 +55,7 @@ public class AssetDTO {
             service.setType(this.getType());
             service.setBaseAmount(this.getBaseAmount());
             service.setSupportFree(this.getSupportFree());
-            //service.setTaxList(this.getTaxDTOList());
+            service.setTaxList(this.getTaxDTOList().stream().map(TaxDTO::toTax).collect(Collectors.toList()));
             return service;
         }
     }
