@@ -1,10 +1,11 @@
 package crisalis.blue.models;
 
 import crisalis.blue.models.dto.CustomerDTO;
+import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.util.Date;
-
+@Entity
 @Getter
 @Setter
 @ToString

@@ -1,8 +1,10 @@
 package crisalis.blue.models;
 
 import crisalis.blue.models.dto.CustomerDTO;
+import jakarta.persistence.Entity;
 import lombok.*;
 
+@Entity
 @Getter
 @Setter
 @ToString
