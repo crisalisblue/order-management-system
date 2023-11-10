@@ -5,6 +5,7 @@ import crisalis.blue.models.Asset;
 import crisalis.blue.models.Product;
 import crisalis.blue.models.Tax;
 import crisalis.blue.models.dto.AssetDTO;
+import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.TaxRepository;
 import lombok.Data;
@@ -43,7 +44,7 @@ public class AssetService {
             if(assetDTO.getBaseAmount() !=null && assetDTO.getBaseAmount().intValue() != 0)
                 asset.setBaseAmount(assetDTO.getBaseAmount());
             if(assetDTO.getTaxDTOList()!=null)
-                asset.setTaxList(buscarTax(assetDTO.getTaxDTOList()));
+                asset.setTaxList(assetDTO.getTaxDTOList().stream().map(TaxDTO::toTax).collect(Collectors.toList()));
             if(asset instanceof crisalis.blue.models.Service)
             {
                 if(assetDTO.getSupportFree() !=null && assetDTO.getSupportFree().intValue() != 0  )
@@ -88,6 +89,9 @@ public class AssetService {
     public List<AssetDTO> read() {
         return this.assetRepository.findAll().stream().map(Asset::toAssetDTO).collect(Collectors.toList());
     }
+    public List<AssetDTO> readType(String type) {
+        return this.assetRepository.findAll().stream().map(Asset::toAssetDTO).filter(assetDTO -> assetDTO.getType().equals(type)).collect(Collectors.toList());
+    }
 
     public AssetDTO update(AssetDTO assetDTO) {
         Optional<Asset> aux = assetRepository.findById(assetDTO.getId());
@@ -96,10 +100,11 @@ public class AssetService {
                 aux.get().setName(assetDTO.getName());
             if (assetDTO.getBaseAmount().intValue() != 0)
                 aux.get().setBaseAmount(assetDTO.getBaseAmount());
-            if(assetDTO.getType() !=null && assetDTO.getType().isEmpty())
+            if(assetDTO.getType() !=null && !assetDTO.getType().isEmpty()) {
                 aux.get().setType(assetDTO.getType());
+            }
             if(assetDTO.getSupportFree() != null && assetDTO.getSupportFree().intValue() != 0) {
-                if (aux.get() instanceof crisalis.blue.models.Service)
+                if (aux.get().getType().equals("Service"))
                     ((crisalis.blue.models.Service) aux.get()).setSupportFree(assetDTO.getSupportFree());
             }
             return this.assetRepository.save(aux.get()).toAssetDTO();

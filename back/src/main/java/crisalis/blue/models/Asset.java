@@ -3,47 +3,39 @@ package crisalis.blue.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import crisalis.blue.models.dto.AssetDTO;
+import crisalis.blue.models.dto.TaxDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity(name = "asset")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data
-
+@DiscriminatorColumn( name="type",
+        discriminatorType = DiscriminatorType.STRING
+)
 public abstract class Asset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(value = "id")
-    @Column(name ="id")
     private Long id ;
+    @JsonProperty(value = "type")
+    @Column(insertable=false, updatable=false)
     private String type;
     @JsonProperty(value = "name")
-    @Column(name = "name")
     private String name;
     @JsonProperty(value = "baseAmount")
-    @Column(name = "baseAmount")
     private BigDecimal baseAmount;
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "asset_tax",
-            joinColumns = @JoinColumn(name="id_asset",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name="tax_id",referencedColumnName = "id")
-    )
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(name="Tax_Asset",
+    joinColumns = @JoinColumn(name = "id_asset",referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name="id_tax",referencedColumnName = "id"))
+    @JsonProperty(value = "taxList")
     private List<Tax> taxList;
-    public boolean checkEmpty()
-    {
-        if(!this.getName().equals(""))
-        {
-            if(this.getBaseAmount().intValue() !=0)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     public AssetDTO toAssetDTO()
     {
@@ -56,20 +48,15 @@ public abstract class Asset {
             assetDTO.setBaseAmount(this.getBaseAmount());
         if(this.getType()!=null &&!this.getType().isEmpty())
             assetDTO.setType(this.getType());
-        if(this.getTaxList() != null)
-        {
-            if(!this.getTaxList().isEmpty())
-            {
-                for(int j=0; j<this.getTaxList().size();j++)
-                {
-                    assetDTO.getTaxDTOList().add(this.getTaxList().get(j).getId());
-                }
-            }
-        }
-        if(this instanceof  Service) {
-            Service service = (Service) this;
+        if(this instanceof Service service) {
             assetDTO.setSupportFree(service.getSupportFree());
         }
+        if(this.getTaxList() != null && !this.getTaxList().isEmpty())
+            assetDTO.setTaxDTOList((this.listTaxToTaxDTO(this.getTaxList())));
         return assetDTO;
+    }
+    public List<TaxDTO>listTaxToTaxDTO(List<Tax> listAsset)
+    {
+        return listAsset.stream().map(Tax::toDTO).collect(Collectors.toList());
     }
 }

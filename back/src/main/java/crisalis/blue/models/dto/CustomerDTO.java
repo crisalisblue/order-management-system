@@ -1,6 +1,7 @@
 package crisalis.blue.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import crisalis.blue.models.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,5 +45,18 @@ public class CustomerDTO {
 
     @JsonProperty("type")
     private String type;
+    public Customer toCustomer()
+    {
+        Customer customer = new Customer();
+        customer.setId(this.getId());
+        customer.setDni(this.getDni());
+        customer.setName(this.getName());
+        customer.setType(this.getType());
+        customer.setCuit(this.getCuit());
+        customer.setActivityStartDate(this.getActivityStartDate());
+        customer.setBusinessName(this.getBusinessName());
+        customer.setLastName(this.getLastName());
+        return customer;
+    }
 
 }

@@ -23,6 +23,8 @@ public class AssetController {
     }
     @GetMapping(value="read", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AssetDTO> read() {return assetService.read();}
+    @GetMapping(value="readType", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<AssetDTO> readType(@RequestParam String type) {return assetService.readType(type);}
     @PutMapping(value="update", produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDTO update(@RequestBody AssetDTO assetDTO)
     {

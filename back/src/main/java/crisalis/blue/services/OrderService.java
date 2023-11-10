@@ -2,6 +2,8 @@ package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.*;
+import crisalis.blue.models.dto.CalculatedTaxDTO;
+import crisalis.blue.models.dto.ItemDTO;
 import crisalis.blue.models.dto.OrderDTO;
 import crisalis.blue.repositories.*;
 import org.springframework.stereotype.Service;
@@ -25,90 +27,79 @@ public class OrderService {
         this.itemRepository = itemRepository;
         this.calculatedTaxRepository = calculatedTaxRepository;
     }
-    public OrderDTO create(OrderDTO order)
+    public OrderDTO create(OrderDTO orderDTO)
     {
-        Optional<Customer> optionalCustomer = null;
-        Customer customer = null;
-        if(chekcEmptyOrder(order))
-        {
-            if(order.getIdCustomer() != null)
-            {
-             if( customerRepository.findById(order.getIdCustomer()).isPresent())
-             {
-                 optionalCustomer = customerRepository.findById(order.getIdCustomer());
-                 customer = optionalCustomer.get();
-             }
+        if(orderDTO != null) {
+            Order order = new Order();
+            if(checkEmpty(orderDTO)) {
+                order.setDatesOrder(orderDTO.getDateOrder());
+                order.setActive(orderDTO.getActive());
+                order.setSubTotal(orderDTO.getSubTotal());
+                order.setTotalDiscount(orderDTO.getTotalDiscount());
+                order.setTotalPrice(orderDTO.getTotalPrice());
             }
-
-            return orderRepository.save(new Order(null,order.getTotalDiscount(),order.getDateOrder()
-                    ,order.getActive(), order.getTotalPrice(),order.getSubTotal()
-                    ,customer,buscarAsset(order.getIdItem()),
-                    buscarTaxes(order.getIdCalculatedTaxes()))).toOrderDTO();
-     }
+            else throw new EmptyElementException("Datos nulos");
+            Optional<Customer> optionalCustomer = Optional.empty();
+            if (orderDTO.getCustomerDTO() != null) {
+                if(orderDTO.getCustomerDTO().getId() != null && orderDTO.getCustomerDTO().getId().intValue() != 0)
+                {
+                    optionalCustomer = customerRepository.findById(orderDTO.getCustomerDTO().getId());
+                    optionalCustomer.ifPresent(order::setCustomer);
+                }
+                else
+                {
+                        Customer customer = orderDTO.getCustomerDTO().toCustomer();
+                        order.setCustomer(customer);
+                }
+            }
+            if(orderDTO.getItemDTO() != null && !orderDTO.getItemDTO().isEmpty())
+                order.setItems(orderDTO.getItemDTO().stream().map(ItemDTO::toItem).collect(Collectors.toList()));
+            return orderRepository.save(order).toOrderDTO();
+        }
      throw new RuntimeException();
 
     }
-    private List<Item> buscarAsset(List<Long> idItems)
+    private List<Item> buscarItems(List<ItemDTO> listItems)
     {
-       if(idItems != null)
+       if(listItems != null)
        {
-           if(!idItems.isEmpty())
+           if(!listItems.isEmpty())
            {
-               List<Item> listAsset = new ArrayList<Item>();
-               Long actual = null;
-               for(int j=0;j<idItems.size();j++)
-               {
-                   actual = idItems.get(j);
-                   Optional<Item> optionalAsset = itemRepository.findById(actual);
-                   if(optionalAsset.isPresent())
-                       listAsset.add(optionalAsset.get());
+               List<Item> listAsset = new ArrayList<>();
+               for (ItemDTO listItem : listItems) {
+                   Optional<Item> optionalAsset = itemRepository.findById(listItem.getIdItem());
+                   optionalAsset.ifPresent(listAsset::add);
                }
                return listAsset;
            }
        }
        return null;
     }
-    private List<CalculatedTax> buscarTaxes(List<Long>idTaxes)
-    {
-        if(idTaxes != null)
-        {
-            if(!idTaxes.isEmpty())
-            {
-                List<CalculatedTax> listTaxes = new ArrayList<CalculatedTax>();
-                Long actual = null;
-                for(int j=0; j<idTaxes.size();j++)
-                {
-                    actual = idTaxes.get(j);
-                    Optional<CalculatedTax> optionalTax = calculatedTaxRepository.findById(actual);
-                    if(optionalTax.isPresent())
-                        listTaxes.add(optionalTax.get());
-                }
-                return listTaxes;
-            }
-        }
-        return null;
-    }
     public List<OrderDTO> read()
     {
         return orderRepository.findAll().stream().map(Order::toOrderDTO).collect(Collectors.toList());
     }
-    public OrderDTO update(  OrderDTO order)
+    public OrderDTO update(  OrderDTO orderDTO)
     {
-        Optional<Order> aux = orderRepository.findById(order.getIdOrder());
+        Optional<Order> aux = orderRepository.findById(orderDTO.getIdOrder());
         if(aux.isPresent()) {
-            if (order.getDateOrder() != null)
-                aux.get().setDatesOrder(order.getDateOrder());
-            if (order.getTotalPrice()!=null && order.getTotalPrice().intValue() != 0)
-                aux.get().setTotalPrice(order.getTotalPrice());
-            if(order.getSubTotal()!=null && order.getSubTotal().intValue() != 0)
-                aux.get().setSubTotal(order.getSubTotal());
-            if(order.getTotalDiscount()!=null && order.getTotalDiscount().intValue() != 0)
-                aux.get().setTotalDiscount(order.getTotalDiscount());
-            if (order.getIdCustomer() != null) {
-                if(customerRepository.existsById(order.getIdCustomer()))
-                    aux.get().setCustomer(customerRepository.findById(order.getIdCustomer()).get());
-            }else
-                aux.get().setCustomer(null);
+            if (orderDTO.getDateOrder() != null)
+                aux.get().setDatesOrder(orderDTO.getDateOrder());
+            if (orderDTO.getTotalPrice()!=null && orderDTO.getTotalPrice().intValue() != 0)
+                aux.get().setTotalPrice(orderDTO.getTotalPrice());
+            if(orderDTO.getSubTotal()!=null && orderDTO.getSubTotal().intValue() != 0)
+                aux.get().setSubTotal(orderDTO.getSubTotal());
+            if(orderDTO.getTotalDiscount()!=null && orderDTO.getTotalDiscount().intValue() != 0)
+                aux.get().setTotalDiscount(orderDTO.getTotalDiscount());
+            if (orderDTO.getCustomerDTO() != null) {
+                Optional<Customer> optionalCustomer = customerRepository.findById(orderDTO.getCustomerDTO().getId());
+                if (optionalCustomer.isPresent()) {
+                    aux.get().setCustomer(optionalCustomer.get());
+                } else {
+                    Customer customer = orderDTO.getCustomerDTO().toCustomer();
+                    aux.get().setCustomer(customer);
+                }
+            }
             return orderRepository.save(aux.get()).toOrderDTO();
         }
         throw new EmptyElementException("No se encontro el registro con ese id ");
@@ -127,23 +118,18 @@ public class OrderService {
             throw new EmptyElementException("No se encontro el registro con ese id ");
 
     }
-    private boolean chekcEmptyOrder(OrderDTO order)
+    private boolean  checkEmpty(OrderDTO order)
     {
         if(order.getDateOrder() != null)
         {
-            if(order.getTotalPrice().intValue() != 0)
-            {
-                if(order.getSubTotal().intValue() != 0)
+            if(order.getTotalPrice() != null){
+                if(order.getTotalDiscount() !=null)
                 {
-                    if(order.getTotalDiscount().intValue() != 0)
-                    {
-                        return true;
-                    }
+                    return order.getSubTotal() != null;
                 }
-
             }
         }
-        throw new EmptyElementException("Los campos estan vacios ");
-    }
 
+        return false;
+    }
 }

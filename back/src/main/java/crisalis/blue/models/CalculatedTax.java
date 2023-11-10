@@ -1,3 +1,4 @@
+// calculatedTaxed
 package crisalis.blue.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,37 +7,44 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name="calculatedTax")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CalculatedTax {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+
     private Long id;
 
 
-    @JsonProperty(value = "idTax")
-    @ManyToOne
-    @JoinColumn(name="id_tax")
-    private Tax idTax;
+    @OneToMany
+    @JoinColumn(name = "id_tax")
+    private List<Tax> idTax;
+
+
     @JsonProperty(value = "idOrder")
+    @OneToMany(cascade =CascadeType.ALL )
+    private List<Order> idOrder;
 
 
-    @ManyToOne
-    @JoinColumn(name="order_id")
-    private Order idOrder;
-
-
-    @Column(name ="taxesAmount")
     private BigDecimal taxesAmount;
 
-
+    public CalculatedTaxDTO calculatedTaxtoDTO()
+    {
+        CalculatedTaxDTO calculatedTaxDTO = new CalculatedTaxDTO();
+        if(this.getId() != 0)
+            calculatedTaxDTO.setId(this.getId());
+        if(this.getIdTax() != null)
+            calculatedTaxDTO.setIdTax(this.getIdTax());
+        if(this.getIdOrder() != null)
+            calculatedTaxDTO.setIdOrder(this.getIdOrder());
+        if(this.getTaxesAmount()!=null && this.getTaxesAmount().intValue() != 0)
+            calculatedTaxDTO.setTaxesAmount(this.getTaxesAmount());
+        return calculatedTaxDTO;
+    }
 }

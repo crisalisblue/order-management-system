@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -34,18 +35,15 @@ public class Order {
     private BigDecimal subTotal;
 
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE,optional = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,optional = true)
     @JoinColumn(name="customer_id",referencedColumnName = "id")
     private Customer customer;
 
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinTable(name = "order_items")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Item> items;
 
 
-    @OneToMany(mappedBy = "idOrder")
-    private List<CalculatedTax> calculatedTaxes;
 
 
 
@@ -61,29 +59,14 @@ public class Order {
         if(this.getTotalPrice().intValue() != 0)
             orderDTO.setTotalPrice(this.getTotalPrice());
         if(this.getCustomer() != null)
-            orderDTO.setIdCustomer(this.getCustomer().getId());
+            orderDTO.setCustomerDTO(this.getCustomer().toDTO());
         if(this.getSubTotal().intValue() != 0)
             orderDTO.setSubTotal(this.getSubTotal());
         orderDTO.setActive(this.active);
-        if(this.getCalculatedTaxes() != null )
+
+        if(this.getItems() != null && !this.getItems().isEmpty())
         {
-            if(!this.getCalculatedTaxes().isEmpty())
-            {
-                for(int j = 0; j<this.getCalculatedTaxes().size(); j++)
-                {
-                    orderDTO.getIdCalculatedTaxes().add(this.getCalculatedTaxes().get(j).getId());
-                }
-            }
-        }
-        if(this.getItems() != null)
-        {
-            if(!this.getItems().isEmpty())
-            {
-                for(int j=0; j<this.getItems().size(); j++)
-                {
-                    orderDTO.getIdItem().add(this.getItems().get(j).getId());
-                }
-            }
+            orderDTO.setItemDTO(this.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList()));
         }
         return orderDTO;
     }

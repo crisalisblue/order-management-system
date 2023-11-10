@@ -17,14 +17,12 @@ import java.util.stream.Collectors;
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
-    private final OrderRepository orderRepository;
     private final AssetRepository assetRepository;
 
-    public ItemService(ItemRepository exchangeGoodOrderRepository,OrderRepository orderRepository,
+    public ItemService(ItemRepository exchangeGoodOrderRepository,
                        AssetRepository assetRepository)
     {
         this.itemRepository = exchangeGoodOrderRepository;
-        this.orderRepository = orderRepository;
         this.assetRepository = assetRepository;
     }
     public ItemDTO create(ItemDTO itemDTO)
@@ -37,16 +35,7 @@ public class ItemService {
             item.setTotalPrice(itemDTO.getTotalPrice());
             item.setItemQuantity(itemDTO.getItemQuantity());
             item.setDiscountAmount(itemDTO.getDiscountAmount());
-            if (itemDTO.getIdOrder() != null) {
-                Optional<Order> optionalOrder = orderRepository.findById(itemDTO.getIdOrder());
-                if (optionalOrder.isPresent())
-                    item.setOrder(optionalOrder.get());
-            }
-            if (itemDTO.getIdAsset() != null) {
-                Optional<Asset> optionalAsset = assetRepository.findById(itemDTO.getIdAsset());
-                if (optionalAsset.isPresent())
-                    item.setAsset(optionalAsset.get());
-            }
+            item.setAsset(itemDTO.getAssetDTO().assetDTOtoAsset());
             return itemRepository.save(item).toItemDTO();
         }else throw new EmptyElementException("Campos vacios");
     }
@@ -54,50 +43,41 @@ public class ItemService {
     {
         return itemRepository.findAll().stream().map(Item::toItemDTO).collect(Collectors.toList());
     }
-    public ItemDTO update(ItemDTO item)
+    public ItemDTO update(ItemDTO itemDTO)
 
     {
         Optional<Item> optionalItem = itemRepository.
-                findById(item.getIdItem());
-        if(optionalItem.isPresent())
-        {
-            //Id propio
-            if(item.getIdItem() != 0)
-                optionalItem.get().setId(item.getIdItem());
-            // Detalles
-            if(!item.getItemDitails().isEmpty())
-                optionalItem.get().setItemDetails(item.getItemDitails());
-            // Precio total
-            if(item.getTotalPrice().intValue() != 0)
-                optionalItem.get().setTotalPrice(item.getTotalPrice());
-            // Monto descuento
-            if(item.getDiscountAmount().intValue() != 0)
-                optionalItem.get().setDiscountAmount(item.getDiscountAmount());
-            // El id de la orden
-            if(item.getIdOrder()!=null && item.getIdOrder() != 0) {
-                Optional<Order> optionalOrder = orderRepository.findById(item.getIdOrder());
-                if(optionalOrder.isPresent())
-                    optionalItem.get().setOrder(optionalOrder.get());
-            }
-            // El id del item
-            if(item.getIdAsset()!=null) {
-                Optional<Asset> optinalAsset = assetRepository.findById(item.getIdAsset());
-                if(optinalAsset.isPresent())
+                findById(itemDTO.getIdItem());
+        if(optionalItem.isPresent()) {
+
+            if (itemDTO.getIdItem() != 0)
+                optionalItem.get().setId(itemDTO.getIdItem());
+
+            if (!itemDTO.getItemDitails().isEmpty())
+                optionalItem.get().setItemDetails(itemDTO.getItemDitails());
+
+            if (itemDTO.getTotalPrice().intValue() != 0)
+                optionalItem.get().setTotalPrice(itemDTO.getTotalPrice());
+            if (itemDTO.getDiscountAmount().intValue() != 0)
+                optionalItem.get().setDiscountAmount(itemDTO.getDiscountAmount());
+
+            if (itemDTO.getAssetDTO() != null) {
+                Optional<Asset> optinalAsset = assetRepository.findById(itemDTO.getAssetDTO().getId());
+                if (optinalAsset.isPresent())
                     optionalItem.get().setAsset(optinalAsset.get());
                 else
                     optionalItem.get().setAsset(null);
             }
-            // Precio item
-            if(item.getItemPrice().intValue() != 0)
-                optionalItem.get().setItemPrice(item.getItemPrice());
-            // Cantidad del item
-            if(item.getItemQuantity() != 0)
-                optionalItem.get().setItemQuantity(item.getItemQuantity());
-            if(item.getWarrantyYears() != 0)
-                optionalItem.get().setWarrantyYears(item.getWarrantyYears());
+            if (itemDTO.getItemPrice().intValue() != 0)
+                optionalItem.get().setItemPrice(itemDTO.getItemPrice());
+
+            if (itemDTO.getItemQuantity() != 0)
+                optionalItem.get().setItemQuantity(itemDTO.getItemQuantity());
+            if (itemDTO.getWarrantyYears() != 0)
+                optionalItem.get().setWarrantyYears(itemDTO.getWarrantyYears());
             return itemRepository.save(optionalItem.get()).toItemDTO();
-        }
-        throw new EmptyElementException("El id no existe");
+        } else
+            throw new EmptyElementException("El id no existe");
     }
     public void delete(Long id_ExchangeGood_Customer)
     {
@@ -114,10 +94,7 @@ public class ItemService {
                         if(item.getItemPrice().intValue() != 0 )
                         {
                             if(item.getDiscountAmount().intValue() != 0)
-                                if(item.getTotalPrice().intValue() != 0)
-                                {
-                                    return true;
-                                }
+                                return item.getTotalPrice().intValue() != 0;
                         }
                     }
                 }

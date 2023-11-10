@@ -1,21 +1,21 @@
 package crisalis.blue.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import crisalis.blue.models.Item;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemDTO {
     @JsonProperty(value = "id")
     private Long idItem;
-    @JsonProperty(value = "idOrder")
-    private Long idOrder;
     @JsonProperty(value = "idAsset")
-    private Long idAsset;
+    private AssetDTO assetDTO;
     @JsonProperty(value = "itemPrice")
     private BigDecimal itemPrice;
     @JsonProperty(value = "itemDitails")
@@ -28,4 +28,16 @@ public class ItemDTO {
     private BigDecimal totalPrice;
     @JsonProperty(value = "warrantyYears")
     private int warrantyYears;
+
+    public Item toItem()
+    {
+        Item item = new Item();
+        item.setId(this.getIdItem());
+        item.setItemQuantity(this.getItemQuantity());
+        item.setItemPrice(this.getItemPrice());
+        item.setDiscountAmount(this.getDiscountAmount());
+        item.setTotalPrice(this.getTotalPrice());
+        item.setWarrantyYears(this.getWarrantyYears());
+        return item;
+    }
 }
