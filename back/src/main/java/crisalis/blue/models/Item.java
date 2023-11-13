@@ -54,7 +54,9 @@ public class Item {
             itemDTO.setIdItem(this.getId());
         if(this.getAsset() != null) {
             if(this.getAsset().getId() != 0)
-                itemDTO.setAssetDTO(this.getAsset().toAssetDTO());
+                itemDTO.setIdAsset(this.getAsset().getId());
+            if(this.getAsset().getName() != null)
+                itemDTO.setNameAsset(this.getAsset().getName());
         }
         if(this.getItemPrice()!=null &&this.getItemPrice().intValue() != 0)
             itemDTO.setItemPrice(this.getItemPrice());

@@ -24,25 +24,22 @@ public class OrderDTO {
     private BigDecimal totalPrice;
     private BigDecimal subTotal;
     private Boolean active;
-    private CustomerDTO customerDTO;
+    private Long customerID;
+    private String customerName;
     private List<ItemDTO> itemDTO;
     public OrderDTO()
     {
         itemDTO = new ArrayList<ItemDTO>();
-       // idTaxes = new ArrayList<Long>();
     }
     public Order toOrder()
     {
         Order order = new Order();
         order.setId(this.getIdOrder());
         order.setDatesOrder(this.getDateOrder());
-        order.setCustomer(this.getCustomerDTO().toCustomer());
         order.setSubTotal(this.getSubTotal());
         order.setActive(this.getActive());
         order.setTotalDiscount(this.getTotalDiscount());
         order.setTotalPrice(this.getTotalPrice());
-        if(this.customerDTO != null)
-            order.setCustomer(this.getCustomerDTO().toCustomer());
         return order;
     }
 }

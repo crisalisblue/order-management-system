@@ -35,7 +35,7 @@ public class Order {
     private BigDecimal subTotal;
 
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,optional = false)
     @JoinColumn(name="customer_id",referencedColumnName = "id")
     private Customer customer;
 
@@ -58,8 +58,10 @@ public class Order {
             orderDTO.setTotalDiscount(this.getTotalDiscount());
         if(this.getTotalPrice().intValue() != 0)
             orderDTO.setTotalPrice(this.getTotalPrice());
-        if(this.getCustomer() != null)
-            orderDTO.setCustomerDTO(this.getCustomer().toDTO());
+        if(this.getCustomer().getId() != null && this.getCustomer().getName() != null) {
+            orderDTO.setCustomerID(this.getCustomer().getId());
+            orderDTO.setCustomerName(this.getCustomer().getName());
+        }
         if(this.getSubTotal().intValue() != 0)
             orderDTO.setSubTotal(this.getSubTotal());
         orderDTO.setActive(this.active);

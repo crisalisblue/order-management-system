@@ -22,9 +22,6 @@ public abstract class Asset {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(value = "id")
     private Long id ;
-    @JsonProperty(value = "type")
-    @Column(insertable=false, updatable=false)
-    private String type;
     @JsonProperty(value = "name")
     private String name;
     @JsonProperty(value = "baseAmount")
@@ -47,13 +44,15 @@ public abstract class Asset {
             assetDTO.setName(this.getName());
         if(this.getBaseAmount()!=null && this.getBaseAmount().intValue() != 0)
             assetDTO.setBaseAmount(this.getBaseAmount());
-        if(this.getType()!=null &&!this.getType().isEmpty())
-            assetDTO.setType(this.getType());
         if(this instanceof Service service) {
             assetDTO.setSupportFree(service.getSupportFree());
         }
         if(this.getTaxList() != null && !this.getTaxList().isEmpty())
             assetDTO.setTaxDTOList((this.listTaxToTaxDTO(this.getTaxList())));
+        if(this instanceof  Product)
+            assetDTO.setType("Product");
+        else
+            assetDTO.setType("Service");
         return assetDTO;
     }
     public List<TaxDTO>listTaxToTaxDTO(List<Tax> listAsset)

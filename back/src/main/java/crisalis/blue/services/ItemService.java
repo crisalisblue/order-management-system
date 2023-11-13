@@ -8,6 +8,7 @@ import crisalis.blue.models.dto.ItemDTO;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.ItemRepository;
 import crisalis.blue.repositories.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,16 +19,19 @@ import java.util.stream.Collectors;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final AssetRepository assetRepository;
+    private final OrderRepository orderRepository;
 
     public ItemService(ItemRepository exchangeGoodOrderRepository,
-                       AssetRepository assetRepository)
+                       AssetRepository assetRepository,OrderRepository orderRepository)
     {
         this.itemRepository = exchangeGoodOrderRepository;
         this.assetRepository = assetRepository;
+        this.orderRepository = orderRepository;
     }
     public ItemDTO create(ItemDTO itemDTO)
     {
         Item item = new Item();
+        Order order = null;
         if(checkIsEmpty(itemDTO)) {
             item.setWarrantyYears(itemDTO.getWarrantyYears());
             item.setItemPrice(itemDTO.getItemPrice());
@@ -35,8 +39,9 @@ public class ItemService {
             item.setTotalPrice(itemDTO.getTotalPrice());
             item.setItemQuantity(itemDTO.getItemQuantity());
             item.setDiscountAmount(itemDTO.getDiscountAmount());
-            item.setAsset(itemDTO.getAssetDTO().assetDTOtoAsset());
-            item.setIdOrder(itemDTO.getOrderDTO().toOrder());
+            item.setAsset(assetRepository.findById(itemDTO.getIdAsset()).get());
+            order = orderRepository.save(itemDTO.getOrderDTO().toOrder());
+            item.setIdOrder(order);
             return itemRepository.save(item).toItemDTO();
         }else throw new EmptyElementException("Campos vacios");
     }
@@ -62,8 +67,8 @@ public class ItemService {
             if (itemDTO.getDiscountAmount().intValue() != 0)
                 optionalItem.get().setDiscountAmount(itemDTO.getDiscountAmount());
 
-            if (itemDTO.getAssetDTO() != null) {
-                Optional<Asset> optinalAsset = assetRepository.findById(itemDTO.getAssetDTO().getId());
+            if (itemDTO.getIdAsset() != null) {
+                Optional<Asset> optinalAsset = assetRepository.findById(itemDTO.getIdAsset());
                 if (optinalAsset.isPresent())
                     optionalItem.get().setAsset(optinalAsset.get());
                 else
@@ -95,7 +100,7 @@ public class ItemService {
                         if(item.getItemPrice().intValue() != 0 )
                         {
                             if(item.getDiscountAmount().intValue() != 0){
-                                if(item.getAssetDTO() != null) {
+                                if(item.getIdAsset() != null) {
                                     return item.getTotalPrice().intValue() != 0;
                                 }
                             }

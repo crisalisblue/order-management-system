@@ -8,6 +8,7 @@ import crisalis.blue.models.dto.OrderDTO;
 import crisalis.blue.repositories.*;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,13 +20,16 @@ public class OrderService {
     private final CustomerRepository customerRepository;
     private final ItemRepository itemRepository;
     private final CalculatedTaxRepository calculatedTaxRepository;
+    private final AssetRepository assetRepository;
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
-                        ItemRepository itemRepository,CalculatedTaxRepository calculatedTaxRepository)
+                        ItemRepository itemRepository,
+                        CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository)
     {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
         this.calculatedTaxRepository = calculatedTaxRepository;
+        this.assetRepository = assetRepository;
     }
     public OrderDTO create(OrderDTO orderDTO)
     {
@@ -41,26 +45,27 @@ public class OrderService {
             else throw new EmptyElementException("Datos nulos");
             //Esto lo tengo que modificar
             Optional<Customer> optionalCustomer = Optional.empty();
-            if (orderDTO.getCustomerDTO() != null) {
-                if(orderDTO.getCustomerDTO().getId() != null && orderDTO.getCustomerDTO().getId().intValue() != 0)
-                {
-                    optionalCustomer = customerRepository.findById(orderDTO.getCustomerDTO().getId());
+            if (orderDTO.getCustomerID() != null) {
+                if(orderDTO.getCustomerID() != null && !BigDecimal.ZERO.equals(orderDTO.getCustomerID())){
+                    optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
                     optionalCustomer.ifPresent(order::setCustomer);
                 }
-                else
-                {
-                        Customer customer = orderDTO.getCustomerDTO().toCustomer();
-                        order.setCustomer(customer);
-                }
             }
-            order = orderRepository.save(order);
-            if(orderDTO.getItemDTO() != null && !orderDTO.getItemDTO().isEmpty()) {
+            orderRepository.save(order);
+            if(orderDTO.getItemDTO() != null && !orderDTO.getItemDTO().isEmpty()){
                 order.setItems(orderDTO.getItemDTO().stream().map(ItemDTO::toItem).collect(Collectors.toList()));
-                for (int j = 0; j < order.getItems().size(); j++) {
+                for (int j = 0; j < order.getItems().size(); j++){
+                    Item item = order.getItems().get(j);
+                    if(orderDTO.getItemDTO().get(j).getIdAsset() != null)
+                    {
+                        Asset asset = assetRepository.findById(orderDTO.getItemDTO().get(j).getIdAsset()).get();
+                        item.setAsset(asset);
+                    }
                     order.getItems().get(j).setIdOrder(order);
                     itemRepository.save(order.getItems().get(j));
                 }
             }
+            orderRepository.save(order);
             return order.toOrderDTO();
         }
      throw new RuntimeException();
@@ -86,28 +91,24 @@ public class OrderService {
     {
         return orderRepository.findAll().stream().map(Order::toOrderDTO).collect(Collectors.toList());
     }
-    public OrderDTO update(  OrderDTO orderDTO)
-    {
+    public OrderDTO update(  OrderDTO orderDTO) {
         Optional<Order> aux = orderRepository.findById(orderDTO.getIdOrder());
-        if(aux.isPresent()) {
+        if (aux.isPresent()) {
             if (orderDTO.getDateOrder() != null)
                 aux.get().setDatesOrder(orderDTO.getDateOrder());
-            if (orderDTO.getTotalPrice()!=null && orderDTO.getTotalPrice().intValue() != 0)
+            if (orderDTO.getTotalPrice() != null && orderDTO.getTotalPrice().intValue() != 0)
                 aux.get().setTotalPrice(orderDTO.getTotalPrice());
-            if(orderDTO.getSubTotal()!=null && orderDTO.getSubTotal().intValue() != 0)
+            if (orderDTO.getSubTotal() != null && orderDTO.getSubTotal().intValue() != 0)
                 aux.get().setSubTotal(orderDTO.getSubTotal());
-            if(orderDTO.getTotalDiscount()!=null && orderDTO.getTotalDiscount().intValue() != 0)
+            if (orderDTO.getTotalDiscount() != null && orderDTO.getTotalDiscount().intValue() != 0)
                 aux.get().setTotalDiscount(orderDTO.getTotalDiscount());
-            if (orderDTO.getCustomerDTO() != null) {
-                Optional<Customer> optionalCustomer = customerRepository.findById(orderDTO.getCustomerDTO().getId());
+            if (orderDTO.getCustomerID() != null) {
+                Optional<Customer> optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
                 if (optionalCustomer.isPresent()) {
                     aux.get().setCustomer(optionalCustomer.get());
-                } else {
-                    Customer customer = orderDTO.getCustomerDTO().toCustomer();
-                    aux.get().setCustomer(customer);
                 }
+                return orderRepository.save(aux.get()).toOrderDTO();
             }
-            return orderRepository.save(aux.get()).toOrderDTO();
         }
         throw new EmptyElementException("No se encontro el registro con ese id ");
     }

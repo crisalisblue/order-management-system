@@ -26,6 +26,9 @@ public class CalculatedTax {
     @JoinColumn(name = "id_tax")
     private List<Tax> idTax;
 
+    @JoinColumn(name="id_Asset")
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Tax tax;
 
     @JsonProperty(value = "idOrder")
     @OneToMany(cascade =CascadeType.ALL )

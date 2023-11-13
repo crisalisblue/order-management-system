@@ -4,9 +4,7 @@ import crisalis.blue.models.dto.CustomerDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -71,7 +69,6 @@ public class Customer {
                         .type(this.type)
                         .build();
     }
-
 
 
     //Relaciones con Entidades que aun no existen.
