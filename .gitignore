@@ -14,7 +14,7 @@ target/
 .sts4-cache
 
 # IntelliJ IDEA
-back/src/main/resources/application.properties
+# back/src/main/resources/application.properties
 .idea
 *.iws
 *.iml
