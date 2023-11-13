@@ -1,24 +1,23 @@
 package crisalis.blue.models;
-import crisalis.blue.models.dto.ServiceDTO;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity(name = "service")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Service extends ExchangeGood {
+@DiscriminatorValue("Service")
+public class Service extends Asset {
+    @JsonProperty("supportFree")
+    @Column(name = "supportFree")
+    private BigDecimal supportFree;
 
-    @Column(name = "support_charge")
-    private double support_charge;
-    @Column(name = "asset")
-    private boolean asset;
-    public ServiceDTO servicieToDto()
-    {
-        return new ServiceDTO(this.support_charge,this.asset);
-    }
 
 
 }

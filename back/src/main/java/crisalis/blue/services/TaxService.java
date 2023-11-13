@@ -4,13 +4,16 @@ package crisalis.blue.services;
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
+import crisalis.blue.models.CalculatedTax;
 import crisalis.blue.models.Tax;
+import crisalis.blue.models.dto.CalculatedTaxDTO;
 import crisalis.blue.models.dto.TaxDTO;
+import crisalis.blue.repositories.CalculatedTaxRepository;
 import crisalis.blue.repositories.TaxRepository;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.hibernate5.HibernateJdbcException;
+
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,32 +22,30 @@ import java.util.stream.Collectors;
 public class TaxService {
 
     private final TaxRepository taxRepository;
+    private final CalculatedTaxRepository calculatedTaxRepository;
 
-    public TaxService(TaxRepository taxRepository){
+    public TaxService(TaxRepository taxRepository,CalculatedTaxRepository calculatedTaxRepository){
         this.taxRepository = taxRepository;
+        this.calculatedTaxRepository = calculatedTaxRepository;
     }
 
-    public TaxDTO createTax(Tax tax) throws Exception{
-        try {
-            this.taxRepository.save(tax);
-            return tax.toDTO();
-        }catch (DataIntegrityViolationException | HibernateJdbcException e){
-            throw new NotCreatedException(e.getMessage());
-        }
+    public TaxDTO createTax(TaxDTO tax){
+      if(tax != null) {
+          Tax taxAux = tax.toTax();
+          return  this.taxRepository.save(taxAux).toDTO();
+      }
+      else throw new EmptyElementException("TaxDTO vacio ");
     }
+    public TaxDTO updateTax(TaxDTO updatedTax) throws Exception{
 
-    public TaxDTO updateTax(Tax updatedTax) throws Exception{
-
-            Optional<Tax> taxOptional = taxRepository.findById(updatedTax.getId().intValue());
-            if (taxOptional.isPresent()){
+            Optional<Tax> taxOptional = taxRepository.findById(updatedTax.getId());
+            if (taxOptional.isPresent()) {
                 //Guardamos en tax, los datos del impuesto que esta en la base de datos.
                 Tax tax = taxOptional.get();
-
                 //En tax Asignamos los nuevos valores que reemplazaremos en la db
                 tax.setName(updatedTax.getName());
                 tax.setPercentage(updatedTax.getPercentage());
-                tax.setFixedAmount(updatedTax.getFixedAmount());
-
+                tax.setBaseAmount(updatedTax.getBaseAmount());
                 taxRepository.save(tax);
 
                 return tax.toDTO();
@@ -54,7 +55,7 @@ public class TaxService {
 
     }
 
-    public String deleteTax(int id){
+    public String deleteTax(Long id){
 
         if (taxRepository.existsById(id)){
             taxRepository.deleteById(id);
@@ -76,7 +77,7 @@ public class TaxService {
         }
     }
 
-    public TaxDTO getTaxById(int id) {
+    public TaxDTO getTaxById(Long id) {
         return this.taxRepository.findById(id)
                 .orElseThrow(
                         ()-> new ResourceNotFoundException("Impuesto no encontrado")
