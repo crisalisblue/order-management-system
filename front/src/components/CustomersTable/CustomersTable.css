@@ -1,13 +1,13 @@
-#usuarios {
+#clientes {
   margin: 1%;
   display: flex;
   flex-direction: column;
 }
 
-#root:has(#usuarios) {
-}
+/* #root:has(#impuestos) {
+} */
 
-#usuarios > section > table {
+#impuestos > section > table {
   text-align: center;
 }
 

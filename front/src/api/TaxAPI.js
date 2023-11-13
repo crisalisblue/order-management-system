@@ -19,7 +19,6 @@ export const getSingleTax = async (taxId) => {
 };
 
 export const updateSingleTax = async (data) => {
-  console.dir(data)
   try {
     const response = await axios.put(`${apiUrl}/update`, data);
     return response.status;

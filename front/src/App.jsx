@@ -15,7 +15,6 @@ import {
   UserCreate,
   UserUpdate,
   CustomerCreate,
-  CustomersTable,
   CustomerUpdate,
   Pedidos,
   Servicios,
@@ -27,6 +26,7 @@ import {
 } from "./pages";
 import { UsersTable } from "./components/UsersTable/UsersTable";
 import { TaxesTable } from "./components/TaxTable/TaxesTable";
+import { CustomersTable } from "./components/CustomersTable/CustomersTable";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 
