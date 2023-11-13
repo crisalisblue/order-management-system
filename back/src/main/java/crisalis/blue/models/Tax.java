@@ -6,40 +6,32 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
+import java.util.List;
+
 
 @Data
 @Entity
-@Table(name = "tax")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Tax {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-
-    @Column(
-            name = "name",
-            nullable = false)
     private String name;
-
-    @Column(name = "percentage")
-    private BigInteger percentage;
-
-    //Montofijo
-    @Column(name = "fixedAmount")
-    private BigInteger fixedAmount;
-
+    private BigDecimal percentage;
+    private BigDecimal baseAmount;
     public TaxDTO toDTO(){
-        return
-                TaxDTO
-                        .builder()
-                        .id(this.id)
-                        .name(this.name)
-                        .percentage(this.percentage)
-                        .fixedAmount(this.fixedAmount)
-                        .build();
+        TaxDTO taxDTO = new TaxDTO();
+        if(this.getId() != 0)
+            taxDTO.setId(this.getId());
+        if(this.getName()!= null && !this.getName().isEmpty())
+            taxDTO.setName(this.getName());
+        if(this.getBaseAmount()!=null && this.getBaseAmount().intValue()!=0)
+            taxDTO.setBaseAmount(this.getBaseAmount());
+        if(this.getPercentage()!=null && this.getPercentage().intValue() !=0)
+            taxDTO.setPercentage(this.getPercentage());
+        return taxDTO;
     }
 
     //Falta agregar relacion con otras tablas...
