@@ -47,6 +47,7 @@ public class CustomerService {
             }
 
         } catch (DataIntegrityViolationException | HibernateJdbcException e) {
+
             throw new NotCreatedException(e.getMessage());
         }
 
@@ -54,12 +55,12 @@ public class CustomerService {
 
     public CustomerDTO updateCustomer(CustomerDTO updatedCustomer) throws Exception {
 
-        Optional<Customer> customerOptional = customerRepository.findById(updatedCustomer.getId().intValue());
+        Optional<Customer> customerOptional = customerRepository.findById(updatedCustomer.getId());
         Customer returnCustomer = null;
 
         if (customerOptional.isPresent()) {
             //Vemos si el type es consistente con lo que necesitamos
-            if (!updatedCustomer.getType().equals("PER") && !updatedCustomer.getType().equals("PER")){
+            if (!updatedCustomer.getType().equals("PER") && !updatedCustomer.getType().equals("BUS")){
                 throw new NotCreatedException("Error en el type recibido");
             }
             //Determinamos si lo que se esta updateando es una Persona o Empresa e instanciamos un objeto segun corresponda
@@ -86,7 +87,7 @@ public class CustomerService {
                 .collect(Collectors.toList());
     }
 
-    public String deleteCustomer(int id) {
+    public String deleteCustomer(Long id) {
 
         if (!customerRepository.existsById(id)) {
             throw new ResourceNotFoundException("No existe un usuario con id " + id + ".");
@@ -95,7 +96,7 @@ public class CustomerService {
         return "Cliente " + id + " Borrado exitosamente";
     }
 
-    public CustomerDTO getCustomerById(int id) {
+    public CustomerDTO getCustomerById(Long id) {
 
         return this.customerRepository.findById(id)
                 .orElseThrow(

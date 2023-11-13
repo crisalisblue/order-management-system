@@ -40,13 +40,16 @@ public class CustomerController {
         return this.customerService.getListOfAllCustomerInDB();
     }
 
-    @DeleteMapping(value = "")
-    public String deleteCustomer(@RequestParam int id) {
+
+    @DeleteMapping(value = "delete")
+    public String deleteCustomer(@RequestParam Long id ) {
         return customerService.deleteCustomer(id);
     }
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerDTO getCustomerById(@RequestParam int id) {
+
+    @GetMapping(value = "read", produces = MediaType.APPLICATION_JSON_VALUE)
+    //Si no funciona cambiar int por Integer y fijarse.
+    public CustomerDTO getCustomerById(@RequestParam Long id) {
         return this.customerService.getCustomerById(id);
     }
 }

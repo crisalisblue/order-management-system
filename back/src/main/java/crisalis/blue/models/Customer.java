@@ -7,9 +7,7 @@ import crisalis.blue.models.dto.CustomerDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -41,12 +39,16 @@ public abstract class Customer {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "address", nullable = false)
     private String address;
 
 
     protected Customer (CustomerDTO dto){
         setId(dto.getId());
+        setName(dto.getName());
         setAddress(dto.getAddress());
     }
 
