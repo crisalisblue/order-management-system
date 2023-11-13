@@ -1,62 +1,62 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { updateSingleUser, getSingleUser } from "../../api/UserAPI";
+import { updateSingleTax, getSingleTax } from "../../api/TaxAPI";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-export const UserUpdate = () => {
+export const TaxUpdate = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [user, setUser] = useState(null);
+  const [tax, setTax] = useState(null);
   const [initialValues, setInitialValues] = useState({
     name: "",
-    username: "",
-    password: "",
+    percentage: "",
+    fixedAmount: "",
   });
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchTaxData = async () => {
       try {
-        const userData = await getSingleUser(id);
-        setUser(userData);
+        const taxData = await getSingleTax(id);
+        setTax(taxData);
         setInitialValues({
-          name: userData.name,
-          username: userData.username,
-          password: "",
+          name: taxData.name,
+          percentage: taxData.percentage,
+          fixedAmount: taxData.fixedAmount,
         });
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching tax data:", error);
       }
     };
 
-    fetchUserData();
+    fetchTaxData();
   }, [id]);
 
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
     data.id = id; // Agrega el ID al objeto de datos antes de enviarlo
-    await updateSingleUser(data);
+    await updateSingleTax(data);
     showSuccessAlert();
-    navigate("/usuarios");
+    navigate("/impuestos");
   };
 
   const showSuccessAlert = () => {
     Swal.fire({
       icon: "success",
-      title: "Usuario actualizado",
+      title: "Impuesto actualizado",
       showConfirmButton: false,
       timer: 1500,
     });
   };
 
-  if (!user) {
+  if (!tax) {
     return <div>Cargando...</div>;
   }
 
   return (
-    <section id="userForm" className="bg-base-200 prose min-w-full">
+    <section id="taxForm" className="bg-base-200 prose min-w-full">
       <form
         className="gap-4 p-4 flex flex-col"
         onSubmit={handleSubmit(onSubmit)}
@@ -70,19 +70,19 @@ export const UserUpdate = () => {
           />
         </div>
         <div>
-          <label htmlFor="username">Usuario:</label>
+          <label htmlFor="percentage">Porcentaje:</label>
           <input
-            defaultValue={initialValues.username}
+            defaultValue={initialValues.percentage}
             type="text"
-            {...register("username")}
+            {...register("percentage")}
           />
         </div>
         <div>
-          <label htmlFor="password">Contraseña:</label>
+          <label htmlFor="fixedAmount">Monto fijo:</label>
           <input
-            defaultValue={initialValues.password}
-            type="password"
-            {...register("password")}
+            defaultValue={initialValues.fixedAmount}
+            type="text"
+            {...register("fixedAmount")}
           />
         </div>
         <input type="hidden" defaultValue={id} {...register("id")} />
@@ -90,25 +90,6 @@ export const UserUpdate = () => {
           Modificar
         </button>
       </form>
-      <article>
-        <h1>Rol</h1>
-        <table>
-          <thead>
-            <th>Rol</th>
-            <th>Seleccionado</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Administrador</td>
-              <input type="checkbox" name="" id="" />
-            </tr>
-            <tr>
-              <td>Usuario</td>
-              <input type="checkbox" name="" id="" />
-            </tr>
-          </tbody>
-        </table>
-      </article>
     </section>
   );
 };

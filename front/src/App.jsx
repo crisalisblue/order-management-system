@@ -13,15 +13,20 @@ import {
   Clientes,
   Layout,
   UserCreate,
-  UsersTable,
   UserUpdate,
+  CustomerCreate,
+  CustomerUpdate,
   Pedidos,
   Servicios,
-  Impuestos,
+  Taxes,
+  TaxCreate,
+  TaxUpdate,
   Productos,
   NotFound,
 } from "./pages";
-
+import { UsersTable } from "./components/UsersTable/UsersTable";
+import { TaxesTable } from "./components/TaxTable/TaxesTable";
+import { CustomersTable } from "./components/CustomersTable/CustomersTable";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 import {ProdcuctCreate} from "./pages/Productos/ProductosCreate.jsx";
@@ -33,6 +38,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route Component={LogedinRoute}>
           <Route path="/" Component={Layout}>
             <Route path="home" Component={Home} />
@@ -41,7 +47,11 @@ export default function App() {
               <Route path=":id/editar" Component={UserUpdate} />
               <Route path="" Component={UsersTable} />
             </Route>
-            <Route path="clientes" Component={Clientes} />
+            <Route path="clientes" Component={Clientes}>
+              <Route path="nuevo" Component={CustomerCreate} />
+              <Route path=":id/editar" Component={CustomerUpdate} />
+              <Route path="" Component={CustomersTable} />
+            </Route>
             <Route path="pedidos" Component={Pedidos} />
             <Route path="productos" Component={Productos}>
                 <Route path="nuevo" Component={ProdcuctCreate} />
@@ -49,7 +59,11 @@ export default function App() {
                 <Route path="" Component={ProductosTable} />
             </Route>
             <Route path="servicios" Component={Servicios} />
-            <Route path="impuestos" Component={Impuestos} />
+            <Route path="impuestos" Component={Taxes}>
+              <Route path="nuevo" Component={TaxCreate} />
+              <Route path=":id/editar" Component={TaxUpdate} />
+              <Route path="" Component={TaxesTable} />
+            </Route>
           </Route>
         </Route>
         <Route Component={NotLogedinRoute}>
