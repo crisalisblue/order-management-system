@@ -76,7 +76,7 @@ public class AssetService {
             {
                for(int j=0; j<listTax.size(); j++)
                {
-                   listR.add(taxRepository.findById(actual).get());
+                   listR.add(taxRepository.findById(listTax.get(j).getId()).get());
                }
             }
         }
