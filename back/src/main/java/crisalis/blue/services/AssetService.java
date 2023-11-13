@@ -112,7 +112,7 @@ public class AssetService {
             if (assetDTO.getBaseAmount().intValue() != 0)
                 aux.get().setBaseAmount(assetDTO.getBaseAmount());
             if(assetDTO.getTaxDTOList() != null)
-                buscarTax(assetDTO.getTaxDTOList())
+                buscarTax(assetDTO.getTaxDTOList());
             if(assetDTO.getSupportFree() != null && assetDTO.getSupportFree().intValue() != 0) {
                 service = (crisalis.blue.models.Service) aux.get();
                 service.setSupportFree(assetDTO.getSupportFree());
