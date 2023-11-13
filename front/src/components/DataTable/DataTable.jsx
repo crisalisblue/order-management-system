@@ -51,7 +51,7 @@ export const DataTable = ({
       }
     });
   };
-
+console.dir(keysToShow)
   return (
     <section className="overflow-y-auto overflow-x-hidden">
       <table className={"w-5/6 m-auto text-black"}>
@@ -95,7 +95,7 @@ export const DataTable = ({
                   index === data.length - 1 ? "rounded-br-md" : ""
                 } p-1`}
               >
-                <Link to={`${editPath}/${item.id}/editar`}></Link>
+                <Link to={`${editPath}/${item.id}/editar`}>🛠</Link>
                 <DeleteModal
                   itemID={item.id}
                   onDelete={() => handleDelete(item.id)}

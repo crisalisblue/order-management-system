@@ -21,18 +21,17 @@ import {
   Taxes,
   TaxCreate,
   TaxUpdate,
-  Productos,
+  Products,
   NotFound,
+  ProductsCreate,
+  ProductsUpdate,
 } from "./pages";
 import { UsersTable } from "./components/UsersTable/UsersTable";
 import { TaxesTable } from "./components/TaxTable/TaxesTable";
 import { CustomersTable } from "./components/CustomersTable/CustomersTable";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
-import {ProdcuctCreate} from "./pages/Productos/ProductosCreate.jsx";
-import {ProductosUpdate} from "./pages/Productos/ProductosUpdate.jsx";
-import {ProductosTable} from "./pages/Productos/ProductosTable.jsx";
-
+import { ProductsTable } from "./components/ProductsTable/ProductsTable.jsx";
 
 export default function App() {
   return (
@@ -53,10 +52,10 @@ export default function App() {
               <Route path="" Component={CustomersTable} />
             </Route>
             <Route path="pedidos" Component={Pedidos} />
-            <Route path="productos" Component={Productos}>
-                <Route path="nuevo" Component={ProdcuctCreate} />
-                <Route path=":id/editar" Component={ProductosUpdate} />
-                <Route path="" Component={ProductosTable} />
+            <Route path="productos" Component={Products}>
+              <Route path="nuevo" Component={ProductsCreate} />
+              <Route path=":id/editar" Component={ProductsUpdate} />
+              <Route path="" Component={ProductsTable} />
             </Route>
             <Route path="servicios" Component={Servicios} />
             <Route path="impuestos" Component={Taxes}>
