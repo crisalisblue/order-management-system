@@ -51,7 +51,8 @@ export const DataTable = ({
       }
     });
   };
-console.dir(keysToShow)
+  console.dir(data);
+  console.dir(keysToShow);
   return (
     <section className="overflow-y-auto overflow-x-hidden">
       <table className={"w-5/6 m-auto text-black"}>
