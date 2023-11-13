@@ -1,10 +1,12 @@
 package crisalis.blue.models;
 
 import crisalis.blue.models.dto.CustomerDTO;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.*;
 
 @Entity
+@DiscriminatorValue("PER")
 @Getter
 @Setter
 @ToString

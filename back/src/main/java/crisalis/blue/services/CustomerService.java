@@ -56,48 +56,36 @@ public class CustomerService {
         Optional<Customer> customerOptional = customerRepository.findById(updatedCustomer.getId().intValue());
 
         if (customerOptional.isPresent()) {
-            // Guardamos en customer, los datos del cliente que esta en la base de datos.
-            Customer customer = customerOptional.get();
 
             //Determinamos si lo que se esta updateando es una Persona o Empresa e instanciamos un objeto segun corresponda
-            if (customer.getType() == "PER"){
-                Customer customerPerson = new Person(updatedCustomer);
-
-                //Para poder acceder a los atributos de Persona, hay que hacer una referencia temporal.
-                ((Person) customerPerson).setName(updatedCustomer.getName());
-                ((Person) customerPerson).setLastName(updatedCustomer.getLastName());
-                ((Person) customerPerson).setDni(updatedCustomer.getDni());
-                /*
-                ((Person) customerPerson).setName(((Person) updatedPerson).getName());
-                ((Person) customerPerson).setLastName(((Person) updatedPerson).getLastName());
-                ((Person) customerPerson).setDni(((Person) updatedPerson).getDni());
-                */
+            if (updatedCustomer.getType().equals("PER")){
+                Person customerPerson = new Person(updatedCustomer);
 
                 customerRepository.save(customerPerson);
-                return ((Person) customerPerson).toDTO();
+                return customerPerson.toDTO();
 
-            } else if (customer.getType() == "BUS"){
-                Customer customerBusiness = new Business(updatedCustomer);
+            } else if (updatedCustomer.getType().equals("BUS")){
+                Business customerBusiness = new Business(updatedCustomer);
 
-                ((Business) customerBusiness).setBusinessName(updatedCustomer.getBusinessName());
-                ((Business) customerBusiness).setActivityStartDate(updatedCustomer.getActivityStartDate());
-                ((Business) customerBusiness).setCuit(updatedCustomer.getCuit());
+                customerBusiness.setBusinessName(updatedCustomer.getBusinessName());
+                customerBusiness.setActivityStartDate(updatedCustomer.getActivityStartDate());
+                customerBusiness.setCuit(updatedCustomer.getCuit());
 
                 customerRepository.save(customerBusiness);
-                return ((Business) customerBusiness).toDTO();
+                return customerBusiness.toDTO();
             }
         }
         throw new NotCreatedException("Error updating Customer");
     }
 
-    /*public List<CustomerDTO> getListOfAllCustomerInDB() {
+    public List<CustomerDTO> getListOfAllCustomerInDB() {
 
         return this.customerRepository
                 .findAll()
                 .stream()
                 .map(Customer::toDTO)
                 .collect(Collectors.toList());
-    }*/
+    }
 
     public String deleteCustomer(int id) {
         if (customerRepository.existsById(id)) {
@@ -108,12 +96,12 @@ public class CustomerService {
 
     }
 
-    /*public CustomerDTO getCustomerById(int id) {
+    public CustomerDTO getCustomerById(int id) {
 
         return this.customerRepository.findById(id)
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Customer not Found"))
                 .toDTO();
-    }*/
+    }
 
 }

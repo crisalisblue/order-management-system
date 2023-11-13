@@ -44,16 +44,6 @@ public abstract class Customer {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(insertable = false,
-            updatable = false)
-    private String type;
-
-
-    /*public Customer(CustomerDTO customer) {
-        this.id = customer.getId();
-        this.address = customer.getAddress();
-        this.type = customer.getType();
-    }*/
 
     protected Customer (CustomerDTO dto){
         setId(dto.getId());
@@ -72,23 +62,29 @@ public abstract class Customer {
     }
 
 
-    // Relaciones con Entidades que aun no existen.
+    // Relaciones
 
-    /*
-     * 1 idcliente a N suscripciones, 1 suscripcion a 1 cliente
-     * 
-     * @OneToMany(mappedBy = "idCustomer")
-     * private List<Suscription> suscriptions;
-     */
+    //Relacion 1 a N con Suscriptions
 
-    /*
-     * 1 id cliente a N Pedidos, 1 Pedido a 1 Cliente
-     * 
-     * @OneToMany(mappedBy = "idClient")
-     * private List<Order> orders;
-     */
+    /*@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "idSuscription")
+    private List<Suscription> suscriptions;*/
 
-    // @ManyToMany
-    // private List<Product> productList = new ArrayList<>();
+    //Relacion 1 a N con Order
+
+     /*@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "idOrder")
+     private List<Order> orders;*/
+
+    //Relacion 1 a N con Empresa
+    @OneToMany
+    @JoinTable(
+            name = "Business_Customer",
+            joinColumns = {
+                    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "business_id", referencedColumnName = "id")
+            }
+    )
+    private List<Business> businesses = new ArrayList<Business>();
 
 }

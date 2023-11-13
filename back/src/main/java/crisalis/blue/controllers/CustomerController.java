@@ -35,19 +35,18 @@ public class CustomerController {
         return customerService.updateCustomer(customer);
     }
 
-    /*@GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CustomerDTO> getAllCustomers() {
         return this.customerService.getListOfAllCustomerInDB();
-    }*/
+    }
 
     @DeleteMapping(value = "")
     public String deleteCustomer(@RequestParam int id) {
         return customerService.deleteCustomer(id);
     }
 
-    /*@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    // Si no funciona cambiar int por Integer y fijarse.
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDTO getCustomerById(@RequestParam int id) {
         return this.customerService.getCustomerById(id);
-    }*/
+    }
 }
