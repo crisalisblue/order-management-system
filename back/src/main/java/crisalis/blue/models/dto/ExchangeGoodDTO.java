@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class ExchangeGoodDTO {
+    @JsonProperty("id")
+    private Long id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("mountBase")
     private double mountBase;
-
-
 
 }

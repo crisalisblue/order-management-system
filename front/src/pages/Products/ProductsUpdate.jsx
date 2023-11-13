@@ -17,7 +17,8 @@ export const ProductsUpdate = () => {
     const fetchProductData = async () => {
       try {
         const productData = await getSingleProduct(productID);
-
+        console.dir(productData)
+        console.dir(productID)
         // Setear los valores iniciales del formulario con los datos obtenidos
         Object.keys(productData).forEach((key) => {
           setValue(key, productData[key]);
