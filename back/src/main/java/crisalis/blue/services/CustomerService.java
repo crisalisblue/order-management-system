@@ -16,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateJdbcException;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,28 +55,26 @@ public class CustomerService {
     public CustomerDTO updateCustomer(CustomerDTO updatedCustomer) throws Exception {
 
         Optional<Customer> customerOptional = customerRepository.findById(updatedCustomer.getId().intValue());
+        Customer returnCustomer = null;
 
         if (customerOptional.isPresent()) {
-
+            //Vemos si el type es consistente con lo que necesitamos
+            if (!updatedCustomer.getType().equals("PER") && !updatedCustomer.getType().equals("PER")){
+                throw new NotCreatedException("Error en el type recibido");
+            }
             //Determinamos si lo que se esta updateando es una Persona o Empresa e instanciamos un objeto segun corresponda
             if (updatedCustomer.getType().equals("PER")){
                 Person customerPerson = new Person(updatedCustomer);
-
+                returnCustomer = customerPerson;
                 customerRepository.save(customerPerson);
-                return customerPerson.toDTO();
-
+                
             } else if (updatedCustomer.getType().equals("BUS")){
                 Business customerBusiness = new Business(updatedCustomer);
-
-                customerBusiness.setBusinessName(updatedCustomer.getBusinessName());
-                customerBusiness.setActivityStartDate(updatedCustomer.getActivityStartDate());
-                customerBusiness.setCuit(updatedCustomer.getCuit());
-
+                returnCustomer = customerBusiness;
                 customerRepository.save(customerBusiness);
-                return customerBusiness.toDTO();
             }
         }
-        throw new NotCreatedException("Error updating Customer");
+        return returnCustomer.toDTO();
     }
 
     public List<CustomerDTO> getListOfAllCustomerInDB() {
