@@ -17,9 +17,9 @@ public class CalculatedTaxDTO {
     @JsonProperty(value = "id")
     private Long id;
     @JsonProperty(value = "idTax")
-    private List<Tax> idTax;
+    private Tax idTax;
     @JsonProperty(value = "idOrder")
-    private List<Order> idOrder;
+    private Order idOrder;
     @JsonProperty(value = "taxesAmount")
     private BigDecimal taxesAmount;
 }

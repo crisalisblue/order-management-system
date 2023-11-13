@@ -8,7 +8,6 @@ import crisalis.blue.models.dto.ItemDTO;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.ItemRepository;
 import crisalis.blue.repositories.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,7 +40,7 @@ public class ItemService {
             item.setDiscountAmount(itemDTO.getDiscountAmount());
             item.setAsset(assetRepository.findById(itemDTO.getIdAsset()).get());
             order = orderRepository.save(itemDTO.getOrderDTO().toOrder());
-            item.setIdOrder(order);
+            item.setOrder(order);
             return itemRepository.save(item).toItemDTO();
         }else throw new EmptyElementException("Campos vacios");
     }

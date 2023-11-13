@@ -40,10 +40,10 @@ public class Order {
     private Customer customer;
 
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "idOrder")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "order")
     private List<Item> items;
-
-
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "order")
+    private List<CalculatedTax> calculatedTaxes;
 
 
 

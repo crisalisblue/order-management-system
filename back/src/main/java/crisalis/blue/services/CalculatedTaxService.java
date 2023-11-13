@@ -27,10 +27,10 @@ public class CalculatedTaxService {
             if(calculatedTaxDTO.getId() != null && calculatedTaxDTO.getId().intValue() != 0)
                 calculatedTax.setId(calculatedTaxDTO.getId());
             if(calculatedTaxDTO.getIdTax() != null)
-                calculatedTax.setIdTax(calculatedTaxDTO.getIdTax());
+                calculatedTax.setTax(calculatedTaxDTO.);
             if(calculatedTaxDTO.getIdOrder() != null)
-                calculatedTax.setIdOrder(calculatedTaxDTO.getIdOrder());
-            return calculatedTaxRepository.save(calculatedTax).calculatedTaxtoDTO();
+                calculatedTax.setOrder(calculatedTaxDTO.getIdOrder());
+            return calculatedTaxRepository.save(calculatedTax);
         }
         else
             throw new EmptyElementException("No se entregaron datos");

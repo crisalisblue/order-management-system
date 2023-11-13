@@ -2,7 +2,6 @@ package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.*;
-import crisalis.blue.models.dto.CalculatedTaxDTO;
 import crisalis.blue.models.dto.ItemDTO;
 import crisalis.blue.models.dto.OrderDTO;
 import crisalis.blue.repositories.*;
@@ -61,7 +60,7 @@ public class OrderService {
                         Asset asset = assetRepository.findById(orderDTO.getItemDTO().get(j).getIdAsset()).get();
                         item.setAsset(asset);
                     }
-                    order.getItems().get(j).setIdOrder(order);
+                    order.getItems().get(j).setOrder(order);
                     itemRepository.save(order.getItems().get(j));
                 }
             }

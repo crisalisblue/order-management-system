@@ -22,22 +22,15 @@ public class CalculatedTax {
     private Long id;
 
 
-    @OneToMany
-    @JoinColumn(name = "id_tax")
-    private List<Tax> idTax;
-
     @JoinColumn(name="id_Asset")
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Tax tax;
-
-    @JsonProperty(value = "idOrder")
-    @OneToMany(cascade =CascadeType.ALL )
-    private List<Order> idOrder;
-
-
+    @JoinColumn(name ="id_Order")
+    @ManyToOne
+    private Order order;
     private BigDecimal taxesAmount;
 
-    public CalculatedTaxDTO calculatedTaxtoDTO()
+    /*public CalculatedTaxDTO calculatedTaxtoDTO()
     {
         CalculatedTaxDTO calculatedTaxDTO = new CalculatedTaxDTO();
         if(this.getId() != 0)
@@ -49,5 +42,5 @@ public class CalculatedTax {
         if(this.getTaxesAmount()!=null && this.getTaxesAmount().intValue() != 0)
             calculatedTaxDTO.setTaxesAmount(this.getTaxesAmount());
         return calculatedTaxDTO;
-    }
+    }*/
 }

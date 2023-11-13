@@ -1,5 +1,6 @@
 package crisalis.blue.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import crisalis.blue.models.dto.ItemDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,8 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name="id_order")
-    private Order idOrder;
+    @JsonProperty(value = "idOrder")
+    private Order order;
 
     // monto Item
     private BigDecimal itemPrice;
