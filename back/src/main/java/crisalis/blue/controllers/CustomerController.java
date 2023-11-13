@@ -13,14 +13,12 @@ import java.util.List;
 @RequestMapping("customer")
 public class CustomerController {
 
-
     private final CustomerService customerService;
 
     @Autowired
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
-
 
     @PostMapping(value = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
     public CustomerDTO createCustomer(@RequestBody Customer customer) throws Exception {
@@ -46,6 +44,7 @@ public class CustomerController {
 
     @GetMapping(value = "read", produces = MediaType.APPLICATION_JSON_VALUE)
     //Si no funciona cambiar int por Integer y fijarse.
+
     public CustomerDTO getCustomerById(@RequestParam int id) {
         return this.customerService.getCustomerById(id);
     }

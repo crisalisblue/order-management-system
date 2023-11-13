@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Data
 @AllArgsConstructor
 @Builder
@@ -41,4 +42,5 @@ public class TaxDTO {
         tax.setBaseAmount(this.getBaseAmount());
         return tax;
     }
+
 }

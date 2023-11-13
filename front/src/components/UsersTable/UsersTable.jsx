@@ -1,4 +1,4 @@
-import { DataTable } from "../../components/DataTable/DataTable";
+import { DataTable } from "../DataTable/DataTable";
 import { getAllUsers } from "../../api/UserAPI";
 import { useDataFetching } from "../../api/API_Utils";
 import "./UsersTable.css";

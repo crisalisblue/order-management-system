@@ -18,7 +18,8 @@ import java.util.Map;
 public class JwtService {
 
     public static final String SECRET_KEY = "SuperSecretKey123456asdbvdgrg12345789023454485706706";
-    public static JwtDTO getToken(UserDTO user){
+
+    public static JwtDTO getToken(UserDTO user) {
         return getToken(new HashMap<>(), user);
     }
 
@@ -34,8 +35,9 @@ public class JwtService {
         JwtDTO jwtDTO = new JwtDTO(aux);
         return jwtDTO;
     }
+
     public static Key getKey() {
-        byte[] keyBytes= Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

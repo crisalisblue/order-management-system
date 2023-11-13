@@ -1,9 +1,9 @@
-.tables-container{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin:  20px auto;
-    width: 90%;
-    height: 90%;
-    padding: 20px;
+.tables-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px auto;
+  width: 90%;
+  height: 90%;
+  padding: 20px;
 }
