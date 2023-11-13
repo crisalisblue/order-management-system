@@ -1,7 +1,6 @@
 package crisalis.blue.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import crisalis.blue.models.CalculatedTax;
 import crisalis.blue.models.Tax;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +9,6 @@ import lombok.NoArgsConstructor;
 
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor

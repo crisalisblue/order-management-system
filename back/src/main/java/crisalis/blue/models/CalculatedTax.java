@@ -1,15 +1,13 @@
 // calculatedTaxed
 package crisalis.blue.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import crisalis.blue.models.dto.CalculatedTaxDTO;
+import crisalis.blue.exceptions.custom.EmptyElementException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
 @Data
@@ -30,17 +28,31 @@ public class CalculatedTax {
     private Order order;
     private BigDecimal taxesAmount;
 
-    /*public CalculatedTaxDTO calculatedTaxtoDTO()
+    public crisalis.blue.models.dto.CalculatedTaxDTO calculatedTaxToDTO()
     {
-        CalculatedTaxDTO calculatedTaxDTO = new CalculatedTaxDTO();
-        if(this.getId() != 0)
-            calculatedTaxDTO.setId(this.getId());
-        if(this.getIdTax() != null)
-            calculatedTaxDTO.setIdTax(this.getIdTax());
-        if(this.getIdOrder() != null)
-            calculatedTaxDTO.setIdOrder(this.getIdOrder());
-        if(this.getTaxesAmount()!=null && this.getTaxesAmount().intValue() != 0)
+        if(checkCalculatedTax()) {
+            crisalis.blue.models.dto.CalculatedTaxDTO calculatedTaxDTO = new crisalis.blue.models.dto.CalculatedTaxDTO();
+            calculatedTaxDTO.setCalculatedTaxID(this.getId());
+            calculatedTaxDTO.setTaxID(this.getTax().getId());
+            calculatedTaxDTO.setTaxName(this.getTax().getName());
             calculatedTaxDTO.setTaxesAmount(this.getTaxesAmount());
-        return calculatedTaxDTO;
-    }*/
+            return calculatedTaxDTO;
+        }
+        else throw new EmptyElementException("Los parámetros son nulos ");
+    }
+    private boolean checkCalculatedTax()
+    {
+        if(this.getId() != null && this.getId() != 0)
+        {
+            if (this.getTax() != null && this.getTax().getId() != 0) {
+                if (this.getTax().getName() != null)
+                {
+                    if (this.getTaxesAmount() != null && !BigDecimal.ZERO.equals(this.getTaxesAmount())){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

@@ -18,43 +18,40 @@ public class CalculatedTaxService {
     {
         this.calculatedTaxRepository = calculatedTaxRepository;
     }
-    public CalculatedTaxDTO create(CalculatedTaxDTO calculatedTaxDTO)
+    public CalculatedTax create(CalculatedTaxDTO calculatedTaxDTO)
     {
         CalculatedTax calculatedTax = null;
         if(calculatedTaxDTO != null)
         {
             calculatedTax = new CalculatedTax();
-            if(calculatedTaxDTO.getId() != null && calculatedTaxDTO.getId().intValue() != 0)
-                calculatedTax.setId(calculatedTaxDTO.getId());
-            if(calculatedTaxDTO.getIdTax() != null)
-                calculatedTax.setTax(calculatedTaxDTO.);
-            if(calculatedTaxDTO.getIdOrder() != null)
-                calculatedTax.setOrder(calculatedTaxDTO.getIdOrder());
+            if(calculatedTaxDTO.getCalculatedTaxID() != null && calculatedTaxDTO.getCalculatedTaxID().intValue() != 0)
+                calculatedTax.setId(calculatedTaxDTO.getCalculatedTaxID());
+            if(calculatedTaxDTO.getTaxID() != null)
+                calculatedTax.setTax(calculatedTax.getTax());
             return calculatedTaxRepository.save(calculatedTax);
         }
         else
             throw new EmptyElementException("No se entregaron datos");
     }
-    public List<CalculatedTaxDTO> read()
+    public List<CalculatedTax> read()
     {
         return calculatedTaxRepository.findAll().
-                stream().map(CalculatedTax::calculatedTaxtoDTO).collect(Collectors.toList());
+                stream().collect(Collectors.toList());
     }
-    public CalculatedTaxDTO update(CalculatedTaxDTO calculatedTaxDTO)
+    public CalculatedTax update(CalculatedTaxDTO calculatedTaxDTO)
     {
         if(calculatedTaxDTO != null)
         {
             CalculatedTax calculatedTax = new CalculatedTax();
-            if(calculatedTaxDTO.getId() != null)
+            if(calculatedTaxDTO.getCalculatedTaxID() != null)
             {
                 Optional<CalculatedTax> calculatedTaxOptional =
-                        calculatedTaxRepository.findById(calculatedTaxDTO.getId());
+                        calculatedTaxRepository.findById(calculatedTaxDTO.getCalculatedTaxID());
                 if(calculatedTaxOptional.isPresent())
                 {
-                    calculatedTaxOptional.get().setIdTax(calculatedTax.getIdTax());
-                    calculatedTaxOptional.get().setIdOrder(calculatedTaxDTO.getIdOrder());
+                    calculatedTaxOptional.get().setTax(calculatedTax.getTax());
                     calculatedTaxOptional.get().setTaxesAmount(calculatedTaxDTO.getTaxesAmount());
-                    return calculatedTaxRepository.save(calculatedTaxOptional.get()).calculatedTaxtoDTO();
+                    return calculatedTaxRepository.save(calculatedTaxOptional.get());
                 }
             }
         }
