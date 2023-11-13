@@ -19,27 +19,27 @@ public class TaxController {
     public TaxController(TaxService taxService) {this.taxService = taxService;}
 
     @PostMapping(value = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TaxDTO createTax(@RequestBody Tax tax) throws Exception {
+    public TaxDTO createTax(@RequestBody TaxDTO tax) throws Exception {
         return this.taxService.createTax(tax);
     }
 
     @PutMapping(value = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TaxDTO updateTax(@RequestBody Tax tax) throws Exception{
+    public TaxDTO updateTax(@RequestBody TaxDTO tax) throws Exception{
         return this.taxService.updateTax(tax);
     }
 
-    @GetMapping(value = "list")
+    @GetMapping(value = "read",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TaxDTO> getAllTaxes(){
         return this.taxService.getAllTaxes();
     }
 
-    @GetMapping(value = "")
-    public TaxDTO getTaxById(@RequestParam int id) {
+    @GetMapping(value = "get")
+    public TaxDTO getTaxById(@RequestParam Long id) {
         return this.taxService.getTaxById(id);
     }
 
-    @DeleteMapping(value = "")
-    public String deleteTax(@RequestParam int id){
+    @DeleteMapping(value = "delete")
+    public String deleteTax(@RequestParam Long id){
         return this.taxService.deleteTax(id);
     }
 }

@@ -12,5 +12,5 @@ public class UserDTOResponse {
     @JsonProperty("name")
     private String name;
     @JsonProperty("id")
-    private Integer id;
+    private Long id;
 }
