@@ -32,9 +32,12 @@ public class CustomerService {
 
     public CustomerDTO createCustomer(Customer customer) throws Exception {
         try {
-            this.customerRepository.save(customer);
-            return customer.toDTO();
-        } catch (DataIntegrityViolationException | HibernateJdbcException e) {
+            if(!customerRepository.findByDni(customer.getDni()).isPresent()) {
+                this.customerRepository.save(customer);
+                return customer.toDTO();
+            }
+            else return null;
+        }catch (DataIntegrityViolationException | HibernateJdbcException e){
             throw new NotCreatedException(e.getMessage());
         }
 
@@ -55,7 +58,6 @@ public class CustomerService {
             customer.setCuit(updatedCustomer.getDni());
             customer.setActivityStartDate(updatedCustomer.getActivityStartDate());
             customer.setBusinessName(updatedCustomer.getBusinessName());
-            customer.setType(updatedCustomer.getType());
 
             // Guardamos el cliente ya actualizado.
             customerRepository.save(customer);
@@ -74,8 +76,8 @@ public class CustomerService {
                 .collect(Collectors.toList());
     }
 
-    public String deleteCustomer(int id) {
-        if (customerRepository.existsById(id)) {
+    public String deleteCustomer(Long id) {
+        if (customerRepository.existsById(id)){
             customerRepository.deleteById(id);
             return "Cliente " + id + " Borrado exitosamente";
         }

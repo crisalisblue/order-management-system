@@ -4,9 +4,7 @@ import crisalis.blue.models.dto.CustomerDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -19,27 +17,31 @@ public class Customer {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(
+            name = "name")
     private String name;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(
+            name = "lastName")
     private String lastName;
 
-    @Column(name = "dni", nullable = false)
+    @Column(
+            name = "dni",unique = true)
     private String dni;
 
-    @Column(name = "cuit", nullable = true)
+    @Column(name = "cuit")
     private String cuit;
 
-    @Column(name = "activityStartDate", nullable = true)
+    @Column(
+            name = "activityStartDate")
     @Temporal(TemporalType.DATE)
     private Date activityStartDate;
 
-    // razon social
-    @Column(name = "businessName", nullable = true)
+    //razon social
+    @Column(name = "businessName")
     private String businessName;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type")
     private String type;
 
     public Customer(Customer customer) {
@@ -63,7 +65,7 @@ public class Customer {
                 .cuit(this.cuit)
                 .activityStartDate(this.activityStartDate)
                 .businessName(this.businessName)
-                .type(this.type)
+                .type(this.type)      
                 .build();
     }
 

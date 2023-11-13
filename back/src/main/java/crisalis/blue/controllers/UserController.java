@@ -38,19 +38,19 @@ public class UserController {
 
     }
 
-    @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> getAllUsers() {
+    @GetMapping(value = "read", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserDTOResponse> getAllUsers() {
         return this.userService.getListOfAllUsersInDB();
 
     }
 
-    @DeleteMapping(value = "/{id}")
-    public UserDTOResponse deleteUser(@PathVariable(value = "id") int id) {
-        return userService.deleteUser(id);
+    @DeleteMapping(value = "delete")
+    public void deleteUser(@RequestParam Long id) {
+         userService.deleteUser(id);
     }
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO getUserById(@RequestParam Integer id) {
+    @GetMapping(value = "obtener-id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO getUserById(@RequestParam Long id) {
         return this.userService.getUserById(id);
     }
 
