@@ -67,7 +67,7 @@ public class CustomerService {
                 Person customerPerson = new Person(updatedCustomer);
                 returnCustomer = customerPerson;
                 customerRepository.save(customerPerson);
-                
+
             } else if (updatedCustomer.getType().equals("BUS")){
                 Business customerBusiness = new Business(updatedCustomer);
                 returnCustomer = customerBusiness;
@@ -87,12 +87,12 @@ public class CustomerService {
     }
 
     public String deleteCustomer(int id) {
-        if (customerRepository.existsById(id)) {
-            customerRepository.deleteById(id);
-            return "Cliente " + id + " Borrado exitosamente";
-        }
-        throw new EmptyElementException("No existe un usuario con id " + id + ".");
 
+        if (!customerRepository.existsById(id)) {
+            throw new ResourceNotFoundException("No existe un usuario con id " + id + ".");
+        }
+        customerRepository.deleteById(id);
+        return "Cliente " + id + " Borrado exitosamente";
     }
 
     public CustomerDTO getCustomerById(int id) {
