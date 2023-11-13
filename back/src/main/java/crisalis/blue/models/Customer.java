@@ -61,30 +61,4 @@ public abstract class Customer {
         return dto;
     }
 
-
-    // Relaciones
-
-    //Relacion 1 a N con Suscriptions
-
-    /*@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "idSuscription")
-    private List<Suscription> suscriptions;*/
-
-    //Relacion 1 a N con Order
-
-     /*@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "idOrder")
-     private List<Order> orders;*/
-
-    //Relacion 1 a N con Empresa
-    @OneToMany
-    @JoinTable(
-            name = "Business_Customer",
-            joinColumns = {
-                    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "business_id", referencedColumnName = "id")
-            }
-    )
-    private List<Business> businesses = new ArrayList<Business>();
-
 }

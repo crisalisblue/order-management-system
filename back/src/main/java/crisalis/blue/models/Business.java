@@ -37,9 +37,6 @@ public class Business extends Customer {
     )
     private List<Person> persons = new ArrayList<Person>();
 
-    /*@ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private Customer customer;*/
     private String businessName;
     private Date activityStartDate;
     private String cuit;
