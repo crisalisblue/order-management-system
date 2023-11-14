@@ -30,7 +30,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public CustomerDTO createCustomer(Customer customer) throws Exception{
+    public CustomerDTO createCustomer(Customer customer) throws Exception {
         try {
             if(!customerRepository.findByDni(customer.getDni()).isPresent()) {
                 this.customerRepository.save(customer);
@@ -47,20 +47,19 @@ public class CustomerService {
 
         Optional<Customer> customerOptional = customerRepository.findById(updatedCustomer.getId().intValue());
 
-        if (customerOptional.isPresent()){
-            //Guardamos en customer, los datos del cliente que esta en la base de datos.
+        if (customerOptional.isPresent()) {
+            // Guardamos en customer, los datos del cliente que esta en la base de datos.
             Customer customer = customerOptional.get();
 
-            //a ese customer le asignamos los nuevos valores recibidos en updatedCustomer
+            // a ese customer le asignamos los nuevos valores recibidos en updatedCustomer
             customer.setName(updatedCustomer.getName());
             customer.setLastName(updatedCustomer.getLastName());
             customer.setDni(updatedCustomer.getDni());
             customer.setCuit(updatedCustomer.getDni());
             customer.setActivityStartDate(updatedCustomer.getActivityStartDate());
             customer.setBusinessName(updatedCustomer.getBusinessName());
-            customer.setType(updatedCustomer.getType());
 
-            //Guardamos el cliente ya actualizado.
+            // Guardamos el cliente ya actualizado.
             customerRepository.save(customer);
 
             return customer.toDTO();
@@ -70,8 +69,7 @@ public class CustomerService {
 
     public List<CustomerDTO> getListOfAllCustomerInDB() {
 
-        return this
-                .customerRepository
+        return this.customerRepository
                 .findAll()
                 .stream()
                 .map(Customer::toDTO)
@@ -81,7 +79,7 @@ public class CustomerService {
     public String deleteCustomer(Long id) {
         if (customerRepository.existsById(id)){
             customerRepository.deleteById(id);
-            return "Cliente " + id +" Borrado exitosamente";
+            return "Cliente " + id + " Borrado exitosamente";
         }
         throw new EmptyElementException("No existe un usuario con id " + id + ".");
 
@@ -91,8 +89,8 @@ public class CustomerService {
 
         return this.customerRepository.findById(id)
                 .orElseThrow(
-                        ()-> new ResourceNotFoundException("Customer not Found")
-                ).toDTO();
+                        () -> new ResourceNotFoundException("Customer not Found"))
+                .toDTO();
     }
 
 }

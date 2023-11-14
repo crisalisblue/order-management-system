@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+
 @Data
 @AllArgsConstructor
 @Builder
@@ -38,4 +39,5 @@ public class TaxDTO {
         tax.setBaseAmount(this.getBaseAmount());
         return tax;
     }
+
 }
