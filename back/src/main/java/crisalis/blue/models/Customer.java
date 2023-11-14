@@ -59,6 +59,7 @@ public abstract class Customer {
         CustomerDTO dto = new CustomerDTO();
         dto.setId(id);
         dto.setAddress(address);
+        dto.setName(name);
         dto = completeSpecificAttrib(dto);
         return dto;
     }
