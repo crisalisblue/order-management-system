@@ -70,6 +70,11 @@ public class Order {
         {
             orderDTO.setItemDTO(this.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList()));
         }
+       if(this.getCalculatedTaxes() != null && !this.getCalculatedTaxes().isEmpty())
+       {
+           orderDTO.setCalculatedTaxDTOS(this.getCalculatedTaxes().stream().
+                   map(CalculatedTax::calculatedTaxToDTO).collect(Collectors.toList()));
+       }
         return orderDTO;
     }
 

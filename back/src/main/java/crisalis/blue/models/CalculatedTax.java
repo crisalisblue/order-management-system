@@ -16,10 +16,7 @@ import java.math.BigDecimal;
 public class CalculatedTax {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
-
-
     @JoinColumn(name="id_Asset")
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Tax tax;

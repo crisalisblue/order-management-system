@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
+    private final TaxRepository taxRepository;
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final ItemRepository itemRepository;
@@ -22,13 +23,15 @@ public class OrderService {
     private final AssetRepository assetRepository;
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
                         ItemRepository itemRepository,
-                        CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository)
+                        CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository
+                        ,TaxRepository taxRepository)
     {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
         this.calculatedTaxRepository = calculatedTaxRepository;
         this.assetRepository = assetRepository;
+        this.taxRepository = taxRepository;
     }
     public OrderDTO create(OrderDTO orderDTO)
     {
@@ -45,31 +48,54 @@ public class OrderService {
             //Esto lo tengo que modificar
             Optional<Customer> optionalCustomer = Optional.empty();
             if (orderDTO.getCustomerID() != null) {
-                if(orderDTO.getCustomerID() != null && !BigDecimal.ZERO.equals(orderDTO.getCustomerID())){
+                if(orderDTO.getCustomerID() !=0){
                     optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
                     optionalCustomer.ifPresent(order::setCustomer);
                 }
             }
             orderRepository.save(order);
-            if(orderDTO.getItemDTO() != null && !orderDTO.getItemDTO().isEmpty()){
-                order.setItems(orderDTO.getItemDTO().stream().map(ItemDTO::toItem).collect(Collectors.toList()));
-                for (int j = 0; j < order.getItems().size(); j++){
-                    Item item = order.getItems().get(j);
-                    if(orderDTO.getItemDTO().get(j).getIdAsset() != null)
-                    {
-                        Asset asset = assetRepository.findById(orderDTO.getItemDTO().get(j).getIdAsset()).get();
-                        item.setAsset(asset);
-                    }
-                    order.getItems().get(j).setOrder(order);
-                    itemRepository.save(order.getItems().get(j));
-                }
-            }
-            orderRepository.save(order);
+            cargarItems(orderDTO, order);
+            cargarImpuestos(orderDTO, order);
             return order.toOrderDTO();
         }
      throw new RuntimeException();
 
     }
+
+    private void cargarImpuestos(OrderDTO orderDTO, Order order) {
+        if(orderDTO.getCalculatedTaxDTOS() != null)
+        {
+            List<CalculatedTax> listCalculatedTaxes = new ArrayList<>();
+            CalculatedTax calculatedTax = new CalculatedTax();
+            for(int k = 0; k< orderDTO.getCalculatedTaxDTOS().size(); k++)
+            {
+                calculatedTax.setOrder(order);
+                calculatedTax.setTax(taxRepository.findById(orderDTO.getCalculatedTaxDTOS().get(k).getTaxID()).get());
+                calculatedTax.setTaxesAmount(orderDTO.getCalculatedTaxDTOS().get(k).getTaxesAmount());
+                calculatedTaxRepository.save(calculatedTax);
+                listCalculatedTaxes.add(calculatedTax);
+            }
+            order.setCalculatedTaxes(listCalculatedTaxes);
+        }
+    }
+
+    private void cargarItems(OrderDTO orderDTO, Order order) {
+        if(orderDTO.getItemDTO() != null && !orderDTO.getItemDTO().isEmpty()){
+            order.setItems(orderDTO.getItemDTO().stream().map(ItemDTO::toItem).collect(Collectors.toList()));
+            for (int j = 0; j < order.getItems().size(); j++){
+                Item item = order.getItems().get(j);
+                if(orderDTO.getItemDTO().get(j).getIdAsset() != null &&
+                        assetRepository.existsById(orderDTO.getItemDTO().get(j).getIdAsset()))
+                {
+                    Asset asset = assetRepository.findById(orderDTO.getItemDTO().get(j).getIdAsset()).get();
+                    item.setAsset(asset);
+                    order.getItems().get(j).setOrder(order);
+                }
+                itemRepository.save(order.getItems().get(j));
+            }
+        }
+    }
+
     private List<Item> buscarItems(List<ItemDTO> listItems)
     {
        if(listItems != null)
