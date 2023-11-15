@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 
 @Entity
-@Table(name="Orderby")
+@Table(name="Orders")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -35,5 +35,7 @@ public class CalculatedTax {
             calculatedTaxDTO.setTaxesAmount(this.getTaxesAmount());
             return calculatedTaxDTO;
     }
-
+    public CalculatedTax(CalculatedTaxDTO calculatedTaxDTO)
+    {
+    }
 }

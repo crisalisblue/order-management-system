@@ -33,17 +33,5 @@ public class ItemDTO {
     @JsonProperty(value = "warrantyYears")
     private int warrantyYears;
 
-    public Item toItem()
-    {
-        Item item = new Item();
-        item.setId(this.getIdItem());
-        item.setItemQuantity(this.getItemQuantity());
-        item.setItemPrice(this.getItemPrice());
-        item.setDiscountAmount(this.getDiscountAmount());
-        item.setTotalPrice(this.getTotalPrice());
-        item.setItemDetails(this.getItemDitails());
-        item.setWarrantyYears(this.getWarrantyYears());
 
-        return item;
-    }
 }
