@@ -39,7 +39,7 @@ public class ItemService {
             item.setItemQuantity(itemDTO.getItemQuantity());
             item.setDiscountAmount(itemDTO.getDiscountAmount());
             item.setAsset(assetRepository.findById(itemDTO.getIdAsset()).get());
-            order = orderRepository.save(itemDTO.getOrderDTO().toOrder());
+           // order = orderRepository.save(itemDTO.getOrderDTO());
             item.setOrder(order);
             return itemRepository.save(item).toItemDTO();
         }else throw new EmptyElementException("Campos vacios");

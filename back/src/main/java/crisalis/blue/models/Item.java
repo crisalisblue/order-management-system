@@ -23,7 +23,7 @@ public class Item {
 
     // Id de de bien de cambio
     @JoinColumn(name="id_Asset")
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Asset asset;
 
     @ManyToOne
@@ -52,26 +52,15 @@ public class Item {
     public ItemDTO toItemDTO()
     {
         ItemDTO itemDTO = new ItemDTO();
-        if(this.getId() != 0)
-            itemDTO.setIdItem(this.getId());
-        if(this.getAsset() != null) {
-            if(this.getAsset().getId() != 0)
-                itemDTO.setIdAsset(this.getAsset().getId());
-            if(this.getAsset().getName() != null)
-                itemDTO.setNameAsset(this.getAsset().getName());
-        }
-        if(this.getItemPrice()!=null &&this.getItemPrice().intValue() != 0)
-            itemDTO.setItemPrice(this.getItemPrice());
-        if(this.getItemDetails()!=null && !this.getItemDetails().isEmpty())
-            itemDTO.setItemDitails(this.getItemDetails());
-        if(this.getItemQuantity() != 0)
-            itemDTO.setItemQuantity(this.getItemQuantity());
-        if(this.getDiscountAmount()!=null && this.getDiscountAmount().intValue() != 0)
-            itemDTO.setDiscountAmount(this.getDiscountAmount());
-        if(this.getTotalPrice()!=null && this.getTotalPrice().intValue() != 0)
-            itemDTO.setTotalPrice(this.getTotalPrice());
-        if(this.getWarrantyYears() != 0)
-            itemDTO.setWarrantyYears(this.getWarrantyYears());
+        itemDTO.setIdItem(this.getId());
+        itemDTO.setIdAsset(this.getAsset().getId());
+        itemDTO.setNameAsset(this.getAsset().getName());
+        itemDTO.setItemPrice(this.getItemPrice());
+        itemDTO.setItemDitails(this.getItemDetails());
+        itemDTO.setItemQuantity(this.getItemQuantity());
+        itemDTO.setDiscountAmount(this.getDiscountAmount());
+        itemDTO.setTotalPrice(this.getTotalPrice());
+        itemDTO.setWarrantyYears(this.getWarrantyYears());
         return itemDTO;
     }
 

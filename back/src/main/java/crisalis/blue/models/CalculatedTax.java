@@ -2,6 +2,7 @@
 package crisalis.blue.models;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
+import crisalis.blue.models.dto.CalculatedTaxDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,8 +18,8 @@ public class CalculatedTax {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JoinColumn(name="id_Asset")
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name="id_Tax")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tax tax;
     @JoinColumn(name ="id_Order")
     @ManyToOne
@@ -27,29 +28,12 @@ public class CalculatedTax {
 
     public crisalis.blue.models.dto.CalculatedTaxDTO calculatedTaxToDTO()
     {
-        if(checkCalculatedTax()) {
             crisalis.blue.models.dto.CalculatedTaxDTO calculatedTaxDTO = new crisalis.blue.models.dto.CalculatedTaxDTO();
             calculatedTaxDTO.setCalculatedTaxID(this.getId());
             calculatedTaxDTO.setTaxID(this.getTax().getId());
             calculatedTaxDTO.setTaxName(this.getTax().getName());
             calculatedTaxDTO.setTaxesAmount(this.getTaxesAmount());
             return calculatedTaxDTO;
-        }
-        else throw new EmptyElementException("Los parámetros son nulos ");
     }
-    private boolean checkCalculatedTax()
-    {
-        if(this.getId() != null && this.getId() != 0)
-        {
-            if (this.getTax() != null && this.getTax().getId() != 0) {
-                if (this.getTax().getName() != null)
-                {
-                    if (this.getTaxesAmount() != null && !BigDecimal.ZERO.equals(this.getTaxesAmount())){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+
 }

@@ -2,12 +2,12 @@ package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.*;
+import crisalis.blue.models.dto.CalculatedTaxDTO;
 import crisalis.blue.models.dto.ItemDTO;
 import crisalis.blue.models.dto.OrderDTO;
 import crisalis.blue.repositories.*;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,103 +37,150 @@ public class OrderService {
     {
         if(orderDTO != null) {
             Order order = new Order();
-            if(checkEmpty(orderDTO)) {
-                order.setDatesOrder(orderDTO.getDateOrder());
-                order.setActive(orderDTO.getActive());
-                order.setSubTotal(orderDTO.getSubTotal());
-                order.setTotalDiscount(orderDTO.getTotalDiscount());
-                order.setTotalPrice(orderDTO.getTotalPrice());
-            }
-            else throw new EmptyElementException("Datos nulos");
-            //Esto lo tengo que modificar
+            checkEmpty(orderDTO );
+            order.setDatesOrder(orderDTO.getDateOrder());
+            order.setActive(orderDTO.getActive());
+            order.setSubTotal(orderDTO.getSubTotal());
+            order.setTotalDiscount(orderDTO.getTotalDiscount());
+            order.setTotalPrice(orderDTO.getTotalPrice());
             Optional<Customer> optionalCustomer = Optional.empty();
-            if (orderDTO.getCustomerID() != null) {
-                if(orderDTO.getCustomerID() !=0){
-                    optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
-                    optionalCustomer.ifPresent(order::setCustomer);
-                }
-            }
+            optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
+            optionalCustomer.ifPresent(order::setCustomer);
             orderRepository.save(order);
-            cargarItems(orderDTO, order);
-            cargarImpuestos(orderDTO, order);
+            createItems(orderDTO, order);
+            crearImpuestos(orderDTO, order);
             return order.toOrderDTO();
         }
      throw new RuntimeException();
 
     }
 
-    private void cargarImpuestos(OrderDTO orderDTO, Order order) {
+    private void crearImpuestos(OrderDTO orderDTO, Order order) {
         if(orderDTO.getCalculatedTaxDTOS() != null)
         {
-            List<CalculatedTax> listCalculatedTaxes = new ArrayList<>();
+            List<CalculatedTax> listCalculatedTaxes = order.getCalculatedTaxes();
             CalculatedTax calculatedTax = new CalculatedTax();
             for(int k = 0; k< orderDTO.getCalculatedTaxDTOS().size(); k++)
             {
-                calculatedTax.setOrder(order);
-                calculatedTax.setTax(taxRepository.findById(orderDTO.getCalculatedTaxDTOS().get(k).getTaxID()).get());
-                calculatedTax.setTaxesAmount(orderDTO.getCalculatedTaxDTOS().get(k).getTaxesAmount());
-                calculatedTaxRepository.save(calculatedTax);
+
+                createCalculatedTax(orderDTO.getCalculatedTaxDTOS().get(k), order, calculatedTax);
                 listCalculatedTaxes.add(calculatedTax);
             }
             order.setCalculatedTaxes(listCalculatedTaxes);
         }
+        else
+            throw new EmptyElementException("Lista de calculatedTax vacias");
     }
 
-    private void cargarItems(OrderDTO orderDTO, Order order) {
+    private void createCalculatedTax(CalculatedTaxDTO calculatedTaxDTO, Order order, CalculatedTax calculatedTax ) {
+        calculatedTax.setOrder(order);
+        calculatedTax.setTax(taxRepository.findById(calculatedTaxDTO.getTaxID()).get());
+        calculatedTax.setTaxesAmount(calculatedTaxDTO.getTaxesAmount());
+        calculatedTaxRepository.save(calculatedTax);
+    }
+
+    private void createItems(OrderDTO orderDTO, Order order) {
         if(orderDTO.getItemDTO() != null && !orderDTO.getItemDTO().isEmpty()){
             order.setItems(orderDTO.getItemDTO().stream().map(ItemDTO::toItem).collect(Collectors.toList()));
+            List<ItemDTO> listItemDTO = orderDTO.getItemDTO();
+            List<Item> listItem = order.getItems();
             for (int j = 0; j < order.getItems().size(); j++){
-                Item item = order.getItems().get(j);
-                if(orderDTO.getItemDTO().get(j).getIdAsset() != null &&
-                        assetRepository.existsById(orderDTO.getItemDTO().get(j).getIdAsset()))
-                {
-                    Asset asset = assetRepository.findById(orderDTO.getItemDTO().get(j).getIdAsset()).get();
-                    item.setAsset(asset);
-                    order.getItems().get(j).setOrder(order);
-                }
+                asignarAssetAItem(listItemDTO.get(j), listItem.get(j));
                 itemRepository.save(order.getItems().get(j));
+                }
+            order.setItems(listItem);
             }
         }
-    }
+
+    private void asignarAssetAItem(ItemDTO itemDTO, Item item) {
+        if(itemDTO.getIdAsset() != null &&
+                assetRepository.existsById(itemDTO.getIdAsset())) {
+            Asset asset = assetRepository.findById(itemDTO.getIdAsset()).get();
+            item.setAsset(asset);
+        }
+}
 
     private List<Item> buscarItems(List<ItemDTO> listItems)
     {
-       if(listItems != null)
+       if(listItems != null && !listItems.isEmpty())
        {
-           if(!listItems.isEmpty())
-           {
-               List<Item> listAsset = new ArrayList<>();
-               for (ItemDTO listItem : listItems) {
-                   Optional<Item> optionalAsset = itemRepository.findById(listItem.getIdItem());
-                   optionalAsset.ifPresent(listAsset::add);
-               }
-               return listAsset;
+           List<Item> listAsset = new ArrayList<>();
+           for (ItemDTO listItem : listItems) {
+               Optional<Item> optionalAsset = itemRepository.findById(listItem.getIdItem());
+               optionalAsset.ifPresent(listAsset::add);
            }
+           return listAsset;
        }
-       return null;
+       throw new EmptyElementException("Lista de items vacia o nula ");
     }
+
+   /* private List<CalculatedTax> actualizoCalculatedTax(OrderDTO orderDTO)
+    {
+        if(orderDTO.getCalculatedTaxDTOS() != null)
+        {
+            if(!listCalculatedTax.isEmpty())
+            {
+                List<CalculatedTax> listCalculated = new ArrayList<>();
+                CalculatedTax calculatedTax = new CalculatedTax();
+                for (int j=0; j<listCalculatedTax.size(); j++){
+                    Optional<Tax> optionalTax = taxRepository.findById(listCalculatedTax.get(j).getTaxID());
+                    if(optionalTax.isPresent())
+                    {
+                        calculatedTax.setTax(optionalTax.get());
+                    }
+                    if(listCalculatedTax.get(j).getTaxesAmount() != null)
+                    {
+                        calculatedTax.setTaxesAmount(listCalculatedTax.get(j).getTaxesAmount());
+                    }
+                    listCalculated.add(calculatedTax);
+                }
+                return listCalculated;
+            }
+        }
+        return null;
+    }*/
     public List<OrderDTO> read()
     {
         return orderRepository.findAll().stream().map(Order::toOrderDTO).collect(Collectors.toList());
     }
     public OrderDTO update(  OrderDTO orderDTO) {
-        Optional<Order> aux = orderRepository.findById(orderDTO.getIdOrder());
-        if (aux.isPresent()) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderDTO.getIdOrder());
+        if (optionalOrder.isPresent()) {
             if (orderDTO.getDateOrder() != null)
-                aux.get().setDatesOrder(orderDTO.getDateOrder());
+                optionalOrder.get().setDatesOrder(orderDTO.getDateOrder());
             if (orderDTO.getTotalPrice() != null && orderDTO.getTotalPrice().intValue() != 0)
-                aux.get().setTotalPrice(orderDTO.getTotalPrice());
+                optionalOrder.get().setTotalPrice(orderDTO.getTotalPrice());
             if (orderDTO.getSubTotal() != null && orderDTO.getSubTotal().intValue() != 0)
-                aux.get().setSubTotal(orderDTO.getSubTotal());
+                optionalOrder.get().setSubTotal(orderDTO.getSubTotal());
             if (orderDTO.getTotalDiscount() != null && orderDTO.getTotalDiscount().intValue() != 0)
-                aux.get().setTotalDiscount(orderDTO.getTotalDiscount());
+                optionalOrder.get().setTotalDiscount(orderDTO.getTotalDiscount());
             if (orderDTO.getCustomerID() != null) {
                 Optional<Customer> optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
                 if (optionalCustomer.isPresent()) {
-                    aux.get().setCustomer(optionalCustomer.get());
+                    optionalOrder.get().setCustomer(optionalCustomer.get());
                 }
-                return orderRepository.save(aux.get()).toOrderDTO();
             }
+            if(orderDTO.getItemDTO() !=null && !orderDTO.getItemDTO().isEmpty())
+            {
+                List<Item> listItem = buscarItems(orderDTO.getItemDTO());
+                optionalOrder.get().setItems(listItem);
+            }
+            if(orderDTO.getCalculatedTaxDTOS() != null && !orderDTO.getCalculatedTaxDTOS().isEmpty())
+            {
+                List<CalculatedTaxDTO> listCalculatedDTO = orderDTO.getCalculatedTaxDTOS();
+                List<CalculatedTax> listCalculatedTax = new ArrayList<>();
+                for(int j =0; j< listCalculatedDTO.size();j++)
+                {
+                    CalculatedTax calculatedTax = new CalculatedTax();
+                    calculatedTax.setId(listCalculatedDTO.get(j).getCalculatedTaxID());
+                    calculatedTax.setOrder(optionalOrder.get());
+                    calculatedTax.setTaxesAmount(listCalculatedDTO.get(j).getTaxesAmount());
+                    calculatedTax.setTax(taxRepository.findById(listCalculatedDTO.get(j).getTaxID()).get());
+                    listCalculatedTax.add(calculatedTax);
+                }
+                optionalOrder.get().setCalculatedTaxes(listCalculatedTax);
+            }
+            return orderRepository.save(optionalOrder.get()).toOrderDTO();
         }
         throw new EmptyElementException("No se encontro el registro con ese id ");
     }
@@ -151,18 +198,17 @@ public class OrderService {
             throw new EmptyElementException("No se encontro el registro con ese id ");
 
     }
-    private boolean  checkEmpty(OrderDTO order)
-    {
-        if(order.getDateOrder() != null)
-        {
-            if(order.getTotalPrice() != null){
-                if(order.getTotalDiscount() !=null)
-                {
-                    return order.getSubTotal() != null;
-                }
-            }
+    private void  checkEmpty(OrderDTO order) throws EmptyElementException {
+        if (order.getDateOrder() == null) {
+            throw new EmptyElementException("Fecha de la orden vacia ");
         }
-
-        return false;
+        if (order.getTotalPrice() == null) {
+            throw new EmptyElementException("Total price de de la orden vacia ");
+        }
+        if (order.getTotalDiscount() != null)
+                throw new EmptyElementException("Total discount de la orden vacia");
+        if(order.getCustomerID() == null) {
+            throw new EmptyElementException("El id del cliente vacio ");
+        }
     }
 }
