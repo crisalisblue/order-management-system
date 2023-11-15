@@ -8,13 +8,4 @@ import lombok.Data;
 @DiscriminatorValue("Product")
 public class Product extends Asset {
 
-    public ProductDTO productToDTO() {
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setId(this.getId());
-        productDTO.setName(this.getName());
-        productDTO.setMountBase(this.getMountBase());
-        productDTO.setGarantia(this.warranty);
-        return productDTO;
-    }
-
 }
