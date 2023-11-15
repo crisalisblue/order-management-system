@@ -19,9 +19,16 @@ public class CustomerDTO {
     @JsonProperty("id")
     private Long id;
 
-    // Atributos de Persona
     @JsonProperty("name")
     private String name;
+
+    @JsonProperty("address")
+    private String address;
+
+    @JsonProperty("type")
+    private String type;
+
+    // Atributos de Persona
 
     @JsonProperty("lastName")
     private String lastName;
@@ -31,30 +38,13 @@ public class CustomerDTO {
 
     // Atributos de Empresa
 
-    // cuit
-    @JsonProperty("businessName")
-    private String businessName;
+    /*@JsonProperty("businessName")
+    private String businessName;*/
 
     @JsonProperty("activityStartDate")
     private Date activityStartDate;
 
     @JsonProperty("cuit")
     private String cuit;
-
-    @JsonProperty("type")
-    private String type;
-    public Customer toCustomer()
-    {
-        Customer customer = new Customer();
-        customer.setId(this.getId());
-        customer.setDni(this.getDni());
-        customer.setName(this.getName());
-        customer.setType(this.getType());
-        customer.setCuit(this.getCuit());
-        customer.setActivityStartDate(this.getActivityStartDate());
-        customer.setBusinessName(this.getBusinessName());
-        customer.setLastName(this.getLastName());
-        return customer;
-    }
 
 }
