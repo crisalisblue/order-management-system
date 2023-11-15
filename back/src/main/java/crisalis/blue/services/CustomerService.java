@@ -3,7 +3,9 @@ package crisalis.blue.services;
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
+import crisalis.blue.models.Business;
 import crisalis.blue.models.Customer;
+import crisalis.blue.models.Person;
 import crisalis.blue.models.User;
 import crisalis.blue.models.dto.CustomerDTO;
 import crisalis.blue.models.dto.UserDTO;
@@ -14,6 +16,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateJdbcException;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,41 +33,49 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public CustomerDTO createCustomer(Customer customer) throws Exception {
+    public CustomerDTO createCustomer(CustomerDTO customer) throws Exception {
         try {
-            if(!customerRepository.findByDni(customer.getDni()).isPresent()) {
-                this.customerRepository.save(customer);
-                return customer.toDTO();
+            if (customer.getType().equals("PER")){
+                Customer customerPerson = new Person(customer);
+                this.customerRepository.save(customerPerson);
+                return customerPerson.toDTO();
+            } else {
+                //Caso Business
+                Customer customerBusiness = new Business(customer);
+                this.customerRepository.save(customerBusiness);
+                return customerBusiness.toDTO();
             }
-            else return null;
-        }catch (DataIntegrityViolationException | HibernateJdbcException e){
+
+        } catch (DataIntegrityViolationException | HibernateJdbcException e) {
+
             throw new NotCreatedException(e.getMessage());
         }
 
     }
 
-    public CustomerDTO updateCustomer(Customer updatedCustomer) throws Exception {
+    public CustomerDTO updateCustomer(CustomerDTO updatedCustomer) throws Exception {
 
-        Optional<Customer> customerOptional = customerRepository.findById(updatedCustomer.getId().intValue());
+        Optional<Customer> customerOptional = customerRepository.findById(updatedCustomer.getId());
+        Customer returnCustomer = null;
 
         if (customerOptional.isPresent()) {
-            // Guardamos en customer, los datos del cliente que esta en la base de datos.
-            Customer customer = customerOptional.get();
+            //Vemos si el type es consistente con lo que necesitamos
+            if (!updatedCustomer.getType().equals("PER") && !updatedCustomer.getType().equals("BUS")){
+                throw new NotCreatedException("Error en el type recibido");
+            }
+            //Determinamos si lo que se esta updateando es una Persona o Empresa e instanciamos un objeto segun corresponda
+            if (updatedCustomer.getType().equals("PER")){
+                Person customerPerson = new Person(updatedCustomer);
+                returnCustomer = customerPerson;
+                customerRepository.save(customerPerson);
 
-            // a ese customer le asignamos los nuevos valores recibidos en updatedCustomer
-            customer.setName(updatedCustomer.getName());
-            customer.setLastName(updatedCustomer.getLastName());
-            customer.setDni(updatedCustomer.getDni());
-            customer.setCuit(updatedCustomer.getDni());
-            customer.setActivityStartDate(updatedCustomer.getActivityStartDate());
-            customer.setBusinessName(updatedCustomer.getBusinessName());
-
-            // Guardamos el cliente ya actualizado.
-            customerRepository.save(customer);
-
-            return customer.toDTO();
+            } else if (updatedCustomer.getType().equals("BUS")){
+                Business customerBusiness = new Business(updatedCustomer);
+                returnCustomer = customerBusiness;
+                customerRepository.save(customerBusiness);
+            }
         }
-        throw new NotCreatedException("Error updating Customer");
+        return returnCustomer.toDTO();
     }
 
     public List<CustomerDTO> getListOfAllCustomerInDB() {
@@ -77,15 +88,15 @@ public class CustomerService {
     }
 
     public String deleteCustomer(Long id) {
-        if (customerRepository.existsById(id)){
-            customerRepository.deleteById(id);
-            return "Cliente " + id + " Borrado exitosamente";
-        }
-        throw new EmptyElementException("No existe un usuario con id " + id + ".");
 
+        if (!customerRepository.existsById(id)) {
+            throw new ResourceNotFoundException("No existe un usuario con id " + id + ".");
+        }
+        customerRepository.deleteById(id);
+        return "Cliente " + id + " Borrado exitosamente";
     }
 
-    public CustomerDTO getCustomerById(int id) {
+    public CustomerDTO getCustomerById(Long id) {
 
         return this.customerRepository.findById(id)
                 .orElseThrow(
