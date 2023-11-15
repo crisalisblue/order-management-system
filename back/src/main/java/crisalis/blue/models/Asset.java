@@ -47,6 +47,8 @@ public abstract class Asset {
         else {
             assetDTO.setType("Service");
         }
+        Service service = (Service) this;
+        assetDTO.setSupportFee(service.getSupportFee());
         return assetDTO;
     }
     public abstract void  asignarDatosCorrespondientes();
