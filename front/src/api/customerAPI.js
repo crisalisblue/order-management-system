@@ -13,7 +13,7 @@ export const getAllCustomers = async () => {
 
 export const getSingleCustomer = async (customerId) => {
   try {
-    const response = await axios.get(`${apiUrl}?id=${customerId}`);
+    const response = await axios.get(`${apiUrl}/read?id=${customerId}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -32,7 +32,7 @@ export const updateSingleCustomer = async (data) => {
 
 export const deleteSingleCustomer = async (customerId) => {
   try {
-    const response = await axios.delete(`${apiUrl}?id=${customerId}`);
+    const response = await axios.delete(`${apiUrl}/delete?id=${customerId}`);
     return response.status;
   } catch (error) {
     console.error(error);
@@ -49,4 +49,3 @@ export const createSingleCustomer = async (data) => {
     console.error(error);
   }
 };
-

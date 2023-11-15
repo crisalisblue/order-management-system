@@ -2,7 +2,7 @@ import axios from "axios";
 const apiUrl = "http://localhost:8080/user";
 export const getAllUsers = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/list`);
+    const response = await axios.get(`${apiUrl}/read`);
     return response.data;
   } catch (error) {
     console.error(error);
