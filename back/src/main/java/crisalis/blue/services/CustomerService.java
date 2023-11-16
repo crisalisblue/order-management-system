@@ -77,13 +77,34 @@ public class CustomerService {
                 throw new NotCreatedException("Error en el type recibido");
             }
             //Determinamos si lo que se esta updateando es una Persona o Empresa e instanciamos un objeto segun corresponda
+            //Damos por hecho que siempre nos va a llegar el dto completo sin datos nulls, si no se actualiza el dato llegara el dato previo
             if (updatedCustomer.getType().equals("PER")){
-                Person customerPerson = new Person(updatedCustomer);
+                //Obtengo los datos de la persona persistidos
+                Customer customerPerson = customerOptional.get();
+
+                //Updateo los datos de la persona con los nuevos
+                customerPerson.setName(updatedCustomer.getName());
+                customerPerson.setAddress(updatedCustomer.getAddress());
+                ((Person) customerPerson).setDni(updatedCustomer.getDni());
+                ((Person) customerPerson).setLastName(updatedCustomer.getLastName());
+
                 returnCustomer = customerPerson;
                 customerRepository.save(customerPerson);
 
             } else if (updatedCustomer.getType().equals("BUS")){
-                Business customerBusiness = new Business(updatedCustomer);
+                //Obtengo los datos de la empresa persistidos
+                Customer customerBusiness = customerOptional.get();
+
+                //Updateo los datos de la empresa con los nuevos
+                customerBusiness.setAddress(updatedCustomer.getAddress());
+                ((Business) customerBusiness).setBusinessName(updatedCustomer.getBusinessName());
+                ((Business) customerBusiness).setCuit(updatedCustomer.getCuit());
+                ((Business) customerBusiness).setActivityStartDate(updatedCustomer.getActivityStartDate());
+                //Updateo los datos de la persona asociada a la empresa con los nuevos
+                ((Business) customerBusiness).getPersons().get(0).setName(updatedCustomer.getName());
+                ((Business) customerBusiness).getPersons().get(0).setLastName(updatedCustomer.getLastName());
+                ((Business) customerBusiness).getPersons().get(0).setDni(updatedCustomer.getDni());
+
                 returnCustomer = customerBusiness;
                 customerRepository.save(customerBusiness);
             }
