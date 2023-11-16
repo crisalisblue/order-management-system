@@ -29,10 +29,10 @@ public class Business extends Customer {
     @JoinTable(
             name = "business_person",
             joinColumns = {
-                    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+                    @JoinColumn(name = "business_id", referencedColumnName = "id")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "customer_id_person", referencedColumnName = "id")
+                    @JoinColumn(name = "person_id", referencedColumnName = "id")
             }
     )
     private List<Person> persons = new ArrayList<Person>();
