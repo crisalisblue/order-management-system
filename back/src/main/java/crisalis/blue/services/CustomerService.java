@@ -50,6 +50,7 @@ public class CustomerService {
                 //Creo una lista nueva en la cual se va a asigna la persona que viene junto a la empresa
                 Business customerBusiness = new Business(customer);
                 List<Person> asociatedPerson = new ArrayList<>();
+                asociatedPerson.add(businessPerson);
 
                 customerBusiness.setPersons(asociatedPerson);
 
