@@ -27,19 +27,10 @@ public class OrderDTO {
     private Long customerID;
     private String customerName;
     private List<ItemDTO> itemDTO;
+    private List<CalculatedTaxDTO> calculatedTaxDTOS;
     public OrderDTO()
     {
         itemDTO = new ArrayList<ItemDTO>();
     }
-    public Order toOrder()
-    {
-        Order order = new Order();
-        order.setId(this.getIdOrder());
-        order.setDatesOrder(this.getDateOrder());
-        order.setSubTotal(this.getSubTotal());
-        order.setActive(this.getActive());
-        order.setTotalDiscount(this.getTotalDiscount());
-        order.setTotalPrice(this.getTotalPrice());
-        return order;
-    }
+
 }
