@@ -114,6 +114,7 @@ public class AssetService {
             if(assetDTO.getTaxDTOList() != null)
                 buscarTax(assetDTO.getTaxDTOList());
             if(assetDTO.getSupportFee() != null && assetDTO.getSupportFee().intValue() != 0) {
+
                 service = (crisalis.blue.models.Service) aux.get();
                 service.setSupportFee(assetDTO.getSupportFee());
                 return this.assetRepository.save(service).toAssetDTO();
