@@ -1,94 +1,67 @@
 package crisalis.blue.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import crisalis.blue.models.dto.CustomerDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+        name ="type",
+        discriminatorType = DiscriminatorType.STRING
+)
 @Table(name = "customer")
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+
+public abstract class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "customer_sequence",
+            sequenceName = "customer_sequence",
+            allocationSize = 1,
+            initialValue = 1
+
+    )
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator = "customer_sequence"
+    )
     @Column(name = "id")
     private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "lastName", nullable = true)
-    private String lastName;
+    @Column(name = "address", nullable = false)
+    private String address;
 
-    @Column(name = "dni", nullable = true)
-    private String dni;
 
-    @Column(name = "cuit", nullable = true)
-    private String cuit;
-
-    @Column(name = "activityStartDate", nullable = true)
-    @Temporal(TemporalType.DATE)
-    private Date activityStartDate;
-
-    // razon social
-    @Column(name = "businessName", nullable = true)
-    private String businessName;
-
-    public Customer(Customer customer) {
-        this.id = customer.getId();
-        this.name = customer.getName();
-        this.lastName = customer.getLastName();
-        this.dni = customer.getDni();
-        this.cuit = customer.getCuit();
-        this.activityStartDate = customer.getActivityStartDate();
-        this.businessName = customer.getBusinessName();
-
+    protected Customer (CustomerDTO dto){
+        setId(dto.getId());
+        setName(dto.getName());
+        setAddress(dto.getAddress());
     }
 
-    public CustomerDTO toDTO() {
-        return CustomerDTO
-                .builder()
-                .id(this.id)
-                .name(this.name)
-                .lastName(this.lastName)
-                .dni(this.dni)
-                .cuit(this.cuit)
-                .activityStartDate(this.activityStartDate)
-                .businessName(this.businessName)
-                .build();
+
+    protected abstract CustomerDTO completeSpecificAttrib(CustomerDTO dto);
+
+    public CustomerDTO toDTO(){
+        CustomerDTO dto = new CustomerDTO();
+        dto.setId(id);
+        dto.setAddress(address);
+        dto.setName(name);
+        dto = completeSpecificAttrib(dto);
+        return dto;
     }
-
-    // Relaciones con Entidades que aun no existen.
-
-    /*
-     * //1 cliente con solo 1 persona
-     * 
-     * @OneToOne
-     * 
-     * @JoinColumn(name = "idPerson")
-     * private Person person
-     */
-
-    /*
-     * 1 idcliente a N suscripciones, 1 suscripcion a 1 cliente
-     * 
-     * @OneToMany(mappedBy = "idCustomer")
-     * private List<Suscription> suscriptions;
-     */
-
-    /*
-     * 1 id cliente a N Pedidos, 1 Pedido a 1 Cliente
-     * 
-     * @OneToMany(mappedBy = "idClient")
-     * private List<Order> orders;
-     */
-
-    // @ManyToMany
-    // private List<Product> productList = new ArrayList<>();
 
 }
