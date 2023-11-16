@@ -36,13 +36,25 @@ public class CustomerService {
     public CustomerDTO createCustomer(CustomerDTO customer) throws Exception {
         try {
             if (customer.getType().equals("PER")){
-                Customer customerPerson = new Person(customer);
+                Person customerPerson = new Person(customer);
                 this.customerRepository.save(customerPerson);
                 return customerPerson.toDTO();
             } else {
                 //Caso Business
-                Customer customerBusiness = new Business(customer);
+                //Primero creo la persona que viene asociada a la empresa
+                Person businessPerson = new Person(customer);
+                this.customerRepository.save(businessPerson);
+                //una vez guardado en la base de datos, ya se puede acceder al id automaticamente en el objeto previamente instanciado
+                //System.out.println(businessPerson.getId());
+
+                //Creo una lista nueva en la cual se va a asigna la persona que viene junto a la empresa
+                Business customerBusiness = new Business(customer);
+                List<Person> asociatedPerson = new ArrayList<>();
+
+                customerBusiness.setPersons(asociatedPerson);
+
                 this.customerRepository.save(customerBusiness);
+
                 return customerBusiness.toDTO();
             }
 
