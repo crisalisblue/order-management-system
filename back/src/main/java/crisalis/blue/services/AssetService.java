@@ -32,7 +32,7 @@ public class AssetService {
         Product product = null;
         crisalis.blue.models.Service service =null;
         Asset asset =null;
-        if (checkItem(assetDTO)) {
+        if (checkAsset(assetDTO)) {
             if(assetDTO.getType()!=null) {
                 if (assetDTO.getType().equals("Product"))
                     asset = new Product();
@@ -83,7 +83,7 @@ public class AssetService {
         return listR;
         }
 
-    private boolean checkItem(AssetDTO assetDTO) {
+    private boolean checkAsset(AssetDTO assetDTO) {
         boolean res = false;
         if(!assetDTO.getName().isEmpty())
             res=true;
