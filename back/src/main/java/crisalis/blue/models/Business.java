@@ -46,6 +46,9 @@ public class Business extends Customer {
         dto.setBusinessName(this.businessName);
         dto.setActivityStartDate(this.activityStartDate);
         dto.setCuit(this.cuit);
+        //Agrego al dto los datos de la persona asociada... por ahora esta hardcodeado a que tenga una sola persona asociada.
+        dto.setLastName(persons.get(0).getLastName());
+        dto.setDni(persons.get(0).getDni());
         return dto;
     }
 }
