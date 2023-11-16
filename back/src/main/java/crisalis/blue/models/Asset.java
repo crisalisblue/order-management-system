@@ -27,7 +27,7 @@ public abstract class Asset {
     @JsonProperty(value = "baseAmount")
     private BigDecimal baseAmount;
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(name="Tax_Asset",
+    @JoinTable(name="Asset_Tax",
     joinColumns = @JoinColumn(name = "id_asset",referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name="id_tax",referencedColumnName = "id"))
     @JsonProperty(value = "taxList")
@@ -38,23 +38,20 @@ public abstract class Asset {
     public AssetDTO toAssetDTO()
     {
         AssetDTO assetDTO = new AssetDTO();
-        if(this.getId() != null)
-            assetDTO.setId(this.getId());
-        if(this.getName()!=null && !this.getName().isEmpty())
-            assetDTO.setName(this.getName());
-        if(this.getBaseAmount()!=null && this.getBaseAmount().intValue() != 0)
-            assetDTO.setBaseAmount(this.getBaseAmount());
-        if(this instanceof Service service) {
-            assetDTO.setSupportFree(service.getSupportFree());
-        }
-        if(this.getTaxList() != null && !this.getTaxList().isEmpty())
-            assetDTO.setTaxDTOList((this.listTaxToTaxDTO(this.getTaxList())));
+        assetDTO.setId(this.getId());
+        assetDTO.setName(this.getName());
+        assetDTO.setBaseAmount(this.getBaseAmount());
+        assetDTO.setTaxDTOList((this.listTaxToTaxDTO(this.getTaxList())));
         if(this instanceof  Product)
             assetDTO.setType("Product");
-        else
+        else {
             assetDTO.setType("Service");
+        }
+        Service service = (Service) this;
+        assetDTO.setSupportFee(service.getSupportFee());
         return assetDTO;
     }
+    public abstract void  asignarDatosCorrespondientes();
     public List<TaxDTO>listTaxToTaxDTO(List<Tax> listAsset)
     {
         return listAsset.stream().map(Tax::toDTO).collect(Collectors.toList());
