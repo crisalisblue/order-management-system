@@ -30,10 +30,10 @@ public class AssetService {
 
     public AssetDTO create(AssetDTO assetDTO) {
         Product product = null;
-        crisalis.blue.models.Service service = null;
-        Asset asset = null;
-        if (checkItem(assetDTO)) {
-            if (assetDTO.getType() != null) {
+        crisalis.blue.models.Service service =null;
+        Asset asset =null;
+        if (checkAsset(assetDTO)) {
+            if(assetDTO.getType()!=null) {
                 if (assetDTO.getType().equals("Product"))
                     asset = new Product();
 
@@ -46,11 +46,15 @@ public class AssetService {
                 asset.setBaseAmount(assetDTO.getBaseAmount());
             if (assetDTO.getTaxDTOList() != null)
                 asset.setTaxList(assetDTO.getTaxDTOList().stream().map(TaxDTO::toTax).collect(Collectors.toList()));
-            if (asset instanceof crisalis.blue.models.Service) {
-                if (assetDTO.getSupportFree() == null) {
-                    ((crisalis.blue.models.Service) asset).setSupportFree(BigDecimal.ZERO);
-                } else {
-                    ((crisalis.blue.models.Service) asset).setSupportFree(assetDTO.getSupportFree());
+            if(asset instanceof crisalis.blue.models.Service)
+            {
+                if(assetDTO.getSupportFee() == null  )
+                {
+                    ((crisalis.blue.models.Service)asset).setSupportFee(BigDecimal.ZERO);
+                }
+                else
+                {
+                    ((crisalis.blue.models.Service) asset).setSupportFee(assetDTO.getSupportFee());
                     service = (crisalis.blue.models.Service) asset;
                 }
                 return assetRepository.save(service).toAssetDTO();
@@ -76,7 +80,7 @@ public class AssetService {
         return listR;
     }
 
-    private boolean checkItem(AssetDTO assetDTO) {
+    private boolean checkAsset(AssetDTO assetDTO) {
         boolean res = false;
         if (!assetDTO.getName().isEmpty())
             res = true;
@@ -107,9 +111,9 @@ public class AssetService {
                 aux.get().setBaseAmount(assetDTO.getBaseAmount());
             if (assetDTO.getTaxDTOList() != null)
                 buscarTax(assetDTO.getTaxDTOList());
-            if (assetDTO.getSupportFree() != null && assetDTO.getSupportFree().intValue() != 0) {
+              if(assetDTO.getSupportFee() != null && assetDTO.getSupportFee().intValue() != 0) {
                 service = (crisalis.blue.models.Service) aux.get();
-                service.setSupportFree(assetDTO.getSupportFree());
+                service.setSupportFee(assetDTO.getSupportFee());
                 return this.assetRepository.save(service).toAssetDTO();
             } else {
                 product = (Product) aux.get();

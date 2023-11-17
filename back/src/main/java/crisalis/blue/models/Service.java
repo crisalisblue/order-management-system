@@ -14,10 +14,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @DiscriminatorValue("Service")
 public class Service extends Asset {
-    @JsonProperty("supportFree")
-    @Column(name = "supportFree")
-    private BigDecimal supportFree;
+    @JsonProperty("supportFee")
+    @Column(name = "supportFee")
+    private BigDecimal supportFee;
 
-
-
+@Override
+public void asignarDatosCorrespondientes(){
+}
 }
