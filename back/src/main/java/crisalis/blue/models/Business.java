@@ -20,7 +20,7 @@ public class Business extends Customer {
 
     public Business(CustomerDTO dto){
         super(dto);
-        //setBusinessName(dto.getBusinessName());
+        setBusinessName(dto.getBusinessName());
         setActivityStartDate(dto.getActivityStartDate());
         setCuit(dto.getCuit());
     }
@@ -29,24 +29,26 @@ public class Business extends Customer {
     @JoinTable(
             name = "business_person",
             joinColumns = {
-                    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+                    @JoinColumn(name = "business_id", referencedColumnName = "id")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "customer_id_person", referencedColumnName = "id")
+                    @JoinColumn(name = "person_id", referencedColumnName = "id")
             }
     )
     private List<Person> persons = new ArrayList<Person>();
-
-    //private String businessName;
+    private String businessName;
     private Date activityStartDate;
     private String cuit;
 
     @Override
     protected CustomerDTO completeSpecificAttrib(CustomerDTO dto) {
         dto.setType("BUS");
-       // dto.setBusinessName(this.businessName);
+        dto.setBusinessName(this.businessName);
         dto.setActivityStartDate(this.activityStartDate);
         dto.setCuit(this.cuit);
+        //Agrego al dto los datos de la persona asociada... por ahora esta hardcodeado a que tenga una sola persona asociada.
+        dto.setLastName(persons.get(0).getLastName());
+        dto.setDni(persons.get(0).getDni());
         return dto;
     }
 }
