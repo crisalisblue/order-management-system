@@ -13,7 +13,7 @@ export const getAllServices = async () => {
 //http://localhost:8080/user?id=3
 export const getSingleService = async (serviceID) => {
   try {
-    const response = await axios.get(`${apiUrl}?id=${serviceID}`);
+    const response = await axios.get(`${apiUrl}/?id=${serviceID}`);
     return response.status;
   } catch (error) {
     console.error(error);
@@ -32,7 +32,7 @@ export const updateSingleService = async (data) => {
 
 export const deleteSingleService = async (serviceID) => {
   try {
-    const response = await axios.delete(`${apiUrl}delete?id=${serviceID}`);
+    const response = await axios.delete(`${apiUrl}/delete?id=${serviceID}`);
     return response.status;
   } catch (error) {
     console.error(error);

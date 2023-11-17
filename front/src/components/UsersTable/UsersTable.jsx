@@ -14,6 +14,10 @@ export const UsersTable = () => {
     return <div>Loading...</div>;
   }
 
+  // Verificar si no hay datos
+  if (!usuariosData || usuariosData.length === 0) {
+    return <div>No hay datos para mostrar.</div>;
+  }
   return (
     <DataTable
       data={usuariosData}

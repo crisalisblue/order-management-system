@@ -16,7 +16,10 @@ export const ServicesTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  // Verificar si no hay datos
+  if (!servicesData || servicesData.length === 0) {
+    return <div>No hay datos para mostrar.</div>;
+  }
   return (
     <DataTable
       data={servicesData}

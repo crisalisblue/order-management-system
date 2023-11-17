@@ -32,7 +32,7 @@ export const updateSingleProduct = async (data) => {
 
 export const deleteSingleProduct = async (productID) => {
   try {
-    const response = await axios.delete(`${apiUrl}delete?id=${productID}`);
+    const response = await axios.delete(`${apiUrl}/delete?id=${productID}`);
     return response.status;
   } catch (error) {
     console.error(error);

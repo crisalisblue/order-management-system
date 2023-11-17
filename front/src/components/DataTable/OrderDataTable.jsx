@@ -46,6 +46,10 @@ export const OrderDataTable = ({ data }) => {
       }
     });
   };
+  // Verificar si no hay datos o keysToShow
+  if (!data || data.length === 0) {
+    return <div>No hay datos para mostrar.</div>;
+  }
   return (
     <table className={"w-5/6 m-auto text-black"}>
       <thead>

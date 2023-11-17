@@ -30,7 +30,7 @@ export const updateSingleUser = async (data) => {
 
 export const deleteSingleUser = async (userId) => {
   try {
-    const response = await axios.delete(`${apiUrl}/${userId}`);
+    const response = await axios.delete(`${apiUrl}delete/${userId}`);
     console.dir(`${apiUrl}/${userId}`);
     return response.status;
   } catch (error) {

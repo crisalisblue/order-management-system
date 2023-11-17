@@ -16,7 +16,10 @@ export const ProductsTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  // Verificar si no hay datos o keysToShow
+  if (!productsData || productsData.length === 0) {
+    return <div>No hay datos para mostrar.</div>;
+  }
   return (
     <DataTable
       data={productsData}
