@@ -1,7 +1,7 @@
 // calculatedTaxed
 package crisalis.blue.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
 @Data
@@ -18,36 +17,26 @@ import java.util.List;
 public class CalculatedTax {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
-
-
-    @OneToMany
-    @JoinColumn(name = "id_tax")
-    private List<Tax> idTax;
-
-    @JoinColumn(name="id_Asset")
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name="id_Tax")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tax tax;
-
-    @JsonProperty(value = "idOrder")
-    @OneToMany(cascade =CascadeType.ALL )
-    private List<Order> idOrder;
-
-
+    @JoinColumn(name ="id_Order")
+    @ManyToOne
+    private Order order;
     private BigDecimal taxesAmount;
 
-    public CalculatedTaxDTO calculatedTaxtoDTO()
+    public crisalis.blue.models.dto.CalculatedTaxDTO calculatedTaxToDTO()
     {
-        CalculatedTaxDTO calculatedTaxDTO = new CalculatedTaxDTO();
-        if(this.getId() != 0)
-            calculatedTaxDTO.setId(this.getId());
-        if(this.getIdTax() != null)
-            calculatedTaxDTO.setIdTax(this.getIdTax());
-        if(this.getIdOrder() != null)
-            calculatedTaxDTO.setIdOrder(this.getIdOrder());
-        if(this.getTaxesAmount()!=null && this.getTaxesAmount().intValue() != 0)
+            crisalis.blue.models.dto.CalculatedTaxDTO calculatedTaxDTO = new crisalis.blue.models.dto.CalculatedTaxDTO();
+            calculatedTaxDTO.setCalculatedTaxID(this.getId());
+            calculatedTaxDTO.setTaxID(this.getTax().getId());
+            calculatedTaxDTO.setTaxName(this.getTax().getName());
             calculatedTaxDTO.setTaxesAmount(this.getTaxesAmount());
-        return calculatedTaxDTO;
+            return calculatedTaxDTO;
+    }
+    public CalculatedTax(CalculatedTaxDTO calculatedTaxDTO)
+    {
+        this.setTaxesAmount(calculatedTaxDTO.getTaxesAmount());
     }
 }

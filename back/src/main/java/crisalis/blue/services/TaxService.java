@@ -4,16 +4,13 @@ package crisalis.blue.services;
 import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
-import crisalis.blue.models.CalculatedTax;
 import crisalis.blue.models.Tax;
-import crisalis.blue.models.dto.CalculatedTaxDTO;
 import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.CalculatedTaxRepository;
 import crisalis.blue.repositories.TaxRepository;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
