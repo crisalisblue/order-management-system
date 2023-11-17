@@ -14,8 +14,32 @@ export const getAllOrders = async () => {
 export const createSingleOrder = async (data) => {
   try {
     console.dir(data);
-    const response = await axios.post(`${apiUrl}/create`, data);
+    const response = await axios.post(`${apiUrl}/create`, 
+    data
+);
     console.dir(response);
+    return response.status;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const refreshOrder = async (data) => {
+  try {
+    console.dir(data);
+    const response = await axios.post(`${apiUrl}/refresh`, 
+    data
+);
+    console.dir("La respuesta a refresh es: ",response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteOrder = async (orderId) => {
+  try {
+    const response = await axios.delete(`${apiUrl}/delete?id=${orderId}`);
     return response.status;
   } catch (error) {
     console.error(error);

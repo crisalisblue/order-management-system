@@ -13,7 +13,7 @@ export const getAllCustomers = async () => {
 
 export const getSingleCustomer = async (customerId) => {
   try {
-    const response = await axios.get(`${apiUrl}?id=${customerId}`);
+    const response = await axios.get(`${apiUrl}/read?id=${customerId}`);
     return response.data;
   } catch (error) {
     console.error(error);

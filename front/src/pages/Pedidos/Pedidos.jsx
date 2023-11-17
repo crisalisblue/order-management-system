@@ -13,7 +13,7 @@ export const Pedidos = () => {
           <section className="flex gap-2 justify-between items-center">
             <h1>Filtros:</h1>
             <input className="h-7 p-1" type="text" placeholder="nombre" />
-            <input className="h-7 p-1" type="text" placeholder="documento" />
+            <input className="h-7 p-1" type="text" placeholder="fechas" />
             <input className="h-7 p-1" type="text" placeholder="tipo" />
             <button className={"btn text-white bg-[#001F3D]"}>
               <RouterLink
