@@ -16,6 +16,10 @@ import {
   UserUpdate,
   CustomerCreate,
   CustomerUpdate,
+  OrderClientCreate,
+  OrderCreate,
+  OrdersTable,
+  OrderUpdate,
   Pedidos,
   Servicios,
   Taxes,
@@ -56,6 +60,12 @@ export default function App() {
               <Route path="nuevo" Component={ProductsCreate} />
               <Route path=":id/editar" Component={ProductsUpdate} />
               <Route path="" Component={ProductsTable} />
+            </Route>
+            <Route path="pedidos" Component={Pedidos}>
+              <Route path="nuevo" Component={OrderCreate} />
+              <Route path="nuevo/nuevo-cliente" Component={OrderClientCreate} />
+              <Route path=":id/editar" Component={OrderUpdate} />
+              <Route path="" Component={OrdersTable} />
             </Route>
             <Route path="servicios" Component={Servicios} />
             <Route path="impuestos" Component={Taxes}>

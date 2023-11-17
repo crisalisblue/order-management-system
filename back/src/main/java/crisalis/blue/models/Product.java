@@ -8,4 +8,9 @@ import lombok.Data;
 @DiscriminatorValue("Product")
 public class Product extends Asset {
 
+
+    @Override
+    public void asignarDatosCorrespondientes() {
+
+    }
 }
