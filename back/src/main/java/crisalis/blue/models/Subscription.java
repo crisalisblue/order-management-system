@@ -29,6 +29,10 @@ public class Subscription {
             initialValue = 1
 
     )
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator = "customer_sequence"
+    )
     @Column(name = "id")
     private Long id;
 
