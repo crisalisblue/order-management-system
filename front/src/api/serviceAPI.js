@@ -1,8 +1,8 @@
 import axios from "axios";
 const apiUrl = "http://localhost:8080/asset";
-export const getAllProducts = async () => {
+export const getAllServices = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/readType?type=Product`);
+    const response = await axios.get(`${apiUrl}/readType?type=Service`);
     console.dir(response);
     console.dir(response.status);
     return response.data;
@@ -11,16 +11,16 @@ export const getAllProducts = async () => {
   }
 };
 //http://localhost:8080/user?id=3
-export const getSingleProduct = async (productID) => {
+export const getSingleService = async (serviceID) => {
   try {
-    const response = await axios.get(`${apiUrl}?id=${productID}`);
+    const response = await axios.get(`${apiUrl}?id=${serviceID}`);
     return response.status;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const updateSingleProduct = async (data) => {
+export const updateSingleService = async (data) => {
   console.dir(data);
   try {
     const response = await axios.put(`${apiUrl}/update`, data);
@@ -30,16 +30,16 @@ export const updateSingleProduct = async (data) => {
   }
 };
 
-export const deleteSingleProduct = async (productID) => {
+export const deleteSingleService = async (serviceID) => {
   try {
-    const response = await axios.delete(`${apiUrl}delete?id=${productID}`);
+    const response = await axios.delete(`${apiUrl}delete?id=${serviceID}`);
     return response.status;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const createSingleProduct = async (data) => {
+export const createSingleService = async (data) => {
   try {
     console.dir(data);
     const response = await axios.post(`${apiUrl}/create`, data);

@@ -9,8 +9,10 @@ export const DataTable = ({
   itemName,
   editPath,
   deleteFunction,
+  columnsToExclude = [], // Nuevo prop para las columnas a excluir
 }) => {
   const navigate = useNavigate();
+
   const handleDelete = (id) => {
     Swal.fire({
       title: `¿Estás seguro de eliminar este ${itemName}?`,
@@ -51,23 +53,29 @@ export const DataTable = ({
       }
     });
   };
-  console.dir(data);
-  console.dir(keysToShow);
+
   return (
     <section className="overflow-y-auto overflow-x-hidden">
       <table className={"w-5/6 m-auto text-black"}>
         <thead className="min-w-full">
           <tr className={"bg-[#85B7CA] text-primary border-gray-500"}>
-            {keysToShow.map((key, index) => (
-              <th
-                key={index}
-                className={`text-center ${index === 0 ? "rounded-tl-md" : ""} ${
-                  index === keysToShow.length - 1 ? "rounded-tr-md" : ""
-                } p-1`}
-              >
-                {key}
-              </th>
-            ))}
+            {keysToShow.map((key, index) => {
+              if (!columnsToExclude.includes(key)) {
+                return (
+                  <th
+                    key={index}
+                    className={`text-center ${
+                      index === 0 ? "rounded-tl-md" : ""
+                    } ${
+                      index === keysToShow.length - 1 ? "rounded-tr-md" : ""
+                    } p-1`}
+                  >
+                    {key}
+                  </th>
+                );
+              }
+              return null;
+            })}
             <th className={"text-center rounded-tr-md p-1"}>Acciones</th>
           </tr>
         </thead>
@@ -79,18 +87,24 @@ export const DataTable = ({
               } drop-shadow-md p-1`}
               key={index}
             >
-              {keysToShow.map((key, idx) => (
-                <td
-                  key={idx}
-                  className={`text-center ${
-                    index === data.length - 1 && idx === keysToShow.length - 1
-                      ? "rounded-br-md"
-                      : ""
-                  } p-1`}
-                >
-                  {item[key]}
-                </td>
-              ))}
+              {keysToShow.map((key, idx) => {
+                if (!columnsToExclude.includes(key)) {
+                  return (
+                    <td
+                      key={idx}
+                      className={`text-center ${
+                        index === data.length - 1 &&
+                        idx === keysToShow.length - 1
+                          ? "rounded-br-md"
+                          : ""
+                      } p-1`}
+                    >
+                      {item[key]}
+                    </td>
+                  );
+                }
+                return null;
+              })}
               <td
                 className={`text-center flex justify-evenly ${
                   index === data.length - 1 ? "rounded-br-md" : ""

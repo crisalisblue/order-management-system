@@ -29,10 +29,13 @@ import {
   NotFound,
   ProductsCreate,
   ProductsUpdate,
+  ServicesCreate,
+  ServicesUpdate,
 } from "./pages";
 import { UsersTable } from "./components/UsersTable/UsersTable.jsx";
 import { TaxesTable } from "./components/TaxTable/TaxesTable.jsx";
 import { CustomersTable } from "./components/CustomersTable/CustomersTable.jsx";
+import { ServicesTable } from "./components/ServicesTable/ServicesTable.jsx";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 import { ProductsTable } from "./components/ProductsTable/ProductsTable.jsx";
@@ -67,7 +70,11 @@ export default function App() {
               <Route path=":id/editar" Component={OrderUpdate} />
               <Route path="" Component={OrdersTable} />
             </Route>
-            <Route path="servicios" Component={Servicios} />
+            <Route path="servicios" Component={Servicios}>
+              <Route path="nuevo" Component={ServicesCreate} />
+              <Route path=":id/editar" Component={ServicesUpdate} />
+              <Route path="" Component={ServicesTable} />
+            </Route>
             <Route path="impuestos" Component={Taxes}>
               <Route path="nuevo" Component={TaxCreate} />
               <Route path=":id/editar" Component={TaxUpdate} />

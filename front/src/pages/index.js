@@ -22,3 +22,5 @@ export { NotFound } from "./NotFound/NotFound";
 export { ProductsCreate } from "./Products/ProductsCreate";
 export { ProductsDelete } from "./Products/ProductsDelete";
 export { ProductsUpdate } from "./Products/ProductsUpdate";
+export { ServicesCreate } from "./Servicios/ServicesCreate";
+export { ServicesUpdate } from "./Servicios/ServicesUpdate";

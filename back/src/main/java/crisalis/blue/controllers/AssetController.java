@@ -46,4 +46,5 @@ public class AssetController {
     public void delete(@RequestParam Long id) {
         assetService.delete(id);
     }
+
 }

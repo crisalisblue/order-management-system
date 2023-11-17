@@ -24,6 +24,7 @@ export const ProductsTable = () => {
       itemName="producto"
       editPath="/productos"
       deleteFunction={deleteSingleProduct}
+      columnsToExclude={["taxList"]}
     />
   );
 };

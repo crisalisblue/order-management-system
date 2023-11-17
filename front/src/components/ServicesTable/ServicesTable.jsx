@@ -2,7 +2,7 @@ import { DataTable } from "../DataTable/DataTable";
 import { getAllServices, deleteSingleService } from "../../api/ServiceAPI";
 import { useDataFetching } from "../../api/API_Utils";
 
-export const Services = () => {
+export const ServicesTable = () => {
   const {
     data: servicesData,
     loading,
@@ -24,6 +24,7 @@ export const Services = () => {
       itemName="producto"
       editPath="/productos"
       deleteFunction={deleteSingleService}
+      columnsToExclude={["taxList"]}
     />
   );
 };
