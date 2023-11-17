@@ -47,6 +47,7 @@ public class AssetService {
                 asset.setName(assetDTO.getName());
             if (assetDTO.getBaseAmount() != null && !BigDecimal.ZERO.equals(assetDTO.getBaseAmount()))
                 asset.setBaseAmount(assetDTO.getBaseAmount());
+            else asset.setBaseAmount(BigDecimal.ZERO);
             if (assetDTO.getTaxDTOList() != null)
                 asset.setTaxList(assetDTO.getTaxDTOList().stream().map(TaxDTO::toTax).collect(Collectors.toList()));
             if (asset instanceof crisalis.blue.models.Service) {
@@ -83,11 +84,11 @@ public class AssetService {
         boolean res = false;
         if (!assetDTO.getName().isEmpty())
             res = true;
-        if (assetDTO.getBaseAmount().intValue() != 0)
+        if (BigDecimal.ZERO.equals(assetDTO.getBaseAmount()))
             res = true;
         if (assetDTO.getTaxDTOList() != null)
             res = true;
-        return res;
+        return true;
     }
 
     public List<AssetDTO> read() {

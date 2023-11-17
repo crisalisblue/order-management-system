@@ -14,6 +14,9 @@ export const UsersTable = () => {
     return <div>Loading...</div>;
   }
 
+  if (usuariosData.length == 0) {
+    return <div>No Data...</div>;
+  }
   return (
     <DataTable
       data={usuariosData}
