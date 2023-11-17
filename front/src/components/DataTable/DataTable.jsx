@@ -1,24 +1,29 @@
 import { DeleteModal } from "../DeleteModal/DeleteModal";
 import { Link } from "react-router-dom";
-import { deleteSingleUser } from "../../api/UserAPI";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-export const DataTable = ({ data }) => {
+export const DataTable = ({
+  data,
+  keysToShow,
+  itemName,
+  editPath,
+  deleteFunction,
+}) => {
   const navigate = useNavigate();
   const handleDelete = (id) => {
     Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Una vez eliminado, no podrás recuperar este usuario",
+      title: `¿Estás seguro de eliminar este ${itemName}?`,
+      text: `Una vez eliminado, no podrás recuperar este ${itemName}`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, eliminar",
+      confirmButtonText: `Sí, eliminar este ${itemName}`,
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteSingleUser(id)
+        deleteFunction(id)
           .then(() => {
             const Toast = Swal.mixin({
               toast: true,
@@ -29,7 +34,7 @@ export const DataTable = ({ data }) => {
 
             Toast.fire({
               icon: "success",
-              title: "El usuario ha sido eliminado",
+              title: `El ${itemName} ha sido eliminado`,
             });
             setTimeout(() => {
               navigate(0);
@@ -38,23 +43,31 @@ export const DataTable = ({ data }) => {
           .catch((error) => {
             Swal.fire(
               "Error",
-              "Hubo un problema al eliminar el usuario",
+              `Hubo un problema al eliminar el ${itemName}`,
               "error"
             );
-            console.error("Error al eliminar el usuario:", error);
+            console.error(`Error al eliminar el ${itemName}:`, error);
           });
       }
     });
   };
-
+  console.dir(data);
+  console.dir(keysToShow);
   return (
-    <section className="">
+    <section className="overflow-y-auto overflow-x-hidden">
       <table className={"w-5/6 m-auto text-black"}>
         <thead className="min-w-full">
           <tr className={"bg-[#85B7CA] text-primary border-gray-500"}>
-            <th className={"text-center rounded-tl-md p-1"}>Usuario</th>
-            <th className={"text-center p-1"}>Nombre</th>
-            <th className={"text-center p-1"}>Contraseña</th>
+            {keysToShow.map((key, index) => (
+              <th
+                key={index}
+                className={`text-center ${index === 0 ? "rounded-tl-md" : ""} ${
+                  index === keysToShow.length - 1 ? "rounded-tr-md" : ""
+                } p-1`}
+              >
+                {key}
+              </th>
+            ))}
             <th className={"text-center rounded-tr-md p-1"}>Acciones</th>
           </tr>
         </thead>
@@ -66,23 +79,24 @@ export const DataTable = ({ data }) => {
               } drop-shadow-md p-1`}
               key={index}
             >
-              <td
-                className={`text-center ${
-                  index === data.length - 1 ? "rounded-bl-md" : ""
-                } p-1`}
-              >
-                {item.username}
-              </td>
-              <td className="text-center p-1">{item.name}</td>
-              <td className="text-center p-1">{item.password}</td>
+              {keysToShow.map((key, idx) => (
+                <td
+                  key={idx}
+                  className={`text-center ${
+                    index === data.length - 1 && idx === keysToShow.length - 1
+                      ? "rounded-br-md"
+                      : ""
+                  } p-1`}
+                >
+                  {item[key]}
+                </td>
+              ))}
               <td
                 className={`text-center flex justify-evenly ${
                   index === data.length - 1 ? "rounded-br-md" : ""
                 } p-1`}
               >
-                <Link to={`/usuarios/${item.id}/editar`}>
-                  <button className="btn btn-accent">Editar</button>
-                </Link>
+                <Link to={`${editPath}/${item.id}/editar`}>🛠</Link>
                 <DeleteModal
                   itemID={item.id}
                   onDelete={() => handleDelete(item.id)}

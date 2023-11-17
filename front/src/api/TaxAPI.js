@@ -11,7 +11,7 @@ export const getAllTaxes = async () => {
 //http://localhost:8080/tax?id=3
 export const getSingleTax = async (taxId) => {
   try {
-    const response = await axios.get(`${apiUrl}?id=${taxId}`);
+    const response = await axios.get(`${apiUrl}/read?id=${taxId}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -19,7 +19,6 @@ export const getSingleTax = async (taxId) => {
 };
 
 export const updateSingleTax = async (data) => {
-  console.dir(data)
   try {
     const response = await axios.put(`${apiUrl}/update`, data);
     return response.status;

@@ -2,7 +2,7 @@ import axios from "axios";
 const apiUrl = "http://localhost:8080/order";
 export const getAllOrders = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/read`);
+    const response = await axios.get(`${apiUrl}/list`);
     console.dir(response);
     console.dir(response.status);
     return response.data;
@@ -14,9 +14,7 @@ export const getAllOrders = async () => {
 export const createSingleOrder = async (data) => {
   try {
     console.dir(data);
-    const response = await axios.post(`${apiUrl}/create`, 
-    data
-);
+    const response = await axios.post(`${apiUrl}/create`, data);
     console.dir(response);
     return response.status;
   } catch (error) {
@@ -27,10 +25,8 @@ export const createSingleOrder = async (data) => {
 export const refreshOrder = async (data) => {
   try {
     console.dir(data);
-    const response = await axios.post(`${apiUrl}/refresh`, 
-    data
-);
-    console.dir("La respuesta a refresh es: ",response);
+    const response = await axios.post(`${apiUrl}/refresh`, data);
+    console.dir("La respuesta a refresh es: ", response);
     return response.data;
   } catch (error) {
     console.error(error);

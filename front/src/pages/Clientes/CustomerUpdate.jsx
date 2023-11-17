@@ -1,129 +1,151 @@
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-import { getSingleCustomer, updateSingleCustomer  } from "../../api/customerAPI";
-import { useNavigate } from "react-router";
-export const CustomerUpdate = (props) => {
+import { Link } from "react-router-dom";
+import { getSingleCustomer, updateSingleCustomer } from "../../api/customerAPI";
+import Swal from "sweetalert2";
+
+export const CustomerUpdate = () => {
   const navigate = useNavigate();
-  const userID = useParams().id;
-  const { register, handleSubmit, reset, control, setValue } = useForm({
+  const { id } = useParams();
+  const { register, handleSubmit, setValue } = useForm({
     defaultValues: {
-      id: Number(userID),
+      id: Number(id),
     },
   });
-  const onError = (errors, e) => console.log(errors, e);
-
-  const [persona, setPersona] = useState(null); // Estado para almacenar la persona
+  const [customer, setCustomer] = useState(null);
 
   useEffect(() => {
-    async function fetchPersona() {
+    const fetchCustomer = async () => {
       try {
-        const data = await getSingleCustomer(userID);
-        setPersona(data);
+        const data = await getSingleCustomer(id);
+        setCustomer(data);
+
+        // Set initial values using setValue from react-hook-form
+        setValue("type", data.type);
+        setValue("name", data.name);
+        setValue("lastName", data.lastName);
+        setValue("dni", data.dni);
+        setValue("businessName", data.businessName);
+        setValue("cuit", data.cuit);
+        setValue("activityStartDate", data.activityStartDate);
+        // Add more fields as needed
       } catch (error) {
-        console.error("Error al buscar el cliente:", error);
+        console.error("Error fetching customer data:", error);
+        showErrorAlert();
       }
+    };
+
+    fetchCustomer();
+  }, [id, setValue]);
+
+  const onSubmit = async (data) => {
+    try {
+      data.id = id; // Agrega el ID al objeto de datos antes de enviarlo
+      await updateSingleCustomer(data);
+      showSuccessAlert();
+      navigate("/clientes");
+    } catch (error) {
+      console.error("Error updating customer:", error);
+      showErrorAlert();
     }
-
-    fetchPersona();
-  }, [userID]);
-
-  const onSubmit = async (data, e) => {
-    console.log(data, e);
-    console.dir(await updateSingleCustomer(data));
-    navigate("/clientes");
   };
 
-  if (persona && persona.type === "Persona") {
+  const showSuccessAlert = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Cliente actualizado",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
+  const showErrorAlert = () => {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Hubo un problema al actualizar el cliente",
+    });
+  };
+
+  if (!customer) {
+    return <div>Cargando...</div>;
+  }
+
+  // Renderiza los campos comunes y específicos según el tipo de cliente
+  const renderCustomerFields = () => {
     return (
       <>
-        <section className={"w-5/6 flex p-2 justify-end m-auto text-black"}>
-         <button className={"btn my-2 text-white bg-[#001F3D]"}>
-          <RouterLink
-          to="/clientes"
+        <div className="flex w-44 justify-evenly items-end gap-3 flex-col">
+          <div className="flex gap-3">
+            <label className="text-black">Tipo:</label>
+            <input type="text" value={customer.type} {...register("type")} />
+          </div>
+          <div className="flex gap-3">
+            <label className="text-black">Nombre:</label>
+            <input type="text" {...register("name")} />
+          </div>
+          <div className="flex gap-3">
+            <label className="text-black">Apellido:</label>
+            <input type="text" {...register("lastName")} />
+          </div>
+          <div className="flex gap-3">
+            <label className="text-black">DNI:</label>
+            <input type="text" {...register("dni")} />
+          </div>
+        </div>
+
+        {customer.type === "EMP" && (
+          <div className="flex gap-3">
+            <label className="text-black">Nombre Empresa:</label>
+            <input type="text" {...register("businessName")} />
+          </div>
+        )}
+
+        {customer.type === "EMP" && (
+          <div className="flex gap-3">
+            <label className="text-black">Cuit:</label>
+            <input type="text" {...register("cuit")} />
+          </div>
+        )}
+
+        {customer.type === "EMP" && (
+          <div className="flex gap-3">
+            <label className="text-black">Inicio actividades:</label>
+            <input type="text" {...register("activityStartDate")} />
+          </div>
+        )}
+
+        <button
+          className="self-center btn my-2 text-white bg-[#001F3D]"
+          type="submit"
         >
-          Lista de Clientes
-        </RouterLink>
+          Cambiar
         </button>
-        </section>
-        
-        <section className={" w-5/6 p-5 m-auto bg-[#F1F1F1]"}>
-        
-        <section className={"flex justify-center items-center gap-3  flex-col"}>
-          <form className={"flex justify-center text-black items-end gap-3 my-10  flex-col"}
-            onSubmit={handleSubmit(onSubmit, onError)}
-          >
-            <section className={"flex w-44 justify-evenly items-end gap-3 flex-col"}>
-              <article className={"flex gap-3"}>
-                <label className={"text-black"}>Tipo:</label>
-                <input type="text" defaultValue={"Persona"
-                } readOnly {...register("type")} />
-              </article>
-              <article className={"flex gap-3"}>
-                <label className={"text-black"}>Nombre:</label>
-                <input type="text" {...register("name")} />
-              </article>
-              <article className={"flex gap-3"}><label className={"text-black"}>Apellido:</label>
-                <input type="text" {...register("lastName")} /></article>
-              <article className={"flex gap-3"}><label className={"text-black"}>DNI:</label>
-                <input type="text" {...register("dni")} /></article>
-            </section>
-            <button className={"self-center btn my-2 text-white bg-[#001F3D]"} type="submit" >Cambiar</button>
-          </form>
-        </section>
-        </section>
-        </>
+      </>
     );
-  }else if((persona && persona.type === "Empresa")){
-    return(
-      <>
-         <section className={"w-5/6 p-2 flex justify-end m-auto text-black"}>
-          <button className={"btn text-white bg-[#001F3D]"}>
-          <RouterLink
-          to="/clientes"
-        >
-          Lista de Clientes
-        </RouterLink>
-        </button>
-        </section>
-        <section className={" w-5/6 flex justify-center m-auto bg-[#F1F1F1]"}>
-       
-        <section className={"flex justify-center  gap-3  flex-col"}>
-          <form className={"flex justify-center text-black items-end gap-3 my-10  flex-col"}
-            onSubmit={handleSubmit(onSubmit, onError)}
+  };
+
+  return (
+    <>
+      <section className="w-5/6 flex p-2 justify-end m-auto text-black">
+        <Link to="/clientes">
+          <button className="btn my-2 text-white bg-[#001F3D]">
+            Lista de Clientes
+          </button>
+        </Link>
+      </section>
+
+      <section className="w-5/6 p-5 m-auto bg-[#F1F1F1]">
+        <section className="flex justify-center items-center gap-3  flex-col">
+          <form
+            className="flex justify-center text-black items-end gap-3 my-10  flex-col"
+            onSubmit={handleSubmit(onSubmit)}
           >
-          
-              <article className={"flex gap-3"}>
-                <label className={"text-black"}>Tipo:</label>
-                <input type="text" defaultValue={"Empresa"
-                } readOnly {...register("type")} />
-              </article>
-              <article className={"flex gap-3"}>
-                <label className={"text-black"}>Nombre Empresa:</label>
-                <input type="text" {...register("businessName")} />
-              </article>
-              <article className={"flex gap-3"}>
-                <label className={"text-black"}>Cuit:</label>
-                <input type="text" {...register("cuit")} />
-              </article>
-              <article className={"flex gap-3"}>
-                <label className={"text-black"}>Inicio actividades:</label>
-                <input type="text" {...register("activityStartDate")} />
-              </article>
-              <h1 className="text-lg text-black font-semibold underline self-center">Contacto:</h1>
-              
-              <article className={"flex gap-3"}><label className={"text-black"}>Nombre:</label>
-                <input type="text" {...register("name")} /></article>
-              <article className={"flex gap-3"}><label className={"text-black"}>Apellido:</label>
-                <input type="text" {...register("lastName")} /></article>
-              <article className={"flex gap-3"}><label className={"text-black"}>Dni:</label>
-                <input type="text" {...register("dni")} /></article>
-            <button className={"btn my-2 self-center text-white bg-[#001F3D]"} type="submit" >Cambiar</button>
+            {renderCustomerFields()}
           </form>
         </section>
-</section>
-</>
-    )
-  }
-}
+      </section>
+    </>
+  );
+};
