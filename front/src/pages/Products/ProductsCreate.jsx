@@ -2,7 +2,8 @@ import { createSingleProduct } from "../../api/productAPI.js";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import { HomeTable } from "../../components/HomeTable/HomeTable.jsx";
+
+import { TaxesTable } from "../../components/TaxTable/TaxesTable.jsx";
 
 export const ProductsCreate = () => {
   const navigate = useNavigate();
@@ -61,16 +62,7 @@ export const ProductsCreate = () => {
             {...register("mountBase")}
           />
         </label>
-        <label
-          className={"text-black text-xl my-5 flex justify-center items-center"}
-        >
-          Garantía
-          <input
-            className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4"
-            type="text"
-            {...register("warranty")}
-          />
-        </label>
+
         <label
           className={"text-black text-xl my-5 flex justify-center items-center"}
         >
@@ -83,13 +75,7 @@ export const ProductsCreate = () => {
         </label>
       </div>
       <div className={"w-1/2"}>
-        <HomeTable
-          col1={"ID"}
-          col2={"Impuesto"}
-          col3={"Porcentaje"}
-          col4={""}
-          numRows={5}
-        />
+        <TaxesTable />
       </div>
       <input
         className={

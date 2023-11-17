@@ -1,10 +1,12 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
+import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.Asset;
 import crisalis.blue.models.Item;
 import crisalis.blue.models.Order;
 import crisalis.blue.models.dto.ItemDTO;
+import crisalis.blue.models.dto.OrderDTO;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.ItemRepository;
 import crisalis.blue.repositories.OrderRepository;
@@ -22,17 +24,16 @@ public class ItemService {
     private final OrderRepository orderRepository;
 
     public ItemService(ItemRepository exchangeGoodOrderRepository,
-                       AssetRepository assetRepository,OrderRepository orderRepository)
-    {
+            AssetRepository assetRepository, OrderRepository orderRepository) {
         this.itemRepository = exchangeGoodOrderRepository;
         this.assetRepository = assetRepository;
         this.orderRepository = orderRepository;
     }
-    public ItemDTO create(ItemDTO itemDTO)
-    {
+
+    public ItemDTO create(ItemDTO itemDTO) {
         Item item = new Item();
         Order order = null;
-        if(checkIsEmpty(itemDTO)) {
+        if (checkIsEmpty(itemDTO)) {
             item.setWarrantyYears(itemDTO.getWarrantyYears());
             item.setItemPrice(itemDTO.getItemPrice());
             item.setItemDetails(itemDTO.getItemDitails());
@@ -43,18 +44,19 @@ public class ItemService {
             order = orderRepository.save(itemDTO.getOrderDTO().toOrder());
             item.setIdOrder(order);
             return itemRepository.save(item).toItemDTO();
-        }else throw new EmptyElementException("Campos vacios");
+        } else
+            throw new EmptyElementException("Campos vacios");
     }
-    public List<ItemDTO> read()
-    {
+
+    public List<ItemDTO> read() {
         return itemRepository.findAll().stream().map(Item::toItemDTO).collect(Collectors.toList());
     }
+
     public ItemDTO update(ItemDTO itemDTO)
 
     {
-        Optional<Item> optionalItem = itemRepository.
-                findById(itemDTO.getIdItem());
-        if(optionalItem.isPresent()) {
+        Optional<Item> optionalItem = itemRepository.findById(itemDTO.getIdItem());
+        if (optionalItem.isPresent()) {
 
             if (itemDTO.getIdItem() != 0)
                 optionalItem.get().setId(itemDTO.getIdItem());
@@ -85,30 +87,35 @@ public class ItemService {
         } else
             throw new EmptyElementException("El id no existe");
     }
-    public void delete(Long id_ExchangeGood_Customer)
-    {
-        if(itemRepository.findById(id_ExchangeGood_Customer).isPresent())
+
+    public void delete(Long id_ExchangeGood_Customer) {
+        if (itemRepository.findById(id_ExchangeGood_Customer).isPresent())
             itemRepository.deleteById(id_ExchangeGood_Customer);
         else
             throw new EmptyElementException("El id no existe");
     }
 
     private boolean checkIsEmpty(ItemDTO item) {
-            if(!item.getItemDitails().isEmpty()){
-                if(item.getItemQuantity() !=0)
-                {
-                        if(item.getItemPrice().intValue() != 0 )
-                        {
-                            if(item.getDiscountAmount().intValue() != 0){
-                                if(item.getIdAsset() != null) {
-                                    return item.getTotalPrice().intValue() != 0;
-                                }
-                            }
-
+        if (!item.getItemDitails().isEmpty()) {
+            if (item.getItemQuantity() != 0) {
+                if (item.getItemPrice().intValue() != 0) {
+                    if (item.getDiscountAmount().intValue() != 0) {
+                        if (item.getIdAsset() != null) {
+                            return item.getTotalPrice().intValue() != 0;
                         }
                     }
+
                 }
+            }
+        }
 
         return false;
+    }
+
+    public ItemDTO getItemById(Long id) {
+        return this.itemRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Item no encontrado"))
+                .toItemDTO();
     }
 }

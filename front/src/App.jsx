@@ -26,9 +26,9 @@ import {
   ProductsCreate,
   ProductsUpdate,
 } from "./pages";
-import { UsersTable } from "./components/UsersTable/UsersTable";
-import { TaxesTable } from "./components/TaxTable/TaxesTable";
-import { CustomersTable } from "./components/CustomersTable/CustomersTable";
+import { UsersTable } from "./components/UsersTable/UsersTable.jsx";
+import { TaxesTable } from "./components/TaxTable/TaxesTable.jsx";
+import { CustomersTable } from "./components/CustomersTable/CustomersTable.jsx";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 import { ProductsTable } from "./components/ProductsTable/ProductsTable.jsx";

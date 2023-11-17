@@ -58,11 +58,11 @@ export const CustomerCreate = () => {
                   onChange={(e) => setType(e.target.value)}
                 >
                   <option value="">Seleccionar Tipo</option>
-                  <option value="Persona">Persona</option>
-                  <option value="Empresa">Empresa</option>
+                  <option value="PER">PER</option>
+                  <option value="BUS">BUS</option>
                 </select>
               </article>
-              {type === "Persona" && (
+              {type === "PER" && (
                 <>
                   <article className="flex gap-3">
                     <label className="text-black">Nombre:</label>
@@ -73,12 +73,16 @@ export const CustomerCreate = () => {
                     <input type="text" {...register("lastName")} />
                   </article>
                   <article className="flex gap-3">
+                    <label className="text-black">Direccion:</label>
+                    <input type="text" {...register("address")} />
+                  </article>
+                  <article className="flex gap-3">
                     <label className="text-black">DNI:</label>
                     <input type="text" {...register("dni")} />
                   </article>
                 </>
               )}
-              {type === "Empresa" && (
+              {type === "BUS" && (
                 <>
                   <article className="flex gap-3">
                     <label className="text-black">Nombre Empresa:</label>
@@ -90,7 +94,7 @@ export const CustomerCreate = () => {
                   </article>
                   <article className="flex gap-3">
                     <label className="text-black">Inicio actividades:</label>
-                    <input type="text" {...register("activityStartDate")} />
+                    <input type="date" {...register("activityStartDate")} />
                   </article>
                   <h1 className="text-lg text-black font-semibold underline self-center">
                     Contacto:
@@ -102,6 +106,10 @@ export const CustomerCreate = () => {
                   <article className="flex gap-3">
                     <label className="text-black">Apellido:</label>
                     <input type="text" {...register("lastName")} />
+                  </article>
+                  <article className="flex gap-3">
+                    <label className="text-black">Direccion:</label>
+                    <input type="text" {...register("address")} />
                   </article>
                   <article className="flex gap-3">
                     <label className="text-black">Dni:</label>

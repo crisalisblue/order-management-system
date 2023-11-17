@@ -2,7 +2,7 @@ import axios from "axios";
 const apiUrl = "http://localhost:8080/tax";
 export const getAllTaxes = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/read`);
+    const response = await axios.get(`${apiUrl}/list`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -11,7 +11,7 @@ export const getAllTaxes = async () => {
 //http://localhost:8080/tax?id=3
 export const getSingleTax = async (taxId) => {
   try {
-    const response = await axios.get(`${apiUrl}?id=${taxId}`);
+    const response = await axios.get(`${apiUrl}/read?id=${taxId}`);
     return response.data;
   } catch (error) {
     console.error(error);

@@ -1,8 +1,8 @@
 import axios from "axios";
-const apiUrl = "http://localhost:8080/product";
+const apiUrl = "http://localhost:8080/asset";
 export const getAllProducts = async () => {
   try {
-    const response = await axios.get(`${apiUrl}/read`);
+    const response = await axios.get(`${apiUrl}/list`);
     console.dir(response);
     console.dir(response.status);
     return response.data;

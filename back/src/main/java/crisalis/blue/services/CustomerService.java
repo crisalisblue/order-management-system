@@ -35,12 +35,12 @@ public class CustomerService {
 
     public CustomerDTO createCustomer(CustomerDTO customer) throws Exception {
         try {
-            if (customer.getType().equals("PER")){
+            if (customer.getType().equals("PER")) {
                 Customer customerPerson = new Person(customer);
                 this.customerRepository.save(customerPerson);
                 return customerPerson.toDTO();
             } else {
-                //Caso Business
+                // Caso Business
                 Customer customerBusiness = new Business(customer);
                 this.customerRepository.save(customerBusiness);
                 return customerBusiness.toDTO();
@@ -59,17 +59,18 @@ public class CustomerService {
         Customer returnCustomer = null;
 
         if (customerOptional.isPresent()) {
-            //Vemos si el type es consistente con lo que necesitamos
-            if (!updatedCustomer.getType().equals("PER") && !updatedCustomer.getType().equals("BUS")){
+            // Vemos si el type es consistente con lo que necesitamos
+            if (!updatedCustomer.getType().equals("PER") && !updatedCustomer.getType().equals("BUS")) {
                 throw new NotCreatedException("Error en el type recibido");
             }
-            //Determinamos si lo que se esta updateando es una Persona o Empresa e instanciamos un objeto segun corresponda
-            if (updatedCustomer.getType().equals("PER")){
+            // Determinamos si lo que se esta updateando es una Persona o Empresa e
+            // instanciamos un objeto segun corresponda
+            if (updatedCustomer.getType().equals("PER")) {
                 Person customerPerson = new Person(updatedCustomer);
                 returnCustomer = customerPerson;
                 customerRepository.save(customerPerson);
 
-            } else if (updatedCustomer.getType().equals("BUS")){
+            } else if (updatedCustomer.getType().equals("BUS")) {
                 Business customerBusiness = new Business(updatedCustomer);
                 returnCustomer = customerBusiness;
                 customerRepository.save(customerBusiness);
