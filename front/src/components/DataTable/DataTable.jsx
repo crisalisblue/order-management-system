@@ -11,6 +11,7 @@ export const DataTable = ({
   deleteFunction,
 }) => {
   const navigate = useNavigate();
+
   const handleDelete = (id) => {
     Swal.fire({
       title: `¿Estás seguro de eliminar este ${itemName}?`,
@@ -51,8 +52,7 @@ export const DataTable = ({
       }
     });
   };
-  console.dir(data);
-  console.dir(keysToShow);
+
   return (
     <section className="overflow-y-auto overflow-x-hidden">
       <table className={"w-5/6 m-auto text-black"}>
@@ -72,38 +72,46 @@ export const DataTable = ({
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <tr
-              className={`${
-                index % 2 === 0 ? "bg-[#BCDEEB]" : "bg-[#DBE8EC]"
-              } drop-shadow-md p-1`}
-              key={index}
-            >
-              {keysToShow.map((key, idx) => (
-                <td
-                  key={idx}
-                  className={`text-center ${
-                    index === data.length - 1 && idx === keysToShow.length - 1
-                      ? "rounded-br-md"
-                      : ""
-                  } p-1`}
-                >
-                  {item[key]}
-                </td>
-              ))}
-              <td
-                className={`text-center flex justify-evenly ${
-                  index === data.length - 1 ? "rounded-br-md" : ""
-                } p-1`}
-              >
-                <Link to={`${editPath}/${item.id}/editar`}>🛠</Link>
-                <DeleteModal
-                  itemID={item.id}
-                  onDelete={() => handleDelete(item.id)}
-                ></DeleteModal>
+          {data.length === 0 ? (
+            <tr>
+              <td colSpan={keysToShow.length + 1} className="text-center">
+                No hay datos disponibles.
               </td>
             </tr>
-          ))}
+          ) : (
+            data.map((item, index) => (
+              <tr
+                className={`${
+                  index % 2 === 0 ? "bg-[#BCDEEB]" : "bg-[#DBE8EC]"
+                } drop-shadow-md p-1`}
+                key={index}
+              >
+                {keysToShow.map((key, idx) => (
+                  <td
+                    key={idx}
+                    className={`text-center ${
+                      index === data.length - 1 && idx === keysToShow.length - 1
+                        ? "rounded-br-md"
+                        : ""
+                    } p-1`}
+                  >
+                    {item[key]}
+                  </td>
+                ))}
+                <td
+                  className={`text-center flex justify-evenly ${
+                    index === data.length - 1 ? "rounded-br-md" : ""
+                  } p-1`}
+                >
+                  <Link to={`${editPath}/${item.id}/editar`}>🛠</Link>
+                  <DeleteModal
+                    itemID={item.id}
+                    onDelete={() => handleDelete(item.id)}
+                  ></DeleteModal>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </section>

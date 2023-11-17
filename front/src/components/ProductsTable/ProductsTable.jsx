@@ -16,7 +16,10 @@ export const ProductsTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  // Verificación de datos vacíos
+  if (!productsData || productsData.length === 0) {
+    return <div>No hay datos disponibles.</div>;
+  }
   return (
     <DataTable
       data={productsData}

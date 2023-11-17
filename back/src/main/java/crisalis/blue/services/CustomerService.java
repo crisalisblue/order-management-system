@@ -35,19 +35,21 @@ public class CustomerService {
 
     public CustomerDTO createCustomer(CustomerDTO customer) throws Exception {
         try {
-            if (customer.getType().equals("PER")){
+            if (customer.getType().equals("PER")) {
                 Person customerPerson = new Person(customer);
                 this.customerRepository.save(customerPerson);
                 return customerPerson.toDTO();
             } else {
-                //Caso Business
-                //Primero creo la persona que viene asociada a la empresa
+                // Caso Business
+                // Primero creo la persona que viene asociada a la empresa
                 Person businessPerson = new Person(customer);
                 this.customerRepository.save(businessPerson);
-                //una vez guardado en la base de datos, ya se puede acceder al id automaticamente en el objeto previamente instanciado
-                //System.out.println(businessPerson.getId());
+                // una vez guardado en la base de datos, ya se puede acceder al id
+                // automaticamente en el objeto previamente instanciado
+                // System.out.println(businessPerson.getId());
 
-                //Creo una lista nueva en la cual se va a asigna la persona que viene junto a la empresa
+                // Creo una lista nueva en la cual se va a asigna la persona que viene junto a
+                // la empresa
                 Business customerBusiness = new Business(customer);
                 List<Person> asociatedPerson = new ArrayList<>();
                 asociatedPerson.add(businessPerson);
@@ -76,13 +78,15 @@ public class CustomerService {
             if (!updatedCustomer.getType().equals("PER") && !updatedCustomer.getType().equals("BUS")) {
                 throw new NotCreatedException("Error en el type recibido");
             }
-            //Determinamos si lo que se esta updateando es una Persona o Empresa e instanciamos un objeto segun corresponda
-            //Damos por hecho que siempre nos va a llegar el dto completo sin datos nulls, si no se actualiza el dato llegara el dato previo
-            if (updatedCustomer.getType().equals("PER")){
-                //Obtengo los datos de la persona persistidos
+            // Determinamos si lo que se esta updateando es una Persona o Empresa e
+            // instanciamos un objeto segun corresponda
+            // Damos por hecho que siempre nos va a llegar el dto completo sin datos nulls,
+            // si no se actualiza el dato llegara el dato previo
+            if (updatedCustomer.getType().equals("PER")) {
+                // Obtengo los datos de la persona persistidos
                 Customer customerPerson = customerOptional.get();
 
-                //Updateo los datos de la persona con los nuevos
+                // Updateo los datos de la persona con los nuevos
                 customerPerson.setName(updatedCustomer.getName());
                 customerPerson.setAddress(updatedCustomer.getAddress());
                 ((Person) customerPerson).setDni(updatedCustomer.getDni());
@@ -91,16 +95,16 @@ public class CustomerService {
                 returnCustomer = customerPerson;
                 customerRepository.save(customerPerson);
 
-            } else if (updatedCustomer.getType().equals("BUS")){
-                //Obtengo los datos de la empresa persistidos
+            } else if (updatedCustomer.getType().equals("BUS")) {
+                // Obtengo los datos de la empresa persistidos
                 Customer customerBusiness = customerOptional.get();
 
-                //Updateo los datos de la empresa con los nuevos
+                // Updateo los datos de la empresa con los nuevos
                 customerBusiness.setAddress(updatedCustomer.getAddress());
                 ((Business) customerBusiness).setBusinessName(updatedCustomer.getBusinessName());
                 ((Business) customerBusiness).setCuit(updatedCustomer.getCuit());
                 ((Business) customerBusiness).setActivityStartDate(updatedCustomer.getActivityStartDate());
-                //Updateo los datos de la persona asociada a la empresa con los nuevos
+                // Updateo los datos de la persona asociada a la empresa con los nuevos
                 ((Business) customerBusiness).getPersons().get(0).setName(updatedCustomer.getName());
                 ((Business) customerBusiness).getPersons().get(0).setLastName(updatedCustomer.getLastName());
                 ((Business) customerBusiness).getPersons().get(0).setDni(updatedCustomer.getDni());

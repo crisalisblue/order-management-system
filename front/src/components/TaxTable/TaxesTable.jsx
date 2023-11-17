@@ -13,6 +13,11 @@ export const TaxesTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  // Verificación de datos vacíos
+  if (!impuestosData || impuestosData.length === 0) {
+    return <div>No hay datos disponibles.</div>;
+  }
   return (
     <DataTable
       data={impuestosData}

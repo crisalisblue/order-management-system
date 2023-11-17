@@ -5,7 +5,7 @@ import "./CustomersTable.css";
 
 export const CustomersTable = () => {
   const {
-    data: clientesData,
+    data: clientsData,
     loading,
     error,
   } = useDataFetching(getAllCustomers);
@@ -17,10 +17,14 @@ export const CustomersTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  if (!clientsData || clientsData.length === 0) {
+    return <div>No hay datos disponibles.</div>;
+  }
   return (
     <DataTable
-      data={clientesData}
-      keysToShow={Object.keys(...clientesData)}
+      data={clientsData}
+      keysToShow={Object.keys(...clientsData)}
       itemName="clientes"
       editPath="/clientes"
       deleteFunction={deleteSingleCustomer}

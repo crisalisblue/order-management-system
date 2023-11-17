@@ -14,6 +14,11 @@ export const UsersTable = () => {
     return <div>Loading...</div>;
   }
 
+  // Verificación de datos vacíos
+  if (!usuariosData || usuariosData.length === 0) {
+    return <div>No hay datos disponibles.</div>;
+  }
+
   return (
     <DataTable
       data={usuariosData}

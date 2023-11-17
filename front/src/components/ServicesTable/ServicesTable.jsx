@@ -17,6 +17,11 @@ export const Services = () => {
     return <div>Loading...</div>;
   }
 
+  // Verificación de datos vacíos
+  if (!servicesData || servicesData.length === 0) {
+    return <div>No hay datos disponibles.</div>;
+  }
+
   return (
     <DataTable
       data={servicesData}
