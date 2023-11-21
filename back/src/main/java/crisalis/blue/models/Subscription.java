@@ -1,25 +1,15 @@
 package crisalis.blue.models;
 
-import crisalis.blue.models.dto.CustomerDTO;
 import crisalis.blue.models.dto.SubscriptionDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Data
-@Entity
-@Table(name = "subscription")
-@Getter
-@Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "subscription")
 public class Subscription {
-
-    public Subscription(SubscriptionDTO dto){
-        setStatus(this.status);
-        setCustomer(this.customer);
-        setService(this.service);
-    }
 
     @Id
     @SequenceGenerator(
@@ -36,23 +26,31 @@ public class Subscription {
     @Column(name = "id")
     private Long id;
 
-    @Column
+    @Column(name = "status")
     private Boolean status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_customer")
+    @ManyToOne
+    @JoinColumn(name = "id_customer", referencedColumnName = "id")
     private Customer customer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_service")
-    private Service service;
+    @ManyToOne
+    @JoinColumn(name = "id_asset", referencedColumnName = "id")
+    private Asset asset;
 
     public SubscriptionDTO toDTO(){
         SubscriptionDTO dto = new SubscriptionDTO();
         dto.setId(this.id);
         dto.setStatus(this.status);
         dto.setCustomer(this.customer.getId());
-        dto.setService(this.customer.getId());
+        dto.setAsset(this.asset.getId());
         return dto;
     }
+    /*
+    SubscriptionDTO.builder()
+                    .id(newSubscription.getId())
+                    .status(newSubscription.getStatus())
+                    .customer(newSubscription.getCustomer().getId())
+                    .asset(newSubscription.getAsset().getId())
+                    .build();
+    * */
 }

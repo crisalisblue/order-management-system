@@ -17,8 +17,8 @@ public class SubscriptionDTO {
     @JsonProperty("customer")
     private Long customer;
 
-    @JsonProperty("service")
-    private Long service;
+    @JsonProperty("asset")
+    private Long asset;
 
     @JsonProperty("status")
     private Boolean status;
