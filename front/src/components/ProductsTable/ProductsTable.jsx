@@ -16,7 +16,7 @@ export const ProductsTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  if (!productsData) {
+  if (!productsData || productsData.length == 0) {
     return <div>No data...</div>;
   }
   return (

@@ -17,7 +17,7 @@ export const CustomersTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  if (!clientesData) {
+  if (clientesData.length == 0) {
     return <div>No data...</div>;
   }
   return (

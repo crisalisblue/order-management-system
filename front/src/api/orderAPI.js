@@ -33,7 +33,7 @@ export const refreshOrder = async (data) => {
   }
 };
 
-export const deleteOrder = async (orderId) => {
+export const deleteSingleOrder = async (orderId) => {
   try {
     const response = await axios.delete(`${apiUrl}/delete?id=${orderId}`);
     return response.status;

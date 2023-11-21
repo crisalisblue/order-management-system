@@ -174,7 +174,9 @@ export const OrderCreate = () => {
   if (assetsLoading || customersLoading) {
     return <div>Loading...</div>;
   }
-
+  if (!assetsData || assetsData.length == 0) {
+    return <div>No data...</div>;
+  }
   return (
     <main className={"w-6/7 p-2 rounded-md"}>
       <header className="flex justify-between p-2 text-black rounded-t-md border-b-black bg-[#F1F1F1] ">
@@ -186,7 +188,7 @@ export const OrderCreate = () => {
         onSubmit={handleSubmit}
       >
         <section className="flex rounded-b-md">
-          <section className="w-1/2 justify-between rounded-b-md flex flex-col justify-center mx-5">
+          <section className="w-1/2 rounded-b-md flex flex-col justify-center mx-5">
             <section className="flex rounded-b-md  justify-center items-center my-3">
               <article>
                 <label htmlFor="">Cliente:</label>
@@ -234,9 +236,9 @@ export const OrderCreate = () => {
                       fill="currentColor"
                     >
                       <path
-                        fill-rule="evenodd"
+                        fillRule="evenodd"
                         d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                        clip-rule="evenodd"
+                        clipRule="evenodd"
                       />
                     </svg>
                   </div>
