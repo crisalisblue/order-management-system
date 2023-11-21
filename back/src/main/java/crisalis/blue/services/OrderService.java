@@ -1,10 +1,12 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
+import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.*;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
 import crisalis.blue.models.dto.ItemDTO;
 import crisalis.blue.models.dto.OrderDTO;
+import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.*;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class OrderService {
     private final ItemRepository itemRepository;
     private final CalculatedTaxRepository calculatedTaxRepository;
     private final AssetRepository assetRepository;
+
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
                         ItemRepository itemRepository,
                         CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository
@@ -48,7 +51,7 @@ public class OrderService {
             orderRepository.save(order);
             return order.toOrderDTO();
         }
-     throw new RuntimeException();
+        throw new RuntimeException();
 
     }
 
@@ -109,8 +112,8 @@ public class OrderService {
             list.get(j).setOrder(order);
         }
     }
-    public List<OrderDTO> read()
-    {
+
+    public List<OrderDTO> read() {
         return orderRepository.findAll().stream().map(Order::toOrderDTO).collect(Collectors.toList());
     }
     public OrderDTO update(  OrderDTO orderDTO) {
@@ -218,11 +221,9 @@ public class OrderService {
     public void delete(Long id )
     {
         Optional<Order> aux = orderRepository.findById(id);
-        if(aux.isPresent())
-        {
+        if (aux.isPresent()) {
             orderRepository.deleteById(id);
-        }
-        else
+        } else
             throw new EmptyElementException("No se encontro el registro con ese id ");
 
     }
@@ -238,5 +239,12 @@ public class OrderService {
         if(order.getCustomerID() == null) {
             throw new EmptyElementException("El id del cliente vacio ");
         }
+    }
+
+    public OrderDTO getOrderById(Long id) {
+        return this.orderRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Orden no encontrada"))
+                .toOrderDTO();
     }
 }

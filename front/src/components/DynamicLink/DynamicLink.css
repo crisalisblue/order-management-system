@@ -1,8 +1,0 @@
-/* Estilos específicos para el estado de deshabilitado, DaisyUI y la prop disabled rompen el estilo */
-.tab-unclickable {
-  background-color: gray !important;
-  opacity: 0.6;
-}
-.tab-unclickable:hover {
-  cursor: not-allowed;
-}

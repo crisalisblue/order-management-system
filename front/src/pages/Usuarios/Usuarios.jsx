@@ -16,7 +16,6 @@ export const Usuarios = () => {
                 : "hidden"
             } `}
           >
-
             <label htmlFor="filter1" className="mr-4">
               Filtrar:
             </label>
@@ -48,7 +47,6 @@ export const Usuarios = () => {
                 : `Lista de Usuarios`}
             </button>
           </Link>
-          
         </section>
       </article>
 

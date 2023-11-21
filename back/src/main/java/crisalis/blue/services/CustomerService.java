@@ -73,8 +73,8 @@ public class CustomerService {
         Customer returnCustomer = null;
 
         if (customerOptional.isPresent()) {
-            //Vemos si el type es consistente con lo que necesitamos
-            if (!updatedCustomer.getType().equals("PER") && !updatedCustomer.getType().equals("BUS")){
+            // Vemos si el type es consistente con lo que necesitamos
+            if (!updatedCustomer.getType().equals("PER") && !updatedCustomer.getType().equals("BUS")) {
                 throw new NotCreatedException("Error en el type recibido");
             }
             //Determinamos si lo que se esta updateando es una Persona o Empresa e instanciamos un objeto segun corresponda
