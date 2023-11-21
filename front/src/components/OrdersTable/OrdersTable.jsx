@@ -12,7 +12,7 @@ export const OrdersTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  if (ordersData.length == 0) {
+  if (!ordersData || ordersData.length == 0) {
     return <div>No data...</div>;
   }
   return (

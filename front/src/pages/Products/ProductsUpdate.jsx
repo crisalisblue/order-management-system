@@ -17,8 +17,8 @@ export const ProductsUpdate = () => {
     const fetchProductData = async () => {
       try {
         const productData = await getSingleProduct(productID);
-        console.dir(productData)
-        console.dir(productID)
+        console.dir(productData);
+        console.dir(productID);
         // Setear los valores iniciales del formulario con los datos obtenidos
         Object.keys(productData).forEach((key) => {
           setValue(key, productData[key]);
@@ -79,7 +79,7 @@ export const ProductsUpdate = () => {
           <input
             className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4"
             type="number"
-            {...register("mountBase")}
+            {...register("baseAmount")}
           />
         </label>
         <label className="text-black text-xl my-5 flex justify-center items-center">
