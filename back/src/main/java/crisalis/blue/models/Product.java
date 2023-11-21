@@ -9,8 +9,4 @@ import lombok.Data;
 public class Product extends Asset {
 
 
-    @Override
-    public void asignarDatosCorrespondientes() {
-
-    }
 }
