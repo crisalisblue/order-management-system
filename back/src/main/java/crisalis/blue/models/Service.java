@@ -18,7 +18,4 @@ public class Service extends Asset {
     @Column(name = "supportFee")
     private BigDecimal supportFee;
 
-@Override
-public void asignarDatosCorrespondientes(){
-}
 }
