@@ -1,9 +1,6 @@
 package crisalis.blue.exceptions;
 
-import crisalis.blue.exceptions.custom.EmptyElementException;
-import crisalis.blue.exceptions.custom.NotCreatedException;
-import crisalis.blue.exceptions.custom.UnauthorizedException;
-import crisalis.blue.exceptions.custom.ResourceNotFoundException;
+import crisalis.blue.exceptions.custom.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,7 +15,9 @@ public class ApiExceptionHandler {
     @ExceptionHandler({
             EmptyElementException.class,
             NotCreatedException.class,
-            ResourceNotFoundException.class
+            ResourceNotFoundException.class,
+            IntegrityViolationException.class
+            //UnauthorizedException.class
     })
     @ResponseBody
     public ErrorMessage badRequest(HttpServletRequest request, Exception exception){
