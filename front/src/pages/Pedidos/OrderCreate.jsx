@@ -174,9 +174,7 @@ export const OrderCreate = () => {
   if (assetsLoading || customersLoading) {
     return <div>Loading...</div>;
   }
-  if (!assetsData || assetsData.length == 0) {
-    return <div>No data...</div>;
-  }
+
   return (
     <main className={"w-6/7 p-2 rounded-md"}>
       <header className="flex justify-between p-2 text-black rounded-t-md border-b-black bg-[#F1F1F1] ">
