@@ -16,7 +16,9 @@ export const Services = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  if (!servicesData) {
+    return <div>No data...</div>;
+  }
   return (
     <DataTable
       data={servicesData}

@@ -17,6 +17,9 @@ export const CustomersTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+  if (!clientesData) {
+    return <div>No data...</div>;
+  }
   return (
     <DataTable
       data={clientesData}

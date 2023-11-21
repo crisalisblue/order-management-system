@@ -13,7 +13,9 @@ export const UsersTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  if (!usuariosData) {
+    return <div>No data...</div>;
+  }
   return (
     <DataTable
       data={usuariosData}
