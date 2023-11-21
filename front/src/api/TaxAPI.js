@@ -29,7 +29,7 @@ export const updateSingleTax = async (data) => {
 
 export const deleteSingleTax = async (taxId) => {
   try {
-    const response = await axios.delete(`${apiUrl}?id=${taxId}`);
+    const response = await axios.delete(`${apiUrl}/delete?id=${taxId}`);
     console.dir(`${apiUrl}/${taxId}`);
     return response.status;
   } catch (error) {

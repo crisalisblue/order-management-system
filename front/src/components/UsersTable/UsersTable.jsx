@@ -9,11 +9,12 @@ export const UsersTable = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  if (usuariosData.length == 0) {
+    return <div>No data...</div>;
+  }
   return (
     <DataTable
       data={usuariosData}

@@ -13,6 +13,9 @@ export const TaxesTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+  if (!impuestosData || impuestosData.length == 0) {
+    return <div>No data...</div>;
+  }
   return (
     <DataTable
       data={impuestosData}

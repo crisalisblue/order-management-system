@@ -7,6 +7,7 @@ import crisalis.blue.models.Product;
 import crisalis.blue.models.Tax;
 import crisalis.blue.models.dto.AssetDTO;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
+import crisalis.blue.models.dto.CustomerDTO;
 import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.TaxRepository;
@@ -128,6 +129,14 @@ public class AssetService {
             assetRepository.deleteById(id);
         } else
             throw new EmptyElementException("El id que se paso es invalido, no existe una entrada con ese elemento  ");
+    }
+
+    public AssetDTO getAssetById(Long id) {
+
+        return this.assetRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Asset not Found"))
+                .toAssetDTO();
     }
 
 }
