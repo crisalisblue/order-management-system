@@ -38,7 +38,7 @@ public class UserController {
 
     }
 
-    @GetMapping(value = "read", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDTOResponse> getAllUsers() {
         return this.userService.getListOfAllUsersInDB();
 
@@ -46,10 +46,10 @@ public class UserController {
 
     @DeleteMapping(value = "delete")
     public void deleteUser(@RequestParam Long id) {
-         userService.deleteUser(id);
+        userService.deleteUser(id);
     }
 
-    @GetMapping(value = "obtener-id", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "read", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO getUserById(@RequestParam Long id) {
         return this.userService.getUserById(id);
     }

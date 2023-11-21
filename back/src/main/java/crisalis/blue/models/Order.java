@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 
 @Entity
-@Table(name="Orderby")
+@Table(name="Orders")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,42 +35,42 @@ public class Order {
     private BigDecimal subTotal;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name="customer_id",referencedColumnName = "id")
     private Customer customer;
 
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "idOrder")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "order")
     private List<Item> items;
-
-
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "order")
+    private List<CalculatedTax> calculatedTaxes;
 
 
 
     public OrderDTO toOrderDTO()
     {
         OrderDTO orderDTO = new OrderDTO();
-        if(this.getId() != 0)
-            orderDTO.setIdOrder(this.getId());
-        if(this.getDatesOrder() != null)
-            orderDTO.setDateOrder(this.getDatesOrder());
-        if(this.getTotalDiscount().intValue() != 0)
-            orderDTO.setTotalDiscount(this.getTotalDiscount());
-        if(this.getTotalPrice().intValue() != 0)
-            orderDTO.setTotalPrice(this.getTotalPrice());
-        if(this.getCustomer().getId() != null && this.getCustomer().getName() != null) {
-            orderDTO.setCustomerID(this.getCustomer().getId());
-            orderDTO.setCustomerName(this.getCustomer().getName());
-        }
-        if(this.getSubTotal().intValue() != 0)
-            orderDTO.setSubTotal(this.getSubTotal());
+        orderDTO.setIdOrder(this.getId());
+        orderDTO.setDateOrder(this.getDatesOrder());
+        orderDTO.setTotalDiscount(this.getTotalDiscount());
+        orderDTO.setTotalPrice(this.getTotalPrice());
+        orderDTO.setCustomerID(this.getCustomer().getId());
+        orderDTO.setCustomerName(this.getCustomer().getName());
+        orderDTO.setSubTotal(this.getSubTotal());
         orderDTO.setActive(this.active);
-
-       if(this.getItems() != null && !this.getItems().isEmpty())
-        {
-            orderDTO.setItemDTO(this.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList()));
-        }
+        orderDTO.setItemDTO(this.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList()));
+        orderDTO.setCalculatedTaxDTOS(this.getCalculatedTaxes().stream().
+                map(CalculatedTax::calculatedTaxToDTO).collect(Collectors.toList()));
         return orderDTO;
+    }
+    public Order(OrderDTO orderDTO)
+    {
+        this.setId(orderDTO.getIdOrder());
+        this.setDatesOrder(orderDTO.getDateOrder());
+        this.setSubTotal(orderDTO.getSubTotal());
+        this.setActive(orderDTO.getActive());
+        this.setTotalDiscount(orderDTO.getTotalDiscount());
+        this.setTotalPrice(orderDTO.getTotalPrice());
     }
 
 

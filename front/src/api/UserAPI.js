@@ -11,7 +11,7 @@ export const getAllUsers = async () => {
 //http://localhost:8080/user?id=3
 export const getSingleUser = async (userId) => {
   try {
-    const response = await axios.get(`${apiUrl}?id=${userId}`);
+    const response = await axios.get(`${apiUrl}/read?id=${userId}`);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -30,7 +30,7 @@ export const updateSingleUser = async (data) => {
 
 export const deleteSingleUser = async (userId) => {
   try {
-    const response = await axios.delete(`${apiUrl}/${userId}`);
+    const response = await axios.delete(`${apiUrl}/delete?id=${userId}`);
     console.dir(`${apiUrl}/${userId}`);
     return response.status;
   } catch (error) {

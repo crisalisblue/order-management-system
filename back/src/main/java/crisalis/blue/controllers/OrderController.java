@@ -2,6 +2,7 @@ package crisalis.blue.controllers;
 
 import crisalis.blue.models.Order;
 import crisalis.blue.models.dto.OrderDTO;
+import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.services.OrderService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -13,28 +14,32 @@ import java.util.List;
 public class OrderController {
     private OrderService orderService;
 
-    public OrderController(OrderService orderService)
-    {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
-    @PostMapping(value ="create",produces = MediaType.APPLICATION_JSON_VALUE)
-    public OrderDTO create(@RequestBody OrderDTO order)
-    {
-       return  orderService.create(order);
+
+    @PostMapping(value = "create", produces = MediaType.APPLICATION_JSON_VALUE)
+    public OrderDTO create(@RequestBody OrderDTO order) {
+        return orderService.create(order);
     }
-    @GetMapping(value="read",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OrderDTO> read()
-    {
+
+    @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<OrderDTO> read() {
         return orderService.read();
     }
-    @PutMapping(value="update",produces=MediaType.APPLICATION_JSON_VALUE)
-    public OrderDTO update(@RequestBody  OrderDTO order )
-    {
+
+    @PutMapping(value = "update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public OrderDTO update(@RequestBody OrderDTO order) {
         return orderService.update(order);
     }
-    @DeleteMapping(value="delete")
-    public void delete(@RequestParam Long id)
-    {
+
+    @GetMapping(value = "read")
+    public OrderDTO getOrderById(@RequestParam Long id) {
+        return orderService.getOrderById(id);
+    }
+
+    @DeleteMapping(value = "delete")
+    public void delete(@RequestParam Long id) {
         orderService.delete(id);
     }
 }

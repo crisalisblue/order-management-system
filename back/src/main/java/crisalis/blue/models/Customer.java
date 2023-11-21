@@ -12,10 +12,7 @@ import java.util.Date;
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-        name ="type",
-        discriminatorType = DiscriminatorType.STRING
-)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "customer")
 @Getter
 @Setter
@@ -25,17 +22,10 @@ import java.util.Date;
 
 public abstract class Customer {
     @Id
-    @SequenceGenerator(
-            name = "customer_sequence",
-            sequenceName = "customer_sequence",
-            allocationSize = 1,
-            initialValue = 1
+    @SequenceGenerator(name = "customer_sequence", sequenceName = "customer_sequence", allocationSize = 1, initialValue = 1
 
     )
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator = "customer_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "customer_sequence")
     @Column(name = "id")
     private Long id;
 
@@ -45,17 +35,16 @@ public abstract class Customer {
     @Column(name = "address", nullable = false)
     private String address;
 
-
-    protected Customer (CustomerDTO dto){
+    protected Customer(CustomerDTO dto) {
         setId(dto.getId());
         setName(dto.getName());
         setAddress(dto.getAddress());
-    }
 
+    }
 
     protected abstract CustomerDTO completeSpecificAttrib(CustomerDTO dto);
 
-    public CustomerDTO toDTO(){
+    public CustomerDTO toDTO() {
         CustomerDTO dto = new CustomerDTO();
         dto.setId(id);
         dto.setAddress(address);
