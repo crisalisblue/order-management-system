@@ -18,7 +18,6 @@ import {
   CustomerUpdate,
   OrderClientCreate,
   OrderCreate,
-  OrdersTable,
   OrderUpdate,
   Pedidos,
   Servicios,
@@ -36,6 +35,7 @@ import { CustomersTable } from "./components/CustomersTable/CustomersTable.jsx";
 import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 import { ProductsTable } from "./components/ProductsTable/ProductsTable.jsx";
+import { OrdersTable } from "./components/OrdersTable/OrdersTable.jsx";
 
 export default function App() {
   return (

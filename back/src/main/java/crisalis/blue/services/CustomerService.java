@@ -1,6 +1,7 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
+import crisalis.blue.exceptions.custom.IntegrityViolationException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.Business;
@@ -122,12 +123,18 @@ public class CustomerService {
     }
 
     public String deleteCustomer(Long id) {
+        try {
+            customerRepository.deleteById(id);
+            return "Cliente " + id + " Borrado exitosamente";
 
-        if (!customerRepository.existsById(id)) {
-            throw new ResourceNotFoundException("No existe un usuario con id " + id + ".");
+        } catch (DataIntegrityViolationException e) {
+            if (!customerRepository.existsById(id)) {
+                throw new ResourceNotFoundException("No existe un usuario con id " + id + ".");
+            }
+            throw new IntegrityViolationException("Error al borrar");
+            //throw new EmptyElementException(e.getMessage());
         }
-        customerRepository.deleteById(id);
-        return "Cliente " + id + " Borrado exitosamente";
+
     }
 
     public CustomerDTO getCustomerById(Long id) {

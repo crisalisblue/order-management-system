@@ -51,7 +51,7 @@ public abstract class Asset {
         }
         return assetDTO;
     }
-    public abstract void  asignarDatosCorrespondientes();
+
     public List<TaxDTO>listTaxToTaxDTO(List<Tax> listAsset)
     {
         return listAsset.stream().map(Tax::toDTO).collect(Collectors.toList());

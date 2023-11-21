@@ -29,6 +29,7 @@ export const CustomerUpdate = () => {
         setValue("businessName", data.businessName);
         setValue("cuit", data.cuit);
         setValue("activityStartDate", data.activityStartDate);
+        setValue("address", data.address);
         // Add more fields as needed
       } catch (error) {
         console.error("Error fetching customer data:", error);
@@ -84,6 +85,10 @@ export const CustomerUpdate = () => {
           <div className="flex gap-3">
             <label className="text-black">Nombre:</label>
             <input type="text" {...register("name")} />
+          </div>
+          <div className="flex gap-3">
+            <label className="text-black">Direccion:</label>
+            <input type="text" {...register("address")} />
           </div>
           <div className="flex gap-3">
             <label className="text-black">Apellido:</label>
