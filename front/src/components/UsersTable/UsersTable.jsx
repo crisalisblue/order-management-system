@@ -12,7 +12,7 @@ export const UsersTable = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  if (usuariosData.length == 0) {
+  if (!usuariosData || usuariosData.length == 0) {
     return <div>No data...</div>;
   }
   return (
