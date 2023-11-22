@@ -3,7 +3,7 @@ package crisalis.blue.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import crisalis.blue.models.Asset;
 import crisalis.blue.models.Product;
-import crisalis.blue.models.Service;
+import crisalis.blue.models.Servicie;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -43,7 +43,7 @@ public class AssetDTO {
             product.setTaxList(this.getTaxDTOList().stream().map(TaxDTO::toTax).collect(Collectors.toList()));
             return product;
         } else {
-            Service service = new Service();
+            Servicie service = new Servicie();
             if (this.getId() != null)
                 ;
             service.setId(this.getId());
