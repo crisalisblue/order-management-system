@@ -33,6 +33,7 @@ export const ProductsUpdate = () => {
 
   const onSubmit = async (data, e) => {
     console.log(data, e);
+    data.id = productID; // Agrega el ID al objeto de datos antes de enviarlo
     try {
       console.dir(await updateSingleProduct(data));
       showSuccessAlert();
@@ -92,10 +93,14 @@ export const ProductsUpdate = () => {
         </label>
         <label className="text-black text-xl my-5 flex justify-center items-center">
           Impuesto
-          <select className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4">
+          <select
+            className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4"
+            {...register("taxId")}
+            defaultValue={0}
+          >
             <option value="1">IVA</option>
-            <option value="2">IVA</option>
-            <option value="3">IVA</option>
+            <option value="2">Otro impuesto</option>
+            <option value="3">Otro impuesto más</option>
           </select>
         </label>
       </div>

@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Entity(name = "service")
+@Entity(name = "servicie")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@DiscriminatorValue("Service")
+@DiscriminatorValue("Servicie")
 public class Servicie extends Asset {
     @JsonProperty("supportFee")
     @Column(name = "supportFee")
