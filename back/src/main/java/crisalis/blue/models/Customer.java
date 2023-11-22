@@ -32,7 +32,7 @@ public abstract class Customer {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
     protected Customer(CustomerDTO dto) {
