@@ -1,20 +1,17 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
-import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.Asset;
 import crisalis.blue.models.Product;
+import crisalis.blue.models.Servicie;
 import crisalis.blue.models.Tax;
 import crisalis.blue.models.dto.AssetDTO;
-import crisalis.blue.models.dto.CalculatedTaxDTO;
-import crisalis.blue.models.dto.CustomerDTO;
 import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.TaxRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,111 +30,125 @@ public class AssetService {
 
     public AssetDTO create(AssetDTO assetDTO) {
         Product product = null;
-        crisalis.blue.models.Service service = null;
-        Asset asset = null;
-        if (checkAsset(assetDTO)) {
-            if (assetDTO.getType() != null) {
-                if (assetDTO.getType().equals("Product"))
-                    asset = new Product();
-
-                else
-                    asset = new crisalis.blue.models.Service();
-            }
-            if (assetDTO.getName() != null && !assetDTO.getName().isEmpty())
-                asset.setName(assetDTO.getName());
-            if (assetDTO.getBaseAmount() != null && !BigDecimal.ZERO.equals(assetDTO.getBaseAmount()))
-                asset.setBaseAmount(assetDTO.getBaseAmount());
-            else asset.setBaseAmount(BigDecimal.ZERO);
-            if (assetDTO.getTaxDTOList() != null)
-                asset.setTaxList(assetDTO.getTaxDTOList().stream().map(TaxDTO::toTax).collect(Collectors.toList()));
-            if (asset instanceof crisalis.blue.models.Service) {
-                if (assetDTO.getSupportFee() == null) {
-                    ((crisalis.blue.models.Service) asset).setSupportFee(BigDecimal.ZERO);
-                } else {
-                    ((crisalis.blue.models.Service) asset).setSupportFee(assetDTO.getSupportFee());
-                    service = (crisalis.blue.models.Service) asset;
-                }
-                return assetRepository.save(service).toAssetDTO();
-            } else {
-                product = (Product) asset;
-                return assetRepository.save(product).toAssetDTO();
-            }
-        } else {
-            throw new EmptyElementException("Error el nombre del producto o el monto base del mismo estan vacios ");
+        Servicie servicie =null;
+        checkAsset(assetDTO);
+        if(assetDTO.getType().equals("Product"))
+        {
+            product = convertirUnAssetProduct(assetDTO);
+            product.setTaxList(updateListTax(assetDTO.getTaxDTOList()));
+            return assetRepository.save(product).toAssetDTO();
         }
+        else
+        {
+            servicie = convertirUnAssetService(assetDTO);
+            servicie.setTaxList(updateListTax(assetDTO.getTaxDTOList()));
+            servicie.setSupportFee(assetDTO.getSupportFee());
+            return assetRepository.save(servicie).toAssetDTO();
+        }
+
+
     }
 
-    private List<Tax> buscarTax(List<TaxDTO> listTax) {
-        List<Tax> listR = new ArrayList<>();
-        Optional<Tax> optionalTax = null;
-        if (listTax != null) {
-            if (!listTax.isEmpty()) {
-                for (int j = 0; j < listTax.size(); j++) {
-                    listR.add(taxRepository.findById(listTax.get(j).getId()).get());
-                }
-            }
-        }
-        return listR;
-    }
-
-    private boolean checkAsset(AssetDTO assetDTO) {
+    private void checkAsset(AssetDTO assetDTO) {
         boolean res = false;
-        if (!assetDTO.getName().isEmpty())
-            res = true;
-        if (BigDecimal.ZERO.equals(assetDTO.getBaseAmount()))
-            res = true;
-        if (assetDTO.getTaxDTOList() != null)
-            res = true;
-        return true;
+        if(assetDTO.getName().isEmpty())
+            throw new EmptyElementException("El id es nulo");
+        if(assetDTO.getBaseAmount().intValue() ==0)
+            throw new EmptyElementException("Base amount es nulo");
+        if(assetDTO.getTaxDTOList() ==null)
+             throw new EmptyElementException("La lista impuesto es nula ");
+        if(assetDTO.getType() == null)
+            throw new EmptyElementException("No se envio el tipo de activo");
     }
 
     public List<AssetDTO> read() {
         return this.assetRepository.findAll().stream().map(Asset::toAssetDTO).collect(Collectors.toList());
     }
-
     public List<AssetDTO> readType(String type) {
-        return this.assetRepository.findAll().stream().map(Asset::toAssetDTO)
-                .filter(assetDTO -> assetDTO.getType().equals(type)).collect(Collectors.toList());
+        return this.assetRepository.findAll().stream().map(Asset::toAssetDTO).
+                filter(assetDTO -> assetDTO.getType().equals(type)).collect(Collectors.toList());
     }
 
     public AssetDTO update(AssetDTO assetDTO) {
-        Optional<Asset> aux = assetRepository.findById(assetDTO.getId());
-        Product product = null;
-        crisalis.blue.models.Service service = null;
-        if (aux.isPresent()) {
-            if (!assetDTO.getName().isEmpty())
-                aux.get().setName(assetDTO.getName());
-            if (assetDTO.getBaseAmount().intValue() != 0)
-                aux.get().setBaseAmount(assetDTO.getBaseAmount());
-            if (assetDTO.getTaxDTOList() != null)
-                buscarTax(assetDTO.getTaxDTOList());
-            if (assetDTO.getSupportFee() != null && assetDTO.getSupportFee().intValue() != 0) {
-                service = (crisalis.blue.models.Service) aux.get();
-                service.setSupportFee(assetDTO.getSupportFee());
-                return this.assetRepository.save(service).toAssetDTO();
-            } else {
-                product = (Product) aux.get();
-                return this.assetRepository.save(product).toAssetDTO();
+            checkAsset(assetDTO);
+            Asset asset = null;
+            Optional<Asset> optionalAsset = assetRepository.findById(assetDTO.getId());
+            if(optionalAsset.isPresent()) {
+                asset = setDatos(assetDTO);
+                asset.setTaxList(updateListTax(assetDTO.getTaxDTOList()));
+                return assetRepository.save(asset).toAssetDTO();
             }
-
-        } else
-            throw new EmptyElementException("El elemento que se quiere actualizar no existe en la base de datos");
+            else
+                throw new EmptyElementException("El id ingresasdo es invalido o no esta en la base de datos ");
     }
-
-    public void delete(Long id) {
+private Asset setDatos(AssetDTO assetDTO)
+{
+    Asset asset = null;
+    if (assetDTO != null) {
+        if (assetDTO.getType().equals("Service")) {
+            Servicie servicie = new Servicie(assetDTO);
+            asset = servicie;
+        }
+        else {
+            Product product = new Product(assetDTO);
+            asset = product;
+        }
+        return asset;
+    }
+    else
+        throw new EmptyElementException("El elemento que se quiere actualizar no existe en la base de datos");
+    }
+private Product convertirUnAssetProduct(AssetDTO asset)
+{
+    Product product = new Product();
+    product.setId(asset.getId());
+    product.setName(asset.getName());
+    product.setBaseAmount(asset.getBaseAmount());
+    return product;
+}
+private Servicie convertirUnAssetService(AssetDTO asset)
+{
+    Servicie servicie = new Servicie();
+    servicie.setName(asset.getName());
+    servicie.setId(asset.getId());
+    servicie.setBaseAmount(asset.getBaseAmount());
+    return servicie;
+}
+private List<Tax> updateListTax(List<TaxDTO> list)
+{
+    if(list != null && !list.isEmpty()) {
+        List<Tax> listTax = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Tax tax = obtenerTax(list.get(i));
+            listTax.add(tax);
+        }
+        return listTax;
+    }
+    return new ArrayList<>();
+    //else throw new EmptyElementException("La lista de impuesto es nula ");
+}
+private Tax obtenerTax(TaxDTO taxDTO )
+{
+    if(taxDTO.getId() != null) {
+        return taxRepository.findById(taxDTO.getId()).get();
+    }
+    else
+        return new Tax(taxDTO);
+}
+    public void delete(Long id)
+    {
         Optional<Asset> aux = assetRepository.findById(id);
-        if (aux.isPresent()) {
+        if(aux.isPresent())
+        {
             assetRepository.deleteById(id);
-        } else
-            throw new EmptyElementException("El id que se paso es invalido, no existe una entrada con ese elemento  ");
+        }
+        else throw new EmptyElementException("El id que se paso es invalido, no existe una entrada con ese elemento  ");
     }
-
-    public AssetDTO getAssetById(Long id) {
-
-        return this.assetRepository.findById(id)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException("Asset not Found"))
-                .toAssetDTO();
+    public AssetDTO getAssetById(Long id)
+    {
+    if(id !=null && id != 0)
+        return assetRepository.findById(id).get().toAssetDTO();
+    else
+        throw new EmptyElementException("Id invalido o es cero o no llego ningun valor");
     }
-
 }
