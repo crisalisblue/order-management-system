@@ -35,7 +35,7 @@ public class SubscriptionController {
 
 
     @GetMapping(value = "read", produces = MediaType.APPLICATION_JSON_VALUE)
-    public CustomerDTO getSubscriptionById(@RequestParam Long id) {
+    public SubscriptionDTO getSubscriptionById(@RequestParam Long id) {
         return this.subscriptionService.getSubscriptionById(id);
     }
 
