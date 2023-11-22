@@ -46,12 +46,12 @@ public abstract class Asset {
             assetDTO.setType("Product");
         else {
             assetDTO.setType("Service");
+            Servicie service = (Servicie) this;
+            assetDTO.setSupportFee(service.getSupportFee());
         }
-        Service service = (Service) this;
-        assetDTO.setSupportFee(service.getSupportFee());
         return assetDTO;
     }
-    public abstract void  asignarDatosCorrespondientes();
+
     public List<TaxDTO>listTaxToTaxDTO(List<Tax> listAsset)
     {
         return listAsset.stream().map(Tax::toDTO).collect(Collectors.toList());
