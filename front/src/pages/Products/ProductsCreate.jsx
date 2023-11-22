@@ -62,7 +62,7 @@ export const ProductsCreate = () => {
             {...register("baseAmount")}
           />
         </label>
-
+         <input type="hidden" defaultValue={"Product"} {...register("type")} />
         <label
           className={"text-black text-xl my-5 flex justify-center items-center"}
         >
