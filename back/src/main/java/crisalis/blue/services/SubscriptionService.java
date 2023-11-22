@@ -15,53 +15,32 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final CustomerRepository customerRepository;
-
     private final AssetRepository assetRepository;
 
-    /*public SubscriptionDTO createSubscription(SubscriptionDTO subscription) {
-        try {
-            //Subscription newSubscription = new Subscription(subscription);
-            Subscription newSubscription = new Subscription();
-            newSubscription.setStatus(Boolean.TRUE);
-            newSubscription.setCustomer(new Person());
-            newSubscription.setAsset();
-            this.subscriptionRepository.save(newSubscription);
-            //return newSubscription.toDTO();
-        }catch (Error e){
-            throw new NotCreatedException("Error al asociar la subscripcion");
-        }
-    }*/
 
     public SubscriptionDTO createSubscription(SubscriptionDTO sub) {
         try {
-            //Subscription newSubscription = new Subscription(subscription);
             Subscription newSubscription = new Subscription();
 
             newSubscription.setStatus(sub.getStatus());
+            //Asigno el cliente en base al id que me llego en "customer"
             Optional <Customer> customer = customerRepository.findById(sub.getCustomer());
-            //Customer customeraux = customer.get();
-            //newSubscription.setCustomer(customeraux);
             newSubscription.setCustomer(customer.get());
+            //Asigno el cliente en base al id que me llego en "asset"
             Optional<Asset> asset = assetRepository.findById(sub.getAsset());
-            //Asset assetaux = asset.get();
-            //newSubscription.setAsset(assetaux);
             newSubscription.setAsset(asset.get());
 
             subscriptionRepository.save(newSubscription);
 
             return newSubscription.toDTO();
-            /*return SubscriptionDTO.builder()
-                    .id(newSubscription.getId())
-                    .status(newSubscription.getStatus())
-                    .customer(newSubscription.getCustomer().getId())
-                    .asset(newSubscription.getAsset().getId())
-                    .build();*/
+
         } catch (Error e) {
             throw new NotCreatedException("Error al asociar la subscripcion");
         }
@@ -72,7 +51,12 @@ public class SubscriptionService {
     }
 
     public List<SubscriptionDTO> getAllSubscriptions() {
-        return null;
+
+        return this.subscriptionRepository
+                .findAll()
+                .stream()
+                .map(Subscription::toDTO)
+                .collect(Collectors.toList());
     }
 
     public CustomerDTO getSubscriptionById(Long id) {
