@@ -1,6 +1,8 @@
 package crisalis.blue.services;
 
+import crisalis.blue.exceptions.custom.IntegrityViolationException;
 import crisalis.blue.exceptions.custom.NotCreatedException;
+import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.Asset;
 import crisalis.blue.models.Customer;
 import crisalis.blue.models.Person;
@@ -11,6 +13,7 @@ import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.CustomerRepository;
 import crisalis.blue.repositories.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,6 +67,16 @@ public class SubscriptionService {
     }
 
     public String deleteSubscription(Long id) {
-        return null;
+        try {
+            subscriptionRepository.deleteById(id);
+            return "Subscripcion " + id + " Borrada exitosamente";
+
+        } catch (DataIntegrityViolationException e) {
+            if (!customerRepository.existsById(id)) {
+                throw new ResourceNotFoundException("No existe una subscripcion con id " + id + ".");
+            }
+            throw new IntegrityViolationException("Error al borrar");
+
+        }
     }
 }
