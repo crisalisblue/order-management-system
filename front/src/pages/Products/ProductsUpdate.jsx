@@ -34,6 +34,8 @@ export const ProductsUpdate = () => {
   const onSubmit = async (data, e) => {
     console.log(data, e);
     data.id = productID; // Agrega el ID al objeto de datos antes de enviarlo
+    data.taxList = [];
+    data.type = "Product";
     try {
       console.dir(await updateSingleProduct(data));
       showSuccessAlert();
