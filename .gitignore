@@ -34,4 +34,4 @@ build/
 # VS Code
 .vscode/
 application.properties
-back/src/main/resources/
+back/src/java/main/resources/application.properties

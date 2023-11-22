@@ -46,7 +46,7 @@ public abstract class Asset {
             assetDTO.setType("Product");
         else {
             assetDTO.setType("Service");
-            Servicie service = (Servicie) this;
+            Service service = (Service) this;
             assetDTO.setSupportFee(service.getSupportFee());
         }
         return assetDTO;

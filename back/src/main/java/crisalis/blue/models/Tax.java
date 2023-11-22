@@ -23,17 +23,15 @@ public class Tax {
     private BigDecimal baseAmount;
     public TaxDTO toDTO(){
         TaxDTO taxDTO = new TaxDTO();
-        taxDTO.setId(this.getId());
-        taxDTO.setName(this.getName());
-        taxDTO.setBaseAmount(this.getBaseAmount());
-        taxDTO.setPercentage(this.getPercentage());
+        if(this.getId() != 0)
+            taxDTO.setId(this.getId());
+        if(this.getName()!= null && !this.getName().isEmpty())
+            taxDTO.setName(this.getName());
+        if(this.getBaseAmount()!=null && this.getBaseAmount().intValue()!=0)
+            taxDTO.setBaseAmount(this.getBaseAmount());
+        if(this.getPercentage()!=null && this.getPercentage().intValue() !=0)
+            taxDTO.setPercentage(this.getPercentage());
         return taxDTO;
-    }
-    public Tax(TaxDTO taxDTO)
-    {
-        this.setName(taxDTO.getName());
-        this.setPercentage(taxDTO.getPercentage());
-        this.setBaseAmount(taxDTO.getBaseAmount());
     }
 
     //Falta agregar relacion con otras tablas...
