@@ -28,7 +28,7 @@ public class AssetService {
         this.taxRepository = taxRepository;
     }
 
-    public AssetDTO create(AssetDTO assetDTO) {
+    public AssetDTO create(AssetDTO assetDTO) throws RuntimeException {
         Product product = null;
         Servicie servicie =null;
         checkAsset(assetDTO);
@@ -49,7 +49,7 @@ public class AssetService {
 
     }
 
-    private void checkAsset(AssetDTO assetDTO) {
+    private void checkAsset(AssetDTO assetDTO) throws RuntimeException {
         boolean res = false;
         if(assetDTO.getName().isEmpty())
             throw new EmptyElementException("El id es nulo");
@@ -69,7 +69,7 @@ public class AssetService {
                 filter(assetDTO -> assetDTO.getType().equals(type)).collect(Collectors.toList());
     }
 
-    public AssetDTO update(AssetDTO assetDTO) {
+    public AssetDTO update(AssetDTO assetDTO) throws RuntimeException {
             checkAsset(assetDTO);
             Asset asset = null;
             Optional<Asset> optionalAsset = assetRepository.findById(assetDTO.getId());
@@ -81,7 +81,7 @@ public class AssetService {
             else
                 throw new EmptyElementException("El id ingresasdo es invalido o no esta en la base de datos ");
     }
-private Asset setDatos(AssetDTO assetDTO)
+private Asset setDatos(AssetDTO assetDTO) throws RuntimeException
 {
     Asset asset = null;
     if (assetDTO != null) {
