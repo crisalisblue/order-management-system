@@ -62,9 +62,14 @@ public class SubscriptionService {
                 .collect(Collectors.toList());
     }
 
-    public CustomerDTO getSubscriptionById(Long id) {
-        return null;
+    public SubscriptionDTO getSubscriptionById(Long id) {
+
+        return this.subscriptionRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Subscription not Found"))
+                .toDTO();
     }
+
 
     public String deleteSubscription(Long id) {
         try {
