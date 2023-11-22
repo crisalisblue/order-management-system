@@ -44,6 +44,8 @@ public class CustomerService {
                 //Caso Business
                 //Primero creo la persona que viene asociada a la empresa
                 Person businessPerson = new Person(customer);
+                //Ya que la persona asociada a la empresa no deberia tener una direccion, se la blanqueamos
+                businessPerson.setAddress(null);
                 this.customerRepository.save(businessPerson);
                 //una vez guardado en la base de datos, ya se puede acceder al id automaticamente en el objeto previamente instanciado
                 //System.out.println(businessPerson.getId());
