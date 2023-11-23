@@ -18,8 +18,6 @@ public class ItemDTO {
     private Long idAsset;
     @JsonProperty(value = "nameAsset")
     private String nameAsset;
-    @JsonProperty(value = "orderDTO")
-    private OrderDTO orderDTO;
     @JsonProperty(value = "itemPrice")
     private BigDecimal itemPrice;
     @JsonProperty(value = "itemDitails")
