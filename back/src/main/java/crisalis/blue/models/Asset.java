@@ -26,7 +26,7 @@ public abstract class Asset {
     private String name;
     @JsonProperty(value = "baseAmount")
     private BigDecimal baseAmount;
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="Asset_Tax",
     joinColumns = @JoinColumn(name = "id_asset",referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name="id_tax",referencedColumnName = "id"))

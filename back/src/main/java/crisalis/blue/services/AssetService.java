@@ -133,7 +133,7 @@ private Tax obtenerTax(TaxDTO taxDTO )
         return taxRepository.findById(taxDTO.getId()).get();
     }
     else
-        return new Tax(taxDTO);
+        return taxRepository.save(new Tax(taxDTO));
 }
     public void delete(Long id)
     {
