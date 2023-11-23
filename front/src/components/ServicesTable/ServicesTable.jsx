@@ -16,7 +16,7 @@ export const Services = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  if (servicesData.length == 0) {
+  if (!servicesData || servicesData.length == 0) {
     return <div>No data...</div>;
   }
   return (

@@ -23,7 +23,7 @@ export const TaxUpdate = () => {
         setInitialValues({
           name: taxData.name,
           percentage: taxData.percentage,
-          fixedAmount: taxData.fixedAmount,
+          baseAmount: taxData.baseAmount,
         });
       } catch (error) {
         console.error("Error fetching tax data:", error);
@@ -78,11 +78,11 @@ export const TaxUpdate = () => {
           />
         </div>
         <div>
-          <label htmlFor="fixedAmount">Monto fijo:</label>
+          <label htmlFor="baseAmount">Monto fijo:</label>
           <input
-            defaultValue={initialValues.fixedAmount}
+            defaultValue={initialValues.baseAmount}
             type="text"
-            {...register("fixedAmount")}
+            {...register("baseAmount")}
           />
         </div>
         <input type="hidden" defaultValue={id} {...register("id")} />

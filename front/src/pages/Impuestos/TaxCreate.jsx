@@ -46,7 +46,7 @@ export const TaxCreate = () => {
 
         <div>
           <label htmlFor="password">Monto fijo:</label>
-          <input type="text" {...register("fixedAmount")} />
+          <input type="text" {...register("baseAmount")} />
         </div>
 
         <button className="btn bg-primary text-base-100" type="submit">
