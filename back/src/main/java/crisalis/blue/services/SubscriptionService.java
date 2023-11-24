@@ -96,4 +96,20 @@ public class SubscriptionService {
 
         }
     }
+
+
+    public SubscriptionDTO getSubscriptionByCustomerIdOrAssetId(Long customerId, Long assetId){
+        if ((customerId != null && !subscriptionRepository.existsByCustomerId(customerId)) ||
+                (assetId != null && !subscriptionRepository.existsByAssetId(assetId))){
+            throw new ResourceNotFoundException("Ya sea el Asset o el Customer no existe.");
+        }
+        Subscription returnSubscription;
+        if (customerId != null){
+            returnSubscription = subscriptionRepository.findByCustomerId(customerId);
+        }else {
+            returnSubscription = subscriptionRepository.findByAssetId(assetId);
+        }
+
+        return returnSubscription.toDTO();
+    }
 }
