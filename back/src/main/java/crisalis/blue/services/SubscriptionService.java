@@ -50,7 +50,19 @@ public class SubscriptionService {
     }
 
     public SubscriptionDTO updateSubscription(SubscriptionDTO subscription) {
-        return null;
+
+        Optional<Subscription> subscriptionOptional = subscriptionRepository.findById(subscription.getId());
+
+        if (!subscriptionOptional.isPresent()){
+            throw new ResourceNotFoundException("No se encontro la Subscripcion.");
+        }
+        //Instancio la subscripcion que se encuentra en la db
+        Subscription mySubscription = subscriptionOptional.get();
+
+        mySubscription.setStatus(subscription.getStatus());
+        subscriptionRepository.save(mySubscription);
+
+        return mySubscription.toDTO();
     }
 
     public List<SubscriptionDTO> getAllSubscriptions() {
