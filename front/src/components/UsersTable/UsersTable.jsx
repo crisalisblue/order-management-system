@@ -22,6 +22,7 @@ export const UsersTable = () => {
       itemName="usuario"
       editPath="/usuarios"
       deleteFunction={deleteSingleUser}
+      hiddenColumns={"id"}
     />
   );
 };

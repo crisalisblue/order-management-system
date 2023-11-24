@@ -23,6 +23,7 @@ export const TaxesTable = () => {
       itemName="impuestos"
       editPath="/impuestos"
       deleteFunction={deleteSingleTax}
+      hiddenColumns={["baseAmount", "id"]}
     ></DataTable>
   );
 };

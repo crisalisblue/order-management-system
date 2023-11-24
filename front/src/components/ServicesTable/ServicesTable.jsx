@@ -26,6 +26,7 @@ export const ServicesTable = () => {
       itemName="servicio"
       editPath="/servicios"
       deleteFunction={deleteSingleService}
+      hiddenColumns={["id", "taxList"]}
     />
   );
 };

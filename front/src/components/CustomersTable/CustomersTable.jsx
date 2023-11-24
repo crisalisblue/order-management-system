@@ -30,6 +30,7 @@ export const CustomersTable = () => {
       itemName="clientes"
       editPath="/clientes"
       deleteFunction={deleteSingleCustomer}
+      hiddenColumns={["id"]}
     ></DataTable>
   );
 };

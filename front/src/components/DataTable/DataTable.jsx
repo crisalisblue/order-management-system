@@ -3,14 +3,37 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
+const translation = {
+  // Aquí puedes agregar más traducciones según tus necesidades
+  address: "Direccion",
+  type: "Tipo",
+  name: "Nombre",
+  lastName: "Apellido",
+  businessName: "Nombre de la Empresa",
+  activityStartDate: "Fecha Inicio de Actividad",
+  percentage: "Porcentaje",
+  baseAmount: "Monto Base",
+  supportFee: "Monto de Soporte",
+  username: "Usuario",
+  dateOrder: "Fecha de Orden",
+  totalDiscount: "Total Descontado",
+  totalPrice: "Precio Total",
+  subTotal: "Subtotal",
+  active: "Activo",
+  customerName: "Nombre Cliente",
+  // ...
+};
+
 export const DataTable = ({
   data,
   keysToShow,
   itemName,
   editPath,
   deleteFunction,
+  hiddenColumns,
 }) => {
   const navigate = useNavigate();
+
   const handleDelete = (id) => {
     Swal.fire({
       title: `¿Estás seguro de eliminar este ${itemName}?`,
@@ -51,23 +74,24 @@ export const DataTable = ({
       }
     });
   };
-  console.dir(data);
-  console.dir(keysToShow);
+
   return (
     <section className="overflow-y-auto overflow-x-hidden">
       <table className={"w-5/6 m-auto text-black"}>
         <thead className="min-w-full">
           <tr className={"bg-[#85B7CA] text-primary border-gray-500"}>
-            {keysToShow.map((key, index) => (
-              <th
-                key={index}
-                className={`text-center ${index === 0 ? "" : ""} ${
-                  index === keysToShow.length - 1 ? "" : ""
-                } p-1`}
-              >
-                {key}
-              </th>
-            ))}
+            {keysToShow.map((key, index) =>
+              hiddenColumns.includes(key) ? null : (
+                <th
+                  key={index}
+                  className={`text-center ${index === 0 ? "" : ""} ${
+                    index === keysToShow.length - 1 ? "" : ""
+                  } p-1`}
+                >
+                  {translation[key] || key}
+                </th>
+              )
+            )}
             <th className={"text-center  p-1"}>Acciones</th>
           </tr>
         </thead>
@@ -79,18 +103,20 @@ export const DataTable = ({
               } drop-shadow-md p-1`}
               key={index}
             >
-              {keysToShow.map((key, idx) => (
-                <td
-                  key={idx}
-                  className={`text-center ${
-                    index === data.length - 1 && idx === keysToShow.length - 1
-                      ? ""
-                      : ""
-                  } p-1`}
-                >
-                  {item[key]}
-                </td>
-              ))}
+              {keysToShow.map((key, idx) =>
+                hiddenColumns.includes(key) ? null : (
+                  <td
+                    key={idx}
+                    className={`text-center ${
+                      index === data.length - 1 && idx === keysToShow.length - 1
+                        ? ""
+                        : ""
+                    } p-1`}
+                  >
+                    {item[key]}
+                  </td>
+                )
+              )}
               <td
                 className={`text-center flex justify-evenly ${
                   index === data.length - 1 ? "rounded-br-md" : ""
