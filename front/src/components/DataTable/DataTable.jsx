@@ -88,7 +88,7 @@ export const DataTable = ({
                       : ""
                   } p-1`}
                 >
-                  {item[key]}
+                  {typeof item[key] == "object" ? null : item[key]}
                 </td>
               ))}
               <td
@@ -98,8 +98,8 @@ export const DataTable = ({
               >
                 <Link to={`${editPath}/${item.id}/editar`}>🛠</Link>
                 <DeleteModal
-                  itemID={item.id}
-                  onDelete={() => handleDelete(item.id)}
+                  itemID={item.idOrder}
+                  onDelete={() => handleDelete(item.idOrder)}
                 ></DeleteModal>
               </td>
             </tr>

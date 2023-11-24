@@ -20,8 +20,8 @@ public class ItemRefreshDTO {
     private String nameAsset;
     @JsonProperty(value = "itemPrice")
     private BigDecimal itemPrice;
-    @JsonProperty(value = "itemDetails")
-    private String itemDetails;
+    @JsonProperty(value = "itemDitails")
+    private String itemDitails;
     @JsonProperty(value = "itemQuantity")
     private int itemQuantity;
     @JsonProperty(value = "discountAmount")
@@ -38,7 +38,7 @@ public class ItemRefreshDTO {
         item.setItemPrice(this.getItemPrice());
         item.setDiscountAmount(this.getDiscountAmount());
         item.setTotalPrice(this.getTotalPrice());
-        item.setItemDetails(this.getItemDetails());
+        item.setItemDetails(this.getItemDitails());
         item.setWarrantyYears(this.getWarrantyYears());
 
         return item;
