@@ -1,4 +1,4 @@
-import { DeleteModal } from "../DeleteModal/DeleteModal";
+import { DeleteModal } from "../DeleteModal/DeleteModal.jsx";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
@@ -61,14 +61,14 @@ export const DataTable = ({
             {keysToShow.map((key, index) => (
               <th
                 key={index}
-                className={`text-center ${index === 0 ? "rounded-tl-md" : ""} ${
-                  index === keysToShow.length - 1 ? "rounded-tr-md" : ""
+                className={`text-center ${index === 0 ? "" : ""} ${
+                  index === keysToShow.length - 1 ? "" : ""
                 } p-1`}
               >
                 {key}
               </th>
             ))}
-            <th className={"text-center rounded-tr-md p-1"}>Acciones</th>
+            <th className={"text-center  p-1"}>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -84,7 +84,7 @@ export const DataTable = ({
                   key={idx}
                   className={`text-center ${
                     index === data.length - 1 && idx === keysToShow.length - 1
-                      ? "rounded-br-md"
+                      ? ""
                       : ""
                   } p-1`}
                 >

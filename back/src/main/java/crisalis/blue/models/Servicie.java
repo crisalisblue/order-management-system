@@ -19,16 +19,14 @@ public class Servicie extends Asset {
     @Column(name = "supportFee")
     private BigDecimal supportFee;
 
-
-    public AssetDTO toAssetDTO()
-    {
+    public AssetDTO toAssetDTO() {
         AssetDTO assetDTO = super.toAssetDTO();
         assetDTO.setSupportFee(this.getSupportFee());
         return assetDTO;
 
     }
-    public Servicie(AssetDTO assetDTO)
-    {
+
+    public Servicie(AssetDTO assetDTO) {
         this.setId(assetDTO.getId());
         this.setName(assetDTO.getName());
         this.setBaseAmount(assetDTO.getBaseAmount());

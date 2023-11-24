@@ -1,6 +1,6 @@
-import { DataTable } from "../DataTable/DataTable";
-import { getAllProducts, deleteSingleProduct } from "../../api/ProductAPI";
-import { useDataFetching } from "../../api/API_Utils";
+import { DataTable } from "../DataTable/DataTable.jsx";
+import { getAllProducts, deleteSingleProduct } from "../../api/ProductAPI.js";
+import { useDataFetching } from "../../api/API_Utils.js";
 
 export const ProductsTable = () => {
   const {

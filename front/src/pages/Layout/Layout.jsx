@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import "./Layout.css";
-import { NavBar } from "../../components/Navbar/Navbar";
+import { NavBar } from "../../components/Navbar/Navbar.jsx";
 import { useLocation } from "react-router-dom";
 
 export const Layout = () => {
@@ -11,7 +11,7 @@ export const Layout = () => {
   return (
     <>
       <NavBar />
-      <main id={mainId} className="bg-neutral overflow-hidden">
+      <main id={mainId} className="overflow-hidden">
         <Outlet />
       </main>
       <footer className={"text-center text-black"}>

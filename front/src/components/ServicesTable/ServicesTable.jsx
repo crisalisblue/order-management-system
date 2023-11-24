@@ -1,8 +1,8 @@
-import { DataTable } from "../DataTable/DataTable";
-import { getAllServices, deleteSingleService } from "../../api/ServiceAPI";
+import { DataTable } from "../DataTable/DataTable.jsx";
+import { getAllServices, deleteSingleService } from "../../api/ServiceAPI.js";
 import { useDataFetching } from "../../api/API_Utils";
 
-export const Services = () => {
+export const ServicesTable = () => {
   const {
     data: servicesData,
     loading,
@@ -23,8 +23,8 @@ export const Services = () => {
     <DataTable
       data={servicesData}
       keysToShow={Object.keys(...servicesData)}
-      itemName="producto"
-      editPath="/productos"
+      itemName="servicio"
+      editPath="/servicios"
       deleteFunction={deleteSingleService}
     />
   );

@@ -1,6 +1,9 @@
 import { DataTable } from "../DataTable/DataTable";
-import { getAllCustomers, deleteSingleCustomer } from "../../api/customerAPI";
-import { useDataFetching } from "../../api/API_Utils";
+import {
+  getAllCustomers,
+  deleteSingleCustomer,
+} from "../../api/customerAPI.js";
+import { useDataFetching } from "../../api/API_Utils.js";
 import "./CustomersTable.css";
 
 export const CustomersTable = () => {

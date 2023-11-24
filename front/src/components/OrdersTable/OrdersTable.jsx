@@ -1,6 +1,6 @@
-import { DataTable } from "../DataTable/DataTable";
+import { DataTable } from "../DataTable/DataTable.jsx";
 import { getAllOrders, deleteSingleOrder } from "../../api/orderAPI.js";
-import { useDataFetching } from "../../api/API_Utils";
+import { useDataFetching } from "../../api/API_Utils.js";
 import "./OrdersTable.css";
 
 export const OrdersTable = () => {

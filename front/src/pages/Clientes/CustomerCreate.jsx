@@ -1,4 +1,4 @@
-import { createSingleCustomer } from "../../api/customerAPI";
+import { createSingleCustomer } from "../../api/customerAPI.js";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";

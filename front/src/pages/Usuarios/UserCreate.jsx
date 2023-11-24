@@ -1,4 +1,4 @@
-import { createSingleUser } from "../../api/UserAPI";
+import { createSingleUser } from "../../api/UserAPI.js";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
