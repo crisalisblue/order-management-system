@@ -9,7 +9,6 @@ export { CustomerCreate } from "./Clientes/CustomerCreate";
 export { CustomerUpdate } from "./Clientes/CustomerUpdate";
 export { OrderCreate } from "./Pedidos/OrderCreate";
 export { OrderClientCreate } from "./Pedidos/OrderClientCreate";
-export { OrderDelete } from "./Pedidos/OrderDelete";
 export { OrderUpdate } from "./Pedidos/OrderUpdate";
 export { Pedidos } from "./Pedidos/Pedidos";
 export { Taxes } from "./Impuestos/Impuestos";
