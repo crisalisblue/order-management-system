@@ -127,13 +127,21 @@ private List<Tax> updateListTax(List<TaxDTO> list)
     return new ArrayList<>();
     //else throw new EmptyElementException("La lista de impuesto es nula ");
 }
+private void updateTax(Tax tax,TaxDTO taxDTO)
+{
+    tax.setName(taxDTO.getName());
+    tax.setBaseAmount(taxDTO.getBaseAmount());
+    tax.setPercentage(taxDTO.getPercentage());
+}
 private Tax obtenerTax(TaxDTO taxDTO )
 {
     if(taxDTO.getId() != null) {
-        return taxRepository.findById(taxDTO.getId()).get();
+        Tax tax = taxRepository.findById(taxDTO.getId()).get();
+        updateTax(tax,taxDTO);
+        return tax;
     }
     else
-        return new Tax(taxDTO);
+        return taxRepository.save(new Tax(taxDTO));
 }
     public void delete(Long id)
     {

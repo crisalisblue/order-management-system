@@ -130,8 +130,8 @@ export const DataTable = ({
                   🛠
                 </Link>
                 <DeleteModal
-                  itemID={item.id}
-                  onDelete={() => handleDelete(item.id)}
+                  itemID={item.idOrder}
+                  onDelete={() => handleDelete(item.idOrder)}
                 ></DeleteModal>
               </td>
             </tr>

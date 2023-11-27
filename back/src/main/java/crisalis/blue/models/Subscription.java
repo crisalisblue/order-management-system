@@ -21,7 +21,7 @@ public class Subscription {
     )
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
-            generator = "customer_sequence"
+            generator = "subscription_sequence"
     )
     @Column(name = "id")
     private Long id;
@@ -45,12 +45,5 @@ public class Subscription {
         dto.setAsset(this.asset.getId());
         return dto;
     }
-    /*
-    SubscriptionDTO.builder()
-                    .id(newSubscription.getId())
-                    .status(newSubscription.getStatus())
-                    .customer(newSubscription.getCustomer().getId())
-                    .asset(newSubscription.getAsset().getId())
-                    .build();
-    * */
+   
 }
