@@ -1,7 +1,6 @@
 package crisalis.blue.models;
 
 import crisalis.blue.models.dto.OrderDTO;
-import crisalis.blue.models.dto.OrderRefreshDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,7 +44,9 @@ public class Order {
     private List<Item> items;
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "order")
     private List<CalculatedTax> calculatedTaxes;
-
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name="suscriptionAsset_id",referencedColumnName = "id")
+    private Asset assetSuscription;
 
 
     public OrderDTO toOrderDTO()
@@ -73,15 +74,5 @@ public class Order {
         this.setTotalDiscount(orderDTO.getTotalDiscount());
         this.setTotalPrice(orderDTO.getTotalPrice());
     }
-    public Order(OrderRefreshDTO orderDTO)
-    {
-        this.setId(orderDTO.getIdOrder());
-        this.setDatesOrder(orderDTO.getDateOrder());
-        this.setSubTotal(orderDTO.getSubTotal());
-        this.setActive(orderDTO.getActive());
-        this.setTotalDiscount(orderDTO.getTotalDiscount());
-        this.setTotalPrice(orderDTO.getTotalPrice());
-    }
-
 
 }

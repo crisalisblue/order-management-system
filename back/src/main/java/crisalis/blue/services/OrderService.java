@@ -5,15 +5,11 @@ import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.*;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
 import crisalis.blue.models.dto.ItemDTO;
-import crisalis.blue.models.dto.ItemRefreshDTO;
 import crisalis.blue.models.dto.OrderDTO;
-import crisalis.blue.models.dto.OrderRefreshDTO;
-import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.*;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,13 +42,14 @@ public class OrderService {
     public OrderDTO create(OrderDTO orderDTO) {
         if (orderDTO != null) {
             checkEmpty(orderDTO);
-            Order order = new Order(orderDTO);
+            Order order = new Order(orderDTO); //Esto hay que charlarlo y tomar la mejor desición
             asignarCustomerAOrder(orderDTO, order);
-            orderRepository.save(order);
+            order = orderRepository.save(order);
             order.setItems(createListItemDeItemDTO(orderDTO.getItemDTO()));
             asignarOrderAListItems(order.getItems(), order);
-            order.setCalculatedTaxes(createCalculatedTaxToCalculatedTaxDTO(orderDTO.getCalculatedTaxDTOS()));
-            asignarOrderAListCalculated(order.getCalculatedTaxes(), order);
+           // order.setCalculatedTaxes(createCalculatedTaxToCalculatedTaxDTO(orderDTO.getCalculatedTaxDTOS()));
+            //asignarOrderAListCalculated(order.getCalculatedTaxes(), order);
+            orderEngineerService.calculateOrderTotals(order);
             orderRepository.save(order);
             return order.toOrderDTO();
         }
@@ -219,11 +216,9 @@ public class OrderService {
         if (order.getDateOrder() == null) {
             throw new EmptyElementException("Fecha de la orden vacia ");
         }
-        if (order.getTotalPrice() == null) {
-            throw new EmptyElementException("Total price de de la orden vacia ");
+        if (order.getItemDTO() == null || order.getItemDTO().isEmpty()) {
+            throw new EmptyElementException("La lista de ítems esta vacia");
         }
-        if (order.getTotalDiscount() == null)
-            throw new EmptyElementException("Total discount de la orden vacia");
         if (order.getCustomerID() == null) {
             throw new EmptyElementException("El id del cliente vacio ");
         }
@@ -237,26 +232,25 @@ public class OrderService {
     }
 
     // CREAR FUNCION QUE REFRESQUE LA INFORMACION
-    public OrderRefreshDTO refresh(OrderRefreshDTO orderDTO) {
-        Order order = new Order();
+    public OrderDTO refresh(OrderDTO orderDTO) {
+        Order order = new Order(orderDTO);
         if ("calculate".equals(orderDTO.getAction())) {
-            orderEngineerService.calculateOrderTotals(orderDTO);
+             orderEngineerService.calculateOrderTotals(order);
         } else if ("customer".equals(orderDTO.getAction())) {
-            updateCustomerInfo(orderDTO, order);
+            updateCustomerInfo(orderDTO,order);
         }
-        return orderDTO;
+        return order.toOrderDTO();
     }
 
 
 
-    private void updateCustomerInfo(OrderRefreshDTO orderDTO, Order order) {
+    private void updateCustomerInfo(OrderDTO orderDTO, Order order) {
         if (orderDTO.getCustomerID() != null) {
             Optional<Customer> optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
 
             if (optionalCustomer.isPresent()) {
                 Customer customer = optionalCustomer.get();
                 order.setCustomer(customer);
-                orderDTO.setCustomerName(customer.getName());
             }
         }
     }

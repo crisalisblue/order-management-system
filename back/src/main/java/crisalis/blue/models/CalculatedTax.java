@@ -39,4 +39,10 @@ public class CalculatedTax {
     {
         this.setTaxesAmount(calculatedTaxDTO.getTaxesAmount());
     }
+    public CalculatedTax(Order order,Tax tax)
+    {
+        this.setOrder(order);
+        this.setTax(tax);
+        this.taxesAmount = BigDecimal.ZERO;
+    }
 }
