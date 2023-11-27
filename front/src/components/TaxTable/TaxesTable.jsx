@@ -1,7 +1,6 @@
-import { DataTable } from "../DataTable/DataTable";
-import { getAllTaxes, deleteSingleTax } from "../../api/TaxAPI";
-import { useDataFetching } from "../../api/API_Utils";
-import "./TaxesTable.css";
+import { DataTable } from "../DataTable/DataTable.jsx";
+import { getAllTaxes, deleteSingleTax } from "../../api/TaxAPI.js";
+import { useDataFetching } from "../../api/API_Utils.js"; 
 
 export const TaxesTable = () => {
   const { data: impuestosData, loading, error } = useDataFetching(getAllTaxes);
@@ -23,6 +22,7 @@ export const TaxesTable = () => {
       itemName="impuestos"
       editPath="/impuestos"
       deleteFunction={deleteSingleTax}
+      hiddenColumns={["baseAmount", "id"]}
     ></DataTable>
   );
 };

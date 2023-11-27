@@ -1,4 +1,4 @@
-import { createSingleTax } from "../../api/TaxAPI";
+import { createSingleTax } from "../../api/TaxAPI.js";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";

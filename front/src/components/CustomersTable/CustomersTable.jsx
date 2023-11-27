@@ -1,7 +1,9 @@
 import { DataTable } from "../DataTable/DataTable";
-import { getAllCustomers, deleteSingleCustomer } from "../../api/customerAPI";
-import { useDataFetching } from "../../api/API_Utils";
-import "./CustomersTable.css";
+import {
+  getAllCustomers,
+  deleteSingleCustomer,
+} from "../../api/customerAPI.js";
+import { useDataFetching } from "../../api/API_Utils.js";
 
 export const CustomersTable = () => {
   const {
@@ -27,6 +29,7 @@ export const CustomersTable = () => {
       itemName="clientes"
       editPath="/clientes"
       deleteFunction={deleteSingleCustomer}
+      hiddenColumns={["id"]}
     ></DataTable>
   );
 };

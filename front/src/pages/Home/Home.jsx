@@ -1,5 +1,5 @@
 import "./Home.css";
-import { HomeTable } from "../../components/HomeTable/HomeTable";
+import { HomeTable } from "../../components/HomeTable/HomeTable.jsx";
 
 export const Home = () => {
   return (
