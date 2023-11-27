@@ -1,7 +1,4 @@
-
 import { Outlet, Link as RouterLink, useLocation } from "react-router-dom";
-import { Outlet, Link, useLocation } from "react-router-dom";
-
 
 export const Usuarios = () => {
   const { pathname } = useLocation();
