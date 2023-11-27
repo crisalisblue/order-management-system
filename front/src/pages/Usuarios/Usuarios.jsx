@@ -1,8 +1,10 @@
+
 import { Outlet, Link as RouterLink, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
+
 
 export const Usuarios = () => {
   const { pathname } = useLocation();
-
   return (
     <article className="prose grid min-w-full">
       <h1 className="text-primary text-center m-0 p-0">Usuarios</h1>
@@ -17,7 +19,6 @@ export const Usuarios = () => {
           {pathname === "/usuarios" ? "+ Agregar Usuario" : "Lista de Usuarios"}
         </button>
       </RouterLink>
-
       <Outlet />
     </article>
   );
