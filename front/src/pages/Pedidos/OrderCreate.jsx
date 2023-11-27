@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useDataFetching } from "../../api/API_Utils.js";
 import { getAllCustomers, getSingleCustomer } from "../../api/customerAPI.js";
-import { createSingleOrder } from "../../api/orderAPI.js";
+import { createSingleOrder, refreshOrder } from "../../api/orderAPI.js";
 import { getAllAssets } from "../../api/assetAPI.js";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
@@ -350,7 +350,7 @@ export const OrderCreate = () => {
             <section className="max-h-60 overflow-y-scroll scrollbar m-2">
               Cliente:{" "}
               {dataRefresh.customerName
-                ? dataRefresh.customerName
+                ? 1
                 : "Buscando nombre"}
               <table className="table">
                 <thead className="bg-[#E6EFF3]">
