@@ -1,32 +1,16 @@
 package crisalis.blue.models.dto;
 
 import crisalis.blue.models.Order;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class OrderRefreshDTO {
-
-    private Long idOrder;
-    @Temporal(TemporalType.DATE)
-    private Date dateOrder;
-    private BigDecimal totalDiscount;
-    private BigDecimal totalPrice;
-    private BigDecimal subTotal;
-    private Boolean active;
-    private Long customerID;
-    private String customerName;
+public class OrderRefreshDTO extends OrderDTO {
     private String action;
     private List<ItemRefreshDTO> itemDTO;
-    private List<CalculatedTaxDTO> calculatedTaxDTOS;
 
     public void OrderDTO() {
         itemDTO = new ArrayList<ItemRefreshDTO>();

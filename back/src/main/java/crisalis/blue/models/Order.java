@@ -1,6 +1,7 @@
 package crisalis.blue.models;
 
 import crisalis.blue.models.dto.OrderDTO;
+import crisalis.blue.models.dto.OrderRefreshDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -64,6 +65,15 @@ public class Order {
         return orderDTO;
     }
     public Order(OrderDTO orderDTO)
+    {
+        this.setId(orderDTO.getIdOrder());
+        this.setDatesOrder(orderDTO.getDateOrder());
+        this.setSubTotal(orderDTO.getSubTotal());
+        this.setActive(orderDTO.getActive());
+        this.setTotalDiscount(orderDTO.getTotalDiscount());
+        this.setTotalPrice(orderDTO.getTotalPrice());
+    }
+    public Order(OrderRefreshDTO orderDTO)
     {
         this.setId(orderDTO.getIdOrder());
         this.setDatesOrder(orderDTO.getDateOrder());

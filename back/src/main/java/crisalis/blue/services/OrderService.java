@@ -27,17 +27,20 @@ public class OrderService {
     private final ItemRepository itemRepository;
     private final CalculatedTaxRepository calculatedTaxRepository;
     private final AssetRepository assetRepository;
+    private final OrderEngineerService orderEngineerService;
 
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
             ItemRepository itemRepository,
             CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository,
-            TaxRepository taxRepository) {
+            TaxRepository taxRepository,OrderEngineerService orderEngineerService) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
         this.calculatedTaxRepository = calculatedTaxRepository;
         this.assetRepository = assetRepository;
         this.taxRepository = taxRepository;
+        this.orderEngineerService = orderEngineerService;
+
     }
 
     public OrderDTO create(OrderDTO orderDTO) {
@@ -236,55 +239,15 @@ public class OrderService {
     // CREAR FUNCION QUE REFRESQUE LA INFORMACION
     public OrderRefreshDTO refresh(OrderRefreshDTO orderDTO) {
         Order order = new Order();
-
         if ("calculate".equals(orderDTO.getAction())) {
-            calculateOrderTotals(orderDTO, order);
+            orderEngineerService.calculateOrderTotals(orderDTO);
         } else if ("customer".equals(orderDTO.getAction())) {
             updateCustomerInfo(orderDTO, order);
         }
-
         return orderDTO;
     }
 
-    private void calculateOrderTotals(OrderRefreshDTO orderDTO, Order order) {
-        // List<ItemDTO> itemList = orderDTO.getItemDTOs();
 
-        if (orderDTO.getItemDTO() != null && !orderDTO.getItemDTO().isEmpty()) {
-            List<Item> items = orderDTO.getItemDTO().stream()
-                    .map(ItemRefreshDTO::toItem)
-                    .collect(Collectors.toList());
-
-            BigDecimal subtotal = BigDecimal.ZERO;
-            BigDecimal total = BigDecimal.ZERO;
-            BigDecimal discounts = BigDecimal.ZERO;
-
-            for (int j = 0; j < items.size(); j++) {
-                Item item = items.get(j);
-
-                if (orderDTO.getItemDTO().get(j).getIdAsset() != null) {
-                    Asset asset = assetRepository.findById(orderDTO.getItemDTO().get(j).getIdAsset()).orElse(null);
-                    if (asset != null) {
-                        item.setAsset(asset);
-                    }
-                }
-
-                BigDecimal itemPrice = item.getItemPrice() != null ? item.getItemPrice() : BigDecimal.ZERO;
-                BigDecimal itemQuantity = BigDecimal.valueOf(item.getItemQuantity()) != null
-                        ? BigDecimal.valueOf(item.getItemQuantity())
-                        : BigDecimal.ZERO;
-
-                subtotal = subtotal.add(itemPrice.multiply(itemQuantity));
-                discounts = discounts.add(item.getDiscountAmount());
-            }
-
-            total = subtotal.subtract(discounts);
-
-            orderDTO.setSubTotal(subtotal);
-            orderDTO.setTotalPrice(total);
-            orderDTO.setTotalDiscount(discounts);
-        }
-
-    }
 
     private void updateCustomerInfo(OrderRefreshDTO orderDTO, Order order) {
         if (orderDTO.getCustomerID() != null) {
