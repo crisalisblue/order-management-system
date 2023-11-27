@@ -50,22 +50,13 @@ public class OrderService {
             Order order = new Order(orderDTO);
             asignarCustomerAOrder(orderDTO, order);
 
-            //Compruebo si ya existe una Subscripcion
-            //Veo si existen subscripciones para ese cliente
-            if (subscriptionRepository.existsByCustomerId(orderDTO.getCustomerID())){
-                //Obtengo todas las subscripciones del cliente
-                List<Subscription> customerSubscription = subscriptionRepository.findAllByCustomerId(orderDTO.getCustomerID());
-                //Para cada subscripcion del cliente las comparo con los servicios que le quiero asignar nuevamente
-                //En caso de que ya existiera alguno de los servicio se anula la order.
-                for(Subscription sub : customerSubscription){
-                    for (ItemDTO asset : orderDTO.getItemDTO()){
-                        if (sub.getAsset().getId().equals(asset.getIdAsset())) {
-                            throw new NotCreatedException("Ya existe una Order con ese Service asignado.");
-                        }
-                    }
+            //Compruebo si ya existe una Subscripcion para todos los assets dado
+            for (ItemDTO asset : orderDTO.getItemDTO()){
+                Subscription subComprobation = subscriptionService.getSubscriptionByAssetIdAndCustomerId(asset.getIdAsset(), orderDTO.getCustomerID());
+                if (subComprobation != null) {
+                    throw new NotCreatedException("El customer: " +orderDTO.getCustomerName()+ " Ya tiene el asset: " +asset.getNameAsset()+ " Asignado");
                 }
             }
-
 
             orderRepository.save(order);
             order.setItems(createListItemDeItemDTO(orderDTO.getItemDTO()));
