@@ -26,6 +26,7 @@ public class OrderRefreshDTO {
     private String customerName;
     private String action;
     private List<ItemRefreshDTO> itemDTO;
+    private List<CalculatedTaxDTO> calculatedTaxDTOS;
 
     public void OrderDTO() {
         itemDTO = new ArrayList<ItemRefreshDTO>();
