@@ -12,7 +12,7 @@ const translation = {
   businessName: "Nombre de la Empresa",
   activityStartDate: "Fecha Inicio de Actividad",
   percentage: "Porcentaje",
-  baseAmount: "Monto Base",
+  baseAmount: "Monto",
   supportFee: "Monto de Soporte",
   username: "Usuario",
   dateOrder: "Fecha de Orden",
@@ -111,7 +111,7 @@ export const DataTable = ({
                       index === data.length - 1 && idx === keysToShow.length - 1
                         ? ""
                         : ""
-                    } p-1`}
+                    } p-1 `}
                   >
                     {item[key]}
                   </td>
@@ -119,10 +119,16 @@ export const DataTable = ({
               )}
               <td
                 className={`text-center flex justify-evenly ${
-                  index === data.length - 1 ? "rounded-br-md" : ""
+                  index === data.length - 1 ? "rounded-br-md " : ""
                 } p-1`}
               >
-                <Link to={`${editPath}/${item.id}/editar`}>🛠</Link>
+                <Link
+                  className="
+                no-underline"
+                  to={`${editPath}/${item.id}/editar`}
+                >
+                  🛠
+                </Link>
                 <DeleteModal
                   itemID={item.id}
                   onDelete={() => handleDelete(item.id)}

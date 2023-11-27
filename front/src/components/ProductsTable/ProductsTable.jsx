@@ -26,7 +26,7 @@ export const ProductsTable = () => {
       itemName="producto"
       editPath="/productos"
       deleteFunction={deleteSingleProduct}
-      hiddenColumns={["id", "supportFee", "taxList"]}
+      hiddenColumns={["id", "supportFee", "taxList", "type"]}
     />
   );
 };
