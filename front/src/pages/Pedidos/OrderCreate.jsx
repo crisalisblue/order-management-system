@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { useDataFetching } from "../../api/API_Utils";
-import { getAllCustomers, getSingleCustomer } from "../../api/customerAPI";
-import { createSingleOrder, refreshOrder } from "../../api/orderAPI";
-import { getAllAssets } from "../../api/assetAPI";
+import { useDataFetching } from "../../api/API_Utils.js";
+import { getAllCustomers, getSingleCustomer } from "../../api/customerAPI.js";
+import { createSingleOrder } from "../../api/orderAPI.js";
+import { getAllAssets } from "../../api/assetAPI.js";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 

@@ -1,37 +1,34 @@
-import { Outlet } from "react-router-dom";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-//import Style from './Pedidos.css'
+import { Outlet, Link as RouterLink, useLocation } from "react-router-dom";
 
 export const Pedidos = () => {
   const location = useLocation();
+
   return (
-    <>
-      <h1 className={"text-4xl m-auto text-black text-center"}> Pedidos</h1>
-
-      <section className={" w-5/6 p-2 m-auto text-black"}>
-        {location.pathname === "/pedidos" ? (
+    <article className="prose min-w-full">
+      <h1 className="text-primary text-center m-0 p-0">Pedidos</h1>
+      {location.pathname === "/pedidos" && (
+        <section className="w-5/6 p-2 m-1 text-black">
           <section className="flex gap-2 justify-between items-center">
-            <h1>Filtros:</h1>
-            <input className="h-7 p-1" type="text" placeholder="nombre" />
-            <input className="h-7 p-1" type="text" placeholder="fechas" />
-            <input className="h-7 p-1" type="text" placeholder="tipo" />
-            <button className={"btn text-white bg-[#001F3D]"}>
-              <RouterLink
-                className={` ${
-                  location.pathname === "/pedidos/nuevo" ? "tab-active" : ""
-                }  w-1/2`}
-                to="/pedidos/nuevo"
-              >
+            <label htmlFor="filter1" className="mr-4">
+              Filtrar:
+            </label>
+            <input className="h-7 p-1" type="text" placeholder="Nombre" />
+            <input className="h-7 p-1" type="text" placeholder="Fechas" />
+            <input className="h-7 p-1" type="text" placeholder="Tipo" />
+            <RouterLink
+              to="/pedidos/nuevo"
+              className={`${
+                location.pathname === "/pedidos/nuevo" ? "tab-active" : ""
+              } w-1/2`}
+            >
+              <button className="float-right bg-primary text-base-100 hover:bg-gray-100 font-semibold py-1 px-2 border border-gray-400 rounded shadow">
                 Agregar Pedido
-              </RouterLink>
-            </button>
+              </button>
+            </RouterLink>
           </section>
-        ) : (
-          ""
-        )}
-      </section>
-
+        </section>
+      )}
       <Outlet />
-    </>
+    </article>
   );
 };
