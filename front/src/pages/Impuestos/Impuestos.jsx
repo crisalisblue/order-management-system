@@ -15,7 +15,7 @@ export const Taxes = () => {
           >
             <button className="float-right bg-primary text-base-100 hover:bg-gray-100  font-semibold py-1 px-2 border border-gray-400 rounded shadow">
               {pathname === `/impuestos`
-                ? `+ Agregar Nuevo`
+                ? `+ Agregar Impuesto`
                 : `Lista de Impuestos`}
             </button>
           </RouterLink>
