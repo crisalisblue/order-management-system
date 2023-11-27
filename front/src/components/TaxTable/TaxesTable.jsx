@@ -1,6 +1,6 @@
 import { DataTable } from "../DataTable/DataTable.jsx";
 import { getAllTaxes, deleteSingleTax } from "../../api/TaxAPI.js";
-import { useDataFetching } from "../../api/API_Utils.js";
+import { useDataFetching } from "../../api/API_Utils.js"; 
 
 export const TaxesTable = () => {
   const { data: impuestosData, loading, error } = useDataFetching(getAllTaxes);
