@@ -80,6 +80,12 @@ export const CustomerCreate = () => {
                     <label className="text-black">DNI:</label>
                     <input type="text" {...register("dni")} />
                   </article>
+                  <button
+                    className="float-right bg-primary text-base-100 hover:bg-gray-100  font-semibold py-1 px-2 border border-gray-400 rounded shadow"
+                    type="submit"
+                  >
+                    Agregar
+                  </button>
                 </>
               )}
               {type === "BUS" && (
@@ -115,15 +121,15 @@ export const CustomerCreate = () => {
                     <label className="text-black">Dni:</label>
                     <input type="text" {...register("dni")} />
                   </article>
+                  <button
+                    className="float-right bg-primary text-base-100 hover:bg-gray-100  font-semibold py-1 px-2 border border-gray-400 rounded shadow"
+                    type="submit"
+                  >
+                    Agregar
+                  </button>
                 </>
               )}
             </section>
-            <button
-              className="float-right bg-primary text-base-100 hover:bg-gray-100  font-semibold py-1 px-2 border border-gray-400 rounded shadow"
-              type="submit"
-            >
-              Agregar
-            </button>
           </form>
         </section>
       </section>
