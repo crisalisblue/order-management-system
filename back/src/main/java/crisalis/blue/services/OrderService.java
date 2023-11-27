@@ -1,6 +1,7 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
+import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.*;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
@@ -8,7 +9,6 @@ import crisalis.blue.models.dto.ItemDTO;
 import crisalis.blue.models.dto.ItemRefreshDTO;
 import crisalis.blue.models.dto.OrderDTO;
 import crisalis.blue.models.dto.OrderRefreshDTO;
-import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.repositories.*;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +27,12 @@ public class OrderService {
     private final CalculatedTaxRepository calculatedTaxRepository;
     private final AssetRepository assetRepository;
     private final SubscriptionService subscriptionService;
+    private final SubscriptionRepository subscriptionRepository;
 
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
                         ItemRepository itemRepository,
                         CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository
-                        , TaxRepository taxRepository, SubscriptionService subscriptionService)
+                        , TaxRepository taxRepository, SubscriptionService subscriptionService, SubscriptionRepository subscriptionRepository)
     {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
@@ -40,6 +41,7 @@ public class OrderService {
         this.assetRepository = assetRepository;
         this.taxRepository = taxRepository;
         this.subscriptionService = subscriptionService;
+        this.subscriptionRepository = subscriptionRepository;
     }
 
     public OrderDTO create(OrderDTO orderDTO) {
@@ -47,6 +49,24 @@ public class OrderService {
             checkEmpty(orderDTO);
             Order order = new Order(orderDTO);
             asignarCustomerAOrder(orderDTO, order);
+
+            //Compruebo si ya existe una Subscripcion
+            //Veo si existen subscripciones para ese cliente
+            if (subscriptionRepository.existsByCustomerId(orderDTO.getCustomerID())){
+                //Obtengo todas las subscripciones del cliente
+                List<Subscription> customerSubscription = subscriptionRepository.findAllByCustomerId(orderDTO.getCustomerID());
+                //Para cada subscripcion del cliente las comparo con los servicios que le quiero asignar nuevamente
+                //En caso de que ya existiera alguno de los servicio se anula la order.
+                for(Subscription sub : customerSubscription){
+                    for (ItemDTO asset : orderDTO.getItemDTO()){
+                        if (sub.getAsset().getId().equals(asset.getIdAsset())) {
+                            throw new NotCreatedException("Ya existe una Order con ese Service asignado.");
+                        }
+                    }
+                }
+            }
+
+
             orderRepository.save(order);
             order.setItems(createListItemDeItemDTO(orderDTO.getItemDTO()));
             asignarOrderAListItems(order.getItems(), order);
