@@ -8,9 +8,7 @@ import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 export const OrderCreate = () => {
-  // const { setValue, handleSubmit } = useForm();
   const navigate = useNavigate();
-  // const location = useLocation();
 
   const {
     data: assetsData,
@@ -26,44 +24,48 @@ export const OrderCreate = () => {
 
   const [activeTab, setActiveTab] = useState("product");
   const [selectedClient, setSelectedClient] = useState("");
-  const [selectedAssets, setSelectedAssets] = useState([]);
   const [assetQuantities, setAssetQuantities] = useState({});
+  const [assetWarranties, setAssetWarranties] = useState({});
+  const [customerData, setCustomerData] = useState({
+    customerID: 0,
+  });
+  const [orderData, setOrderData] = useState({
+    dateOrder: "2023-11-23",
+    itemDTO: [],
+    calculatedTaxDTOS: [],
+    active: true,
+    totalDiscount: 0,
+    totalPrice: 0,
+    subTotal: 0,
+  });
+  const [dataRefresh, setDataRefresh] = useState({
+    dateOrder: "2023-11-23",
+    totalDiscount: 1,
+    totalPrice: 1,
+    subTotal: 1,
+    active: true,
+    customerID: 0,
+    customerName: "",
+    itemDTO: [],
+    calculatedTaxDTOS: [],
+    action: "",
+  });
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const orderTotal = orderData.items.reduce(
-      (total, item) => total + item.subtotal,
-      0
-    );
-
-    const orderObject = {
-      dateOrder: "2023-11-08",
-      totalDiscount: 1000,
-      totalPrice: orderTotal === 0 ? 0 : orderTotal - 1000,
-      subTotal: orderTotal,
-      active: true,
-      customerID: orderData.customerId,
-      customerName: orderData.customerName,
-      itemDto: [0],
-    };
     try {
-      const response = await createSingleOrder(orderObject);
-
-      if (response == "200") {
-        Swal.fire({
-          icon: "success",
-          title: "Pedido creado",
-          text: "La orden se creó exitosamente.",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            navigate("/pedidos");
-          }
-        });
-      } else {
-        console.log("status:", response);
-        // Captura un status distinto de 200 y lanza un error
-        throw new Error("Error al crear la orden. Status: " + response.status);
-      }
+      //const response = await createSingleOrder(dataRefresh);
+      await createSingleOrder(dataRefresh);
+      console.log(dataRefresh);
+      Swal.fire({
+        icon: "success",
+        title: "Pedido creado",
+        text: "La orden se creó exitosamente.",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/pedidos");
+        }
+      });
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -72,33 +74,41 @@ export const OrderCreate = () => {
       });
     }
   }
-  const [orderData, setOrderData] = useState({
-    dateOrder: "",
-    totalDiscount: "",
-    customerId: "",
-    customerName: "",
-    orderId: "",
-    items: [],
-    taxes: [{ idTax: "1", name: "iva", monto: 2100 }],
-    total: 0,
-    active: true,
-    subTotal: 0,
-    totalPrice: 0,
-    action: "",
-  });
 
-  //Funcion nueva - Cambia el id de cliente dentro de la lista de la orden a enviar al back
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await refreshOrder(orderData);
+        setDataRefresh(result);
+      } catch (error) {
+        console.error("Error al actualizar datos:", error);
+      }
+    };
+
+    fetchData();
+  }, [orderData, customerData]);
+
+  //Función nueva - Cambia el id de cliente dentro de la lista de la orden a enviar al back
   const handleClientChangeWithClientId = async (event) => {
     const selectedClientId = event.target.value;
 
     try {
-      const data = await getSingleCustomer(selectedClientId);
-      setOrderData({
-        ...orderData,
-        customerId: selectedClientId,
-        customerName: data.name,
-        action: "changeClient",
+      const customerInfo = await getSingleCustomer(selectedClientId);
+      setCustomerData({
+        customerID: selectedClientId,
+        customerName: customerInfo.name,
       });
+
+      setOrderData((prevOrderData) => ({
+        ...prevOrderData,
+        customerID: selectedClientId,
+        customerName: customerInfo.name,
+        action: "customer",
+      }));
+      setOrderData((prevOrderData) => ({
+        ...prevOrderData,
+        action: "calculate",
+      }));
     } catch (error) {
       console.error("Error al buscar el cliente:", error);
     }
@@ -109,49 +119,55 @@ export const OrderCreate = () => {
   };
 
   //Agrega los items seleccionados a la orden nueva
-  const handleAddAssetInOrder = (asset) => {
+  const handleAddAssetInOrder = async (asset) => {
     const quantity = assetQuantities[asset.id] || 1;
+    const warranty = assetWarranties[asset.id] || 0;
     const newItem = {
-      name: asset.name,
-      price: asset.baseAmount,
-      quantity: quantity < 1 ? 1 : quantity,
-      subtotal: asset.baseAmount * quantity,
-      itemDetails: "",
-      warrantyYears: 1,
-      tax: (asset.baseAmount * 21) / 100,
+      idAsset: asset.id,
+      nameAsset: asset.name,
+      orderDTO: {},
+      itemPrice: asset.baseAmount,
+      itemDitails: "Esto es una descripción",
+      itemQuantity: quantity,
+      discountAmount: 2000,
+      totalPrice: asset.baseAmount * quantity,
+      warrantyYears: warranty,
     };
-    console.log("id item:", asset.id);
-
-    setOrderData({
-      ...orderData,
-      items: [...orderData.items, newItem],
-      action: "calculateItems",
-      total: orderData.total + newItem.subtotal,
-    });
-
+    setOrderData((prevOrderData) => ({
+      ...prevOrderData,
+      itemDTO: [...prevOrderData.itemDTO, newItem],
+      action: "calculate",
+    }));
     // Restablece la cantidad del activo a 0 después de agregarlo
     setAssetQuantities({
       ...assetQuantities,
       [asset.id]: 1,
     });
+    setAssetWarranties({
+      ...assetWarranties,
+      [asset.id]: 0,
+    });
   };
 
   //Funcion nueva, remueve items de la orden
-  const handleRemoveAsset = (assetId) => {
-    const indexToRemove = orderData.items.findIndex(
+  const handleRemoveAsset = async (assetId) => {
+    const indexToRemove = orderData.itemDTO.findIndex(
       (item) => item.id === assetId
     );
 
     if (indexToRemove !== -1) {
-      const updatedItems = [...orderData.items];
+      const updatedItems = [...orderData.itemDTO];
       updatedItems.splice(indexToRemove, 1);
 
-      setOrderData({
-        ...orderData,
-        items: updatedItems,
-        total: orderData.total - orderData.items[indexToRemove].subtotal,
-      });
+      setOrderData((prevOrderData) => ({
+        ...prevOrderData,
+        itemDTO: updatedItems,
+        total: orderData.total - orderData.itemDTO[indexToRemove].subtotal,
+        action: "calculate",
+      }));
     }
+
+    console.log("Refresh data en eliminar item: ", dataRefresh);
   };
 
   //Cambiar cantidad de cantidad
@@ -159,6 +175,14 @@ export const OrderCreate = () => {
     setAssetQuantities((prevQuantities) => ({
       ...prevQuantities,
       [assetId]: quantity,
+    }));
+  };
+
+  //Cambiar cantidad de cantidad
+  const handleWarrantyChange = (assetId, years) => {
+    setAssetWarranties((prevYears) => ({
+      ...prevYears,
+      [assetId]: years,
     }));
   };
 
@@ -179,7 +203,7 @@ export const OrderCreate = () => {
     <>
       <header className="flex justify-between p-2 text-black rounded-t-md border-b-black bg-[#F1F1F1] ">
         <h6>{orderData.id ? "00000" + orderData.id : "00000"}</h6>
-        <h6>6/11/2023</h6>
+        <h6>{orderData.dateOrder ? orderData.dateOrder : "buscando fecha"}</h6>
       </header>
       <form
         className="flex flex-col py-3 min-h-screen text-black rounded-b-md bg-[#FfFfFf]"
@@ -196,6 +220,9 @@ export const OrderCreate = () => {
                   onChange={(e) => handleClientChangeWithClientId(e)}
                   className="border-none p-1 px-2 relative mt-2 mx-2 rounded-md"
                 >
+                  <option value="" disabled hidden>
+                    Selecciona un cliente
+                  </option>
                   {customersData.map((client, index) => (
                     <option value={client.id} key={index}>
                       {client.name}
@@ -206,11 +233,9 @@ export const OrderCreate = () => {
               <article>
                 <RouterLink
                   className={` ${
-                    location.pathname === "/pedidos/nuevo/nuevo-cliente"
-                      ? "tab-active"
-                      : ""
+                    location.pathname === "/clientes/nuevo" ? "tab-active" : ""
                   }  w-1/2`}
-                  to="/pedidos/nuevo/nuevo-cliente"
+                  to="/clientes/nuevo"
                 >
                   <button className="btn-neutral p-1 px-2 relative mt-2 rounded-md bg-[#004C7D] text-white">
                     Crear Cliente
@@ -267,20 +292,22 @@ export const OrderCreate = () => {
               <div className="max-h-70 overflow-y-auto scrollbar">
                 <table className="table mt-3">
                   <thead className="bg-[#E6EFF3]">
-                    <th>ID</th>
+                    {/* <th>ID</th> */}
                     <th>Nombre</th>
                     <th>P/Unitario</th>
                     <th>Imp</th>
                     <th>Cant</th>
+                    <th>Garantia</th>
                     <th> </th>
                   </thead>
                   <tbody>
                     {assetsData.map((asset, index) => (
                       <tr className="border-none" key={index}>
-                        <td>{asset.id}</td>
+                        {/* <td>{asset.id}</td> */}
                         <td>{asset.name}</td>
                         <td>{asset.baseAmount}</td>
-                        <td>{asset.taxList.map((tax) => tax)}</td>
+                        {/* <td>{asset.taxList.map((tax) => tax)}</td> */}
+                        <td>lista imp</td>
                         <td>
                           <input
                             className="w-10"
@@ -289,6 +316,17 @@ export const OrderCreate = () => {
                             value={assetQuantities[asset.id] || 1}
                             onChange={(e) =>
                               handleQuantityChange(asset.id, e.target.value)
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            className="w-10"
+                            type="number"
+                            min={0}
+                            value={assetWarranties[asset.id] || 0}
+                            onChange={(e) =>
+                              handleWarrantyChange(asset.id, e.target.value)
                             }
                           />
                         </td>
@@ -311,8 +349,8 @@ export const OrderCreate = () => {
           <section className="w-1/2 flex flex-col justify-between">
             <section className="max-h-60 overflow-y-scroll scrollbar m-2">
               Cliente:{" "}
-              {orderData.customerName
-                ? orderData.customerName
+              {dataRefresh.customerName
+                ? dataRefresh.customerName
                 : "Buscando nombre"}
               <table className="table">
                 <thead className="bg-[#E6EFF3]">
@@ -322,19 +360,20 @@ export const OrderCreate = () => {
                   <th>Sub s/imp</th>
                   <th>Sub c/imp</th>
                   <th>Imp</th>
+                  <th>Garantia</th>
                   {/* <th>garantia</th> */}
                   <th></th>
                 </thead>
                 <tbody>
-                  {orderData.items.map((selectedAsset, index) => (
+                  {orderData.itemDTO?.map((selectedAsset, index) => (
                     <tr className="border-none" key={index}>
-                      <td>{selectedAsset.name}</td>
-                      <td>{selectedAsset.price}</td>
-                      <td>{selectedAsset.quantity || 0}</td>
-                      <td>{selectedAsset.subtotal} </td>
-                      <td>{selectedAsset.subtotal + selectedAsset.tax} </td>
+                      <td>{selectedAsset.nameAsset}</td>
+                      <td>{selectedAsset.itemPrice}</td>
+                      <td>{selectedAsset.itemQuantity || 0}</td>
+                      <td>{selectedAsset.totalPrice} </td>
+                      <td>{selectedAsset.totalPrice} </td>
                       <td>{selectedAsset.tax}</td>
-                      {/* <td>{selectedAsset.warrantyYears} </td> */}
+                      <td>{selectedAsset.warrantyYears} </td>
                       <td>
                         <button
                           type="button"
@@ -358,7 +397,9 @@ export const OrderCreate = () => {
               </div>
               <div className="flex justify-evenly  p-2">
                 <span>Total</span>
-                <span>{orderData.total}</span>
+                <span>
+                  {dataRefresh.totalPrice ? dataRefresh.totalPrice : 0}
+                </span>
               </div>
             </div>
           </section>

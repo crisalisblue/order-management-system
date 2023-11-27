@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 const translation = {
-  // Aquí puedes agregar más traducciones según tus necesidades
   address: "Direccion",
   type: "Tipo",
   name: "Nombre",
@@ -21,7 +20,6 @@ const translation = {
   subTotal: "Subtotal",
   active: "Activo",
   customerName: "Nombre Cliente",
-  // ...
 };
 
 export const DataTable = ({
@@ -130,8 +128,8 @@ export const DataTable = ({
                   🛠
                 </Link>
                 <DeleteModal
-                  itemID={item.id}
-                  onDelete={() => handleDelete(item.id)}
+                  itemID={item.idOrder}
+                  onDelete={() => handleDelete(item.idOrder)}
                 ></DeleteModal>
               </td>
             </tr>
