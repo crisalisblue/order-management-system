@@ -200,7 +200,7 @@ export const OrderCreate = () => {
   }
 
   return (
-    <main className={"w-6/7 p-2 rounded-md"}>
+    <>
       <header className="flex justify-between p-2 text-black rounded-t-md border-b-black bg-[#F1F1F1] ">
         <h6>{orderData.id ? "00000" + orderData.id : "00000"}</h6>
         <h6>{orderData.dateOrder ? orderData.dateOrder : "buscando fecha"}</h6>
@@ -421,6 +421,6 @@ export const OrderCreate = () => {
           </button>
         </section>
       </form>
-    </main>
+    </>
   );
 };
