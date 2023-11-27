@@ -1,49 +1,22 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link as RouterLink, useLocation } from "react-router-dom";
 
 export const Usuarios = () => {
   const { pathname } = useLocation();
 
   return (
-    <article className="prose min-w-full">
+    <article className="prose grid min-w-full">
       <h1 className="text-primary text-center m-0 p-0">Usuarios</h1>
 
-      {pathname === "/usuarios" && (
-        <section
-          id="filters"
-          className="flex items-center justify-between m-4 gap-4"
-        >
-          <label htmlFor="filter1" className="mr-4">
-            Filtrar:
-          </label>
-          <input
-            type="search"
-            name=""
-            id=""
-            className="pl-1"
-            placeholder="Usuario"
-          />
-          <input
-            type="search"
-            name=""
-            id=""
-            className="pl-1"
-            placeholder="Nombre"
-          />
-          <label htmlFor="">Rol:</label>
-          <select className="select-xs select-bordered max-w-xs">
-            <option>Admin</option>
-            <option>Usuario</option>
-          </select>
-        </section>
-      )}
-
-      <section id="actions" className="flex items-center">
-        <Link to={pathname === "/usuarios" ? "/usuarios/nuevo" : "/usuarios"}>
-          <button className="float-right bg-primary text-base-100 hover:bg-gray-100 font-semibold py-1 px-2 border border-gray-400 rounded shadow">
-            {pathname === "/usuarios" ? "+ Agregar Nuevo" : "Lista de Usuarios"}
-          </button>
-        </Link>
-      </section>
+      <RouterLink
+        to={pathname === "/usuarios" ? "/usuarios/nuevo" : "/usuarios"}
+        className={`w-5/6 m-auto  ${
+          location.pathname === "/pedidos/nuevo" ? "tab-active" : ""
+        } w-1/2`}
+      >
+        <button className="float-right bg-primary text-base-100 hover:bg-gray-100 font-semibold py-1 px-2 border border-gray-400 rounded shadow">
+          {pathname === "/usuarios" ? "+ Agregar Usuario" : "Lista de Usuarios"}
+        </button>
+      </RouterLink>
 
       <Outlet />
     </article>
