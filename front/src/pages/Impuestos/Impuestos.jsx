@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Outlet, Link as RouterLink, useLocation } from "react-router-dom";
 export const Taxes = () => {
   const { pathname } = useLocation();
+
   return (
     <>
       <article className="prose grid min-w-full">
