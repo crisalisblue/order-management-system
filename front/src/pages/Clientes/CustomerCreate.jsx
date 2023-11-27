@@ -58,8 +58,8 @@ export const CustomerCreate = () => {
                   onChange={(e) => setType(e.target.value)}
                 >
                   <option value="">Seleccionar Tipo</option>
-                  <option value="PER">PER</option>
-                  <option value="BUS">BUS</option>
+                  <option value="PER">Persona</option>
+                  <option value="BUS">Empresa</option>
                 </select>
               </article>
               {type === "PER" && (

@@ -4,7 +4,6 @@ import {
   deleteSingleCustomer,
 } from "../../api/customerAPI.js";
 import { useDataFetching } from "../../api/API_Utils.js";
-import "./CustomersTable.css";
 
 export const CustomersTable = () => {
   const {
