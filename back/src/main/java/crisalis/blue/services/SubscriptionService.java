@@ -99,18 +99,19 @@ public class SubscriptionService {
 
     //Si se desea utilizar para conseguir por Customer, enviar id en el primer parametro y null en el segundo,
     //Si se desea utilizar para conseguir por Asset, enviar null en el primer parametro y el id en el segundo.
-    public SubscriptionDTO getSubscriptionByCustomerIdOrAssetId(Long customerId, Long assetId){
+    public List<Subscription> getSubscriptionByCustomerIdOrAssetId(Long customerId, Long assetId){
         if ((customerId != null && !subscriptionRepository.existsByCustomerId(customerId)) ||
                 (assetId != null && !subscriptionRepository.existsByAssetId(assetId))){
             throw new ResourceNotFoundException("Ya sea el Asset o el Customer no existe.");
         }
-        Subscription returnSubscription;
+        List<Subscription> returnSubscription;
+
         if (customerId != null){
-            returnSubscription = subscriptionRepository.findByCustomerId(customerId);
+            returnSubscription = subscriptionRepository.findAllByCustomerId(customerId);
         }else {
-            returnSubscription = subscriptionRepository.findByAssetId(assetId);
+            returnSubscription = subscriptionRepository.findAllByAssetId(assetId);
         }
 
-        return returnSubscription.toDTO();
+        return returnSubscription;
     }
 }
