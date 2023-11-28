@@ -2,7 +2,10 @@ import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getSingleCustomer, updateSingleCustomer } from "../../api/customerAPI";
+import {
+  getSingleCustomer,
+  updateSingleCustomer,
+} from "../../api/customerAPI.js";
 import Swal from "sweetalert2";
 
 export const CustomerUpdate = () => {

@@ -2,10 +2,12 @@ package crisalis.blue.repositories;
 
 import crisalis.blue.models.Subscription;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
@@ -13,4 +15,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     Boolean existsByAssetId(@Param("asset_id") Long id);
     List<Subscription> findAllByCustomerId(@Param("customer_id") Long id);
     List<Subscription> findAllByAssetId(@Param("asset_id") Long id);
+    Optional<Subscription> findByAssetIdAndCustomerId(Long assetId, Long customerId);
+
 }

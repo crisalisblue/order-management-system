@@ -1,9 +1,6 @@
 package crisalis.blue.controllers;
 
-import crisalis.blue.models.Order;
 import crisalis.blue.models.dto.OrderDTO;
-import crisalis.blue.models.dto.OrderRefreshDTO;
-import crisalis.blue.models.dto.TaxDTO;
 import crisalis.blue.services.OrderService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +42,7 @@ public class OrderController {
     }
 
     @PostMapping(value = "refresh", produces = MediaType.APPLICATION_JSON_VALUE)
-    public OrderRefreshDTO refresh(@RequestBody OrderRefreshDTO order) {
+    public OrderDTO refresh(@RequestBody OrderDTO order) {
         return orderService.refresh(order);
     }
 }

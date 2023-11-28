@@ -1,45 +1,45 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { updateSingleProduct, getSingleProduct } from "../../api/productAPI.js";
+import { updateSingleService, getSingleService } from "../../api/serviceAPI.js";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
-export const ProductsUpdate = () => {
+export const ServiciosUpdate = () => {
   const navigate = useNavigate();
-  const productID = useParams().id;
+  const serviceID = useParams().id;
   const { register, handleSubmit, setValue } = useForm();
 
   const onError = (errors, e) => console.log(errors, e);
 
   useEffect(() => {
-    const fetchProductData = async () => {
+    const fetchServiceData = async () => {
       try {
-        const productData = await getSingleProduct(productID);
-        console.dir(productData);
-        console.dir(productID);
-        Object.keys(productData).forEach((key) => {
-          setValue(key, productData[key]);
+        const serviceData = await getSingleService(serviceID);
+        console.dir(serviceData);
+        console.dir(serviceID);
+        Object.keys(serviceData).forEach((key) => {
+          setValue(key, serviceData[key]);
         });
       } catch (error) {
-        console.error("Error fetching product data:", error);
+        console.error("Error fetching service data:", error);
       }
     };
 
-    fetchProductData();
-  }, [productID, setValue]);
+    fetchServiceData();
+  }, [serviceID, setValue]);
 
   const onSubmit = async (data, e) => {
     console.log(data, e);
-    data.id = productID;
+    data.id = serviceID;
     data.taxList = [];
-    data.type = "Product";
+    data.type = "Service";
     try {
-      console.dir(await updateSingleProduct(data));
+      console.dir(await updateSingleService(data));
       showSuccessAlert();
-      navigate("/productos");
+      navigate("/servicios");
     } catch (error) {
-      console.error("Error updating product:", error);
+      console.error("Error updating service:", error);
       showErrorAlert();
     }
   };
@@ -47,7 +47,7 @@ export const ProductsUpdate = () => {
   const showSuccessAlert = () => {
     Swal.fire({
       icon: "success",
-      title: "Producto actualizado",
+      title: "Servicio actualizado",
       showConfirmButton: false,
       timer: 1500,
     });
@@ -56,8 +56,8 @@ export const ProductsUpdate = () => {
   const showErrorAlert = () => {
     Swal.fire({
       icon: "error",
-      title: "Error al actualizar producto",
-      text: "Hubo un problema al actualizar el producto.",
+      title: "Error al actualizar servicio",
+      text: "Hubo un problema al actualizar el servicio.",
     });
   };
 
@@ -107,7 +107,7 @@ export const ProductsUpdate = () => {
       <input
         className="bg-[#001F3D] rounded-md text-white p-2 w-fit mx-auto my-2 cursor-pointer"
         type="submit"
-        value="Actualizar Producto"
+        value="Actualizar Servicio"
       />
     </form>
   );

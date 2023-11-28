@@ -44,7 +44,9 @@ public class Order {
     private List<Item> items;
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "order")
     private List<CalculatedTax> calculatedTaxes;
-
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name="suscriptionAsset_id",referencedColumnName = "id")
+    private Asset assetSuscription;
 
 
     public OrderDTO toOrderDTO()
@@ -72,6 +74,5 @@ public class Order {
         this.setTotalDiscount(orderDTO.getTotalDiscount());
         this.setTotalPrice(orderDTO.getTotalPrice());
     }
-
 
 }

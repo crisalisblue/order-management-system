@@ -48,6 +48,10 @@ public class Item {
     // Impuestos Aplicados
 
     private int warrantyYears;
+    // Valor de cargo de soporte
+    private BigDecimal supportFee;
+    // Valor del año de garantia
+    private BigDecimal warrantyPrice;
 
     public ItemDTO toItemDTO()
     {
