@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { updateSingleTax, getSingleTax } from "../../api/TaxAPI";
+import { updateSingleTax, getSingleTax } from "../../api/TaxAPI.js";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 

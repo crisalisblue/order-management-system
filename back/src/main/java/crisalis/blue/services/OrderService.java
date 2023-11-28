@@ -1,13 +1,13 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
+import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.*;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
 import crisalis.blue.models.dto.ItemDTO;
 import crisalis.blue.models.dto.OrderDTO;
 import crisalis.blue.repositories.*;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class OrderService {
             ItemRepository itemRepository,
             CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository,
             TaxRepository taxRepository,OrderEngineerService orderEngineerService) {
+
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
@@ -36,7 +37,6 @@ public class OrderService {
         this.assetRepository = assetRepository;
         this.taxRepository = taxRepository;
         this.orderEngineerService = orderEngineerService;
-
     }
 
     public OrderDTO create(OrderDTO orderDTO) {
@@ -51,10 +51,25 @@ public class OrderService {
             //asignarOrderAListCalculated(order.getCalculatedTaxes(), order);
             orderEngineerService.calculateOrderTotals(order);
             orderRepository.save(order);
+
+            crearSubscripcion(order);
+
             return order.toOrderDTO();
         }
         throw new RuntimeException();
 
+    }
+    private void crearSubscripcion(Order order){
+        for(Item item : order.getItems()){
+            if (item.getAsset() instanceof Servicie) {
+                Subscription newSubscription = new Subscription();
+                newSubscription.setCustomer(order.getCustomer());
+                newSubscription.setAsset(item.getAsset());
+                newSubscription.setStatus(Boolean.TRUE);
+
+                subscriptionService.createSubscription(newSubscription.toDTO());
+            }
+        }
     }
 
     private void asignarCustomerAOrder(OrderDTO orderDTO, Order order) {
