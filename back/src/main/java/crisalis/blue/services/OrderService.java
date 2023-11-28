@@ -24,11 +24,12 @@ public class OrderService {
     private final CalculatedTaxRepository calculatedTaxRepository;
     private final AssetRepository assetRepository;
     private final OrderEngineerService orderEngineerService;
+    private final SubscriptionService subscriptionService;
 
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
-            ItemRepository itemRepository,
-            CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository,
-            TaxRepository taxRepository,OrderEngineerService orderEngineerService) {
+                        ItemRepository itemRepository,
+                        CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository,
+                        TaxRepository taxRepository, OrderEngineerService orderEngineerService, SubscriptionService subscriptionService) {
 
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
@@ -37,6 +38,7 @@ public class OrderService {
         this.assetRepository = assetRepository;
         this.taxRepository = taxRepository;
         this.orderEngineerService = orderEngineerService;
+        this.subscriptionService = subscriptionService;
     }
 
     public OrderDTO create(OrderDTO orderDTO) {
@@ -44,6 +46,15 @@ public class OrderService {
             checkEmpty(orderDTO);
             Order order = new Order(orderDTO); //Esto hay que charlarlo y tomar la mejor desición
             asignarCustomerAOrder(orderDTO, order);
+
+            //Compruebo si ya existe una Subscripcion para todos los assets dado
+            for (ItemDTO asset : orderDTO.getItemDTO()){
+                Subscription subComprobation = subscriptionService.getSubscriptionByAssetIdAndCustomerId(asset.getIdAsset(), orderDTO.getCustomerID());
+                if (subComprobation != null) {
+                    throw new NotCreatedException("El customer: " +orderDTO.getCustomerName()+ " Ya tiene el asset: " +asset.getNameAsset()+ " Asignado");
+                }
+            }
+
             order = orderRepository.save(order);
             order.setItems(createListItemDeItemDTO(orderDTO.getItemDTO()));
             asignarOrderAListItems(order.getItems(), order);
