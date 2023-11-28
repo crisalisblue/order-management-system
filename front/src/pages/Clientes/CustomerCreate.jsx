@@ -19,7 +19,7 @@ export const CustomerCreate = () => {
         text: "El cliente se creó exitosamente.",
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate("/clientes");
+          navigate(-1);
         }
       });
     } catch (error) {
