@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class OrderEngineerService {
+public class OrderEngineService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -125,7 +125,7 @@ public class OrderEngineerService {
         if(listCT != null)
         {
             for(int j=0; j<listCT.size();j++) {
-                order.getTotalPrice().add(listCT.get(j).getTaxesAmount());
+                order.setTotalPrice(order.getTotalPrice().add(listCT.get(j).getTaxesAmount()));
             }
         }
     }
