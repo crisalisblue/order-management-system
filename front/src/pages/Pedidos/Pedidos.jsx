@@ -7,16 +7,17 @@ export const Pedidos = () => {
     <article className="prose grid min-w-full">
       <h1 className="text-primary text-center m-0 p-0">Pedidos</h1>
       {location.pathname === "/pedidos" && (
-        <RouterLink
-          to="/pedidos/nuevo"
+        <span
           className={`w-5/6 m-auto  ${
             location.pathname === "/pedidos/nuevo" ? "tab-active" : ""
           } w-1/2`}
         >
-          <button className="float-right bg-primary text-base-100 hover:bg-gray-100 font-semibold py-1 px-2 border border-gray-400 rounded shadow">
-            Agregar Pedido
-          </button>
-        </RouterLink>
+          <RouterLink to="/pedidos/nuevo">
+            <button className="float-right bg-primary text-base-100 hover:bg-gray-100 font-semibold py-1 px-2 border border-gray-400 rounded shadow">
+              Agregar Pedido
+            </button>
+          </RouterLink>
+        </span>
       )}
       <Outlet />
     </article>

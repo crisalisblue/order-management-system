@@ -289,7 +289,7 @@ export const OrderCreate = () => {
               </article>
             </section>
             <section className="">
-              <div className="max-h-70 overflow-y-auto scrollbar">
+              <div className="max-h-96 overflow-y-auto scrollbar">
                 <table className="table mt-3">
                   <thead className="bg-[#E6EFF3]">
                     {/* <th>ID</th> */}
@@ -347,11 +347,8 @@ export const OrderCreate = () => {
             </section>
           </section>
           <section className="w-1/2 flex flex-col justify-between">
-            <section className="max-h-60 overflow-y-scroll scrollbar m-2">
-              Cliente:{" "}
-              {dataRefresh.customerName
-                ? 1
-                : "Buscando nombre"}
+            <section className="max-h-96 overflow-y-auto scrollbar m-2">
+              Cliente: {dataRefresh.customerName ? 1 : "Buscando nombre"}
               <table className="table">
                 <thead className="bg-[#E6EFF3]">
                   <th>Item</th>
