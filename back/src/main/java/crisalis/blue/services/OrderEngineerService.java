@@ -43,8 +43,10 @@ public class OrderEngineerService {
                     aplicarDescuento(item);
                 }
                 item.setTotalPrice(suma);
+                order.getSubTotal().add(item.getTotalPrice());
             }
             aplicarImpuestos(order);
+            calcularTotalPriceOrder(order);
         }
         else throw new EmptyElementException("La lista de ítem enviada en la orden esta vacia ");
     }
@@ -101,6 +103,7 @@ public class OrderEngineerService {
                 // Sumo a la item taxesAmount el monto que se le agrega al  aplicar el impuesto a este ítem
                 calculatedTax.setTaxesAmount(calculatedTax.getTaxesAmount().
                         add(item.getTotalPrice().multiply(tax.getPercentage().divide(BigDecimal.valueOf(100)))));
+                order.getCalculatedTaxes().add(calculatedTax);
             }
         }
 
@@ -115,5 +118,15 @@ public class OrderEngineerService {
         }
         return null;
     }
-
+    private void calcularTotalPriceOrder(Order order)
+    {
+        List<CalculatedTax> listCT = order.getCalculatedTaxes();
+        order.setTotalPrice(order.getSubTotal());
+        if(listCT != null)
+        {
+            for(int j=0; j<listCT.size();j++) {
+                order.getTotalPrice().add(listCT.get(j).getTaxesAmount());
+            }
+        }
+    }
 }
