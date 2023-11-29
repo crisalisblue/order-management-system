@@ -8,7 +8,6 @@ export const getAllUsers = async () => {
     console.error(error);
   }
 };
-//http://localhost:8080/user?id=3
 export const getSingleUser = async (userId) => {
   try {
     const response = await axios.get(`${apiUrl}/read?id=${userId}`);

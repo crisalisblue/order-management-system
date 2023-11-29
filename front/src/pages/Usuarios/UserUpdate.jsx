@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { updateSingleUser, getSingleUser } from "../../api/UserAPI";
+import { updateSingleUser, getSingleUser } from "../../api/UserAPI.js";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
@@ -36,7 +36,7 @@ export const UserUpdate = () => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
-    data.id = id; // Agrega el ID al objeto de datos antes de enviarlo
+    data.id = id;
     await updateSingleUser(data);
     showSuccessAlert();
     navigate("/usuarios");

@@ -32,7 +32,7 @@ public class CustomerDTO {
     @JsonProperty("lastName")
     private String lastName;
 
-    @JsonProperty("dni")
+    @JsonProperty("DNI")
     private String dni;
 
     // Atributos de Empresa

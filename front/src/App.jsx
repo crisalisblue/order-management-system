@@ -28,6 +28,8 @@ import {
   NotFound,
   ProductsCreate,
   ProductsUpdate,
+  ServiciosCreate,
+  ServiciosUpdate,
 } from "./pages";
 import { UsersTable } from "./components/UsersTable/UsersTable.jsx";
 import { TaxesTable } from "./components/TaxTable/TaxesTable.jsx";
@@ -36,6 +38,7 @@ import NotLogedinRoute from "./routes/NotLogedinRoute";
 import LogedinRoute from "./routes/LogedinRoute";
 import { ProductsTable } from "./components/ProductsTable/ProductsTable.jsx";
 import { OrdersTable } from "./components/OrdersTable/OrdersTable.jsx";
+import { ServicesTable } from "./components/ServicesTable/ServicesTable.jsx";
 
 export default function App() {
   return (
@@ -67,7 +70,11 @@ export default function App() {
               <Route path=":id/editar" Component={OrderUpdate} />
               <Route path="" Component={OrdersTable} />
             </Route>
-            <Route path="servicios" Component={Servicios} />
+            <Route path="servicios" Component={Servicios}>
+              <Route path="nuevo" Component={ServiciosCreate} />
+              <Route path=":id/editar" Component={ServiciosUpdate} />
+              <Route path="" Component={ServicesTable} />
+            </Route>
             <Route path="impuestos" Component={Taxes}>
               <Route path="nuevo" Component={TaxCreate} />
               <Route path=":id/editar" Component={TaxUpdate} />
