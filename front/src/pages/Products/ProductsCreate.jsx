@@ -1,13 +1,29 @@
 import { createSingleProduct } from "../../api/productAPI.js";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-
 import { TaxesTable } from "../../components/TaxTable/TaxesTable.jsx";
+import { getAllTaxes } from "../../api/taxAPI.js";
 
 export const ProductsCreate = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const [taxes, setTaxes] = useState([]);
+
+  useEffect(() => {
+    const fetchTaxes = async () => {
+      try {
+        const taxList = await getAllTaxes();
+        setTaxes(taxList);
+      } catch (error) {
+        console.error(error);
+        // Manejar el error de manera apropiada
+      }
+    };
+
+    fetchTaxes();
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -36,41 +52,28 @@ export const ProductsCreate = () => {
 
   return (
     <form
-      className={
-        "bg-[#F1F1F1] flex justify-evenly flex-wrap p-4 rounded-md drop-shadow-md w-5/6 mx-auto my-4"
-      }
+      className={"bg-[#F1F1F1] flex justify-evenly flex-wrap p-4 rounded-md drop-shadow-md w-5/6 mx-auto"}
       onSubmit={handleSubmit(onSubmit, onError)}
     >
       <div className={"flex flex-col w-1/2"}>
-        <label
-          className={"text-black text-xl my-5 flex justify-center items-center"}
-        >
+        <label className={"text-black text-xl my-5 flex justify-center items-center"}>
           Nombre
-          <input
-            className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4"
-            type="text"
-            {...register("name")}
-          />
+          <input className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4" type="text" {...register("name")} />
         </label>
-        <label
-          className={"text-black text-xl my-5 flex justify-center items-center"}
-        >
+        <label className={"text-black text-xl my-5 flex justify-center items-center"}>
           Precio Unitario
-          <input
-            className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4"
-            type="number"
-            {...register("baseAmount")}
-          />
+          <input className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4" type="number" {...register("baseAmount")} />
         </label>
-         <input type="hidden" defaultValue={"Product"} {...register("type")} />
-        <label
-          className={"text-black text-xl my-5 flex justify-center items-center"}
-        >
+        <input type="hidden" defaultValue={"Product"} {...register("type")} />
+        <label className={"text-black text-xl my-5 flex justify-center items-center"}>
           Impuesto
-          <select className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4">
-            <option value="1">IVA</option>
-            <option value="2">IVA</option>
-            <option value="3">IVA</option>
+          <select className="bg-white rounded-md drop-shadow-md text-black w-1/3" {...register("tax")}>
+            <option value="">Seleccionar Impuesto</option>
+            {taxes.map((tax) => (
+              <option key={tax.id} value={tax.id}>
+                {tax.name}
+              </option>
+            ))}
           </select>
         </label>
       </div>
@@ -78,9 +81,7 @@ export const ProductsCreate = () => {
         <TaxesTable />
       </div>
       <input
-        className={
-          "bg-[#001F3D] rounded-md text-white p-2 w-fit mx-auto my-2 cursor-pointer"
-        }
+        className={"bg-[#001F3D] rounded-md text-white p-2 w-fit mx-auto my-2 cursor-pointer"}
         type="submit"
         value="Agregar Producto"
       />

@@ -37,7 +37,7 @@ export const ServiciosCreate = () => {
   return (
     <form
       className={
-        "bg-[#F1F1F1] flex justify-evenly flex-wrap p-4 rounded-md drop-shadow-md w-5/6 mx-auto my-4"
+        "bg-[#F1F1F1] flex justify-evenly flex-wrap p-4 rounded-md drop-shadow-md w-5/6 mx-auto"
       }
       onSubmit={handleSubmit(onSubmit, onError)}
     >
