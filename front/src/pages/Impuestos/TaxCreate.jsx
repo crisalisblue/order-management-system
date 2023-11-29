@@ -64,20 +64,7 @@ export const TaxCreate = () => {
           />
         </div>
 
-        <div className="mb-4">
-          <label
-            htmlFor="baseAmount"
-            className="block text-sm font-semibold text-gray-600"
-          >
-            Monto fijo:
-          </label>
-          <input
-            type="text"
-            id="baseAmount"
-            {...register("baseAmount")}
-            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-          />
-        </div>
+    
 
         <button
           type="submit"

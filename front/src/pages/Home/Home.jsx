@@ -21,7 +21,7 @@ export const Home = () => {
           <div className="feature-icon">&#127828;</div>
           <h2 className="feature-title">Productos</h2>
           <p className="feature-description">
-            Gestiona tu inventario manera efectiva.
+            Gestiona tu inventario de manera efectiva.
           </p>
         </div>
 
