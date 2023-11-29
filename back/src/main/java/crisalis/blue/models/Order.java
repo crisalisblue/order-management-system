@@ -1,5 +1,7 @@
 package crisalis.blue.models;
 
+import crisalis.blue.models.dto.CalculatedTaxDTO;
+import crisalis.blue.models.dto.ItemDTO;
 import crisalis.blue.models.dto.OrderDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -74,8 +76,30 @@ public class Order {
         this.setActive(orderDTO.getActive());
         this.setTotalDiscount(orderDTO.getTotalDiscount());
         this.setTotalPrice(orderDTO.getTotalPrice());
-        this.setCalculatedTaxes(new ArrayList<CalculatedTax>());
-        this.setItems(new ArrayList<Item>());
+        this.setCalculatedTaxes(createCalculatedTaxToCalculatedTaxDTO(orderDTO.getCalculatedTaxDTOS()));
+        this.setItems(createListItemDeItemDTO(orderDTO.getItemDTO()));
     }
-
+    private List<Item> createListItemDeItemDTO(List<ItemDTO> itemDTOList) {
+        List<Item> listItem = new ArrayList<>();
+        if(itemDTOList != null) {
+            for (int j = 0; j < itemDTOList.size(); j++) {
+                Item item = new Item(itemDTOList.get(j));
+                listItem.add(item);
+            }
+        }
+        return listItem;
+    }
+    private List<CalculatedTax> createCalculatedTaxToCalculatedTaxDTO(List<CalculatedTaxDTO> listCalculatedDTO) {
+        List<CalculatedTax> listCalculated = new ArrayList<>();
+        CalculatedTax calculatedTax = new CalculatedTax();
+        for (int j = 0; j < listCalculatedDTO.size(); j++) {
+            createCalculatedTax(listCalculatedDTO.get(j), calculatedTax);
+            listCalculated.add(calculatedTax);
+        }
+        return listCalculated;
+    }
+    private void createCalculatedTax(CalculatedTaxDTO calculatedTaxDTO, CalculatedTax calculatedTax) {
+        //calculatedTax.setTax(taxRepository.findById(calculatedTaxDTO.getTaxID()).get());
+        calculatedTax.setTaxesAmount(calculatedTaxDTO.getTaxesAmount());
+    }
 }

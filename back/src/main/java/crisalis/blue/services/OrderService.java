@@ -22,7 +22,7 @@ public class OrderService {
     private final ItemRepository itemRepository;
     private final CalculatedTaxRepository calculatedTaxRepository;
     private final AssetRepository assetRepository;
-    private final OrderEngineService orderEngineerService;
+    private final OrderEngineService orderEngineService;
     private final SubscriptionService subscriptionService;
 
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
@@ -36,7 +36,7 @@ public class OrderService {
         this.calculatedTaxRepository = calculatedTaxRepository;
         this.assetRepository = assetRepository;
         this.taxRepository = taxRepository;
-        this.orderEngineerService = orderEngineerService;
+        this.orderEngineService = orderEngineerService;
         this.subscriptionService = subscriptionService;
     }
 
@@ -46,15 +46,10 @@ public class OrderService {
             Order order = new Order(orderDTO); //Esto hay que charlarlo y tomar la mejor desición
             asignarCustomerAOrder(orderDTO, order);
             order = orderRepository.save(order);
-            order.setItems(createListItemDeItemDTO(orderDTO.getItemDTO()));
             asignarOrderAListItems(order.getItems(), order);
-           // order.setCalculatedTaxes(createCalculatedTaxToCalculatedTaxDTO(orderDTO.getCalculatedTaxDTOS()));
-            //asignarOrderAListCalculated(order.getCalculatedTaxes(), order);
-           orderEngineerService.calculateOrderTotals(order);
-
+           orderEngineService.calculateOrderTotals(order);
             crearSubscripcion(order);
             orderRepository.save(order);
-
             return order.toOrderDTO();
         }
         throw new RuntimeException();
@@ -67,49 +62,20 @@ public class OrderService {
                 newSubscription.setCustomer(order.getCustomer());
                 newSubscription.setAsset(item.getAsset());
                 newSubscription.setStatus(Boolean.TRUE);
-
                 subscriptionService.createSubscription(newSubscription.toDTO());
             }
         }
     }
-
     private void asignarCustomerAOrder(OrderDTO orderDTO, Order order) {
         Optional<Customer> optionalCustomer = Optional.empty();
         optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
         optionalCustomer.ifPresent(order::setCustomer);
     }
-
-    private List<CalculatedTax> createCalculatedTaxToCalculatedTaxDTO(List<CalculatedTaxDTO> listCalculatedDTO) {
-        List<CalculatedTax> listCalculated = new ArrayList<>();
-        CalculatedTax calculatedTax = new CalculatedTax();
-        for (int j = 0; j < listCalculatedDTO.size(); j++) {
-            createCalculatedTax(listCalculatedDTO.get(j), calculatedTax);
-            listCalculated.add(calculatedTax);
-        }
-        return listCalculated;
-    }
-
-    private void createCalculatedTax(CalculatedTaxDTO calculatedTaxDTO, CalculatedTax calculatedTax) {
-        calculatedTax.setTax(taxRepository.findById(calculatedTaxDTO.getTaxID()).get());
-        calculatedTax.setTaxesAmount(calculatedTaxDTO.getTaxesAmount());
-    }
-
     private void asignarOrderAListCalculated(List<CalculatedTax> listCalculated, Order order) {
         for (int j = 0; j < listCalculated.size(); j++) {
             listCalculated.get(j).setOrder(order);
         }
     }
-
-    private List<Item> createListItemDeItemDTO(List<ItemDTO> itemDTOList) {
-        List<Item> listItem = new ArrayList<>();
-        for (int j = 0; j < itemDTOList.size(); j++) {
-            Item item = new Item(itemDTOList.get(j));
-            asignarAssetAItem(itemDTOList.get(j), item);
-            listItem.add(item);
-        }
-        return listItem;
-    }
-
     private void asignarAssetAItem(ItemDTO itemDTO, Item item) {
         if (itemDTO.getIdAsset() != null &&
                 assetRepository.existsById(itemDTO.getIdAsset())) {
@@ -117,17 +83,14 @@ public class OrderService {
             item.setAsset(asset);
         }
     }
-
     private void asignarOrderAListItems(List<Item> list, Order order) {
         for (int j = 0; j < list.size(); j++) {
             list.get(j).setOrder(order);
         }
     }
-
     public List<OrderDTO> read() {
         return orderRepository.findAll().stream().map(Order::toOrderDTO).collect(Collectors.toList());
     }
-
     public OrderDTO update(OrderDTO orderDTO) {
         Optional<Order> optionalOrder = orderRepository.findById(orderDTO.getIdOrder());
         if (optionalOrder.isPresent()) {
@@ -251,7 +214,7 @@ public class OrderService {
     public OrderDTO refresh(OrderDTO orderDTO) {
         Order order = new Order(orderDTO);
         if ("calculate".equals(orderDTO.getAction())) {
-             orderEngineerService.calculateOrderTotals(order);
+             orderEngineService.calculateOrderTotals(order);
         } else if ("customer".equals(orderDTO.getAction())) {
             updateCustomerInfo(orderDTO,order);
         }
