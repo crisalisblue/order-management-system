@@ -74,6 +74,7 @@ public class Item {
         this.setItemDetails(itemDTO.getItemDitails());
         this.setWarrantyYears(itemDTO.getWarrantyYears());
         this.setTotalPrice(itemDTO.getTotalPrice());
+        this.setWarrantyPrice(itemDTO.getWarrantyPrice());
 
     }
 }

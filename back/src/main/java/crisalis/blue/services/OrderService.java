@@ -24,11 +24,12 @@ public class OrderService {
     private final CalculatedTaxRepository calculatedTaxRepository;
     private final AssetRepository assetRepository;
     private final OrderEngineerService orderEngineerService;
+    private final SubscriptionService subscriptionService;
 
     public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
             ItemRepository itemRepository,
             CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository,
-            TaxRepository taxRepository,OrderEngineerService orderEngineerService) {
+            TaxRepository taxRepository,OrderEngineerService orderEngineerService, SubscriptionService subscriptionService) {
 
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
@@ -37,6 +38,7 @@ public class OrderService {
         this.assetRepository = assetRepository;
         this.taxRepository = taxRepository;
         this.orderEngineerService = orderEngineerService;
+        this.subscriptionService = subscriptionService;
     }
 
     public OrderDTO create(OrderDTO orderDTO) {
@@ -49,10 +51,10 @@ public class OrderService {
             asignarOrderAListItems(order.getItems(), order);
            // order.setCalculatedTaxes(createCalculatedTaxToCalculatedTaxDTO(orderDTO.getCalculatedTaxDTOS()));
             //asignarOrderAListCalculated(order.getCalculatedTaxes(), order);
-            orderEngineerService.calculateOrderTotals(order);
-            orderRepository.save(order);
+           orderEngineerService.calculateOrderTotals(order);
 
             crearSubscripcion(order);
+            orderRepository.save(order);
 
             return order.toOrderDTO();
         }

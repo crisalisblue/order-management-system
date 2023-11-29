@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,8 +45,8 @@ public class Order {
     private List<Item> items;
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "order")
     private List<CalculatedTax> calculatedTaxes;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name="suscriptionAsset_id",referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="suscriptionAsset_id",referencedColumnName = "id",nullable = true)
     private Asset assetSuscription;
 
 
@@ -67,12 +68,14 @@ public class Order {
     }
     public Order(OrderDTO orderDTO)
     {
-        this.setId(orderDTO.getIdOrder());
+       // this.setId(orderDTO.getIdOrder());
         this.setDatesOrder(orderDTO.getDateOrder());
         this.setSubTotal(orderDTO.getSubTotal());
         this.setActive(orderDTO.getActive());
         this.setTotalDiscount(orderDTO.getTotalDiscount());
         this.setTotalPrice(orderDTO.getTotalPrice());
+        this.setCalculatedTaxes(new ArrayList<CalculatedTax>());
+        this.setItems(new ArrayList<Item>());
     }
 
 }
