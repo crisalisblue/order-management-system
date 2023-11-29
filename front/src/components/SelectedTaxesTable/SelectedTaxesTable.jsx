@@ -24,6 +24,7 @@ export const SelectedTaxesTable = ({ selectedTaxes, onRemoveTax }) => {
               </td>
               <td className={"border border-gray-300 p-2"}>
                 <button
+                  form=""
                   className={"bg-red-500 text-white p-1 rounded"}
                   onClick={() => onRemoveTax(tax.name)}
                 >

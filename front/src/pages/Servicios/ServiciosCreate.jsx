@@ -83,7 +83,7 @@ export const ServiciosCreate = () => {
 
     const removedTax = selectedTaxes.find((tax) => tax.name === taxName);
     if (removedTax) {
-      setTaxes([...taxes, removedTax]);
+      setTaxes((prevTaxes) => [...prevTaxes, { ...removedTax }]);
     }
 
     setValue("tax", "");

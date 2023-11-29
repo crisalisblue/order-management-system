@@ -54,7 +54,6 @@ export const ProductsCreate = () => {
 
   const handleTaxChange = (e) => {
     const selectedTaxName = e.target.value;
-
     const isTaxSelected = selectedTaxes.some(
       (tax) => tax.name === selectedTaxName
     );
@@ -62,7 +61,7 @@ export const ProductsCreate = () => {
     if (!isTaxSelected) {
       const selectedTax = taxes.find((tax) => tax.name === selectedTaxName);
       if (selectedTax) {
-        setSelectedTaxes([...selectedTaxes, selectedTax]);
+        setSelectedTaxes((prevTaxes) => [...prevTaxes, selectedTax]);
       }
 
       const updatedTaxes = taxes.filter((tax) => tax.name !== selectedTaxName);
@@ -82,8 +81,9 @@ export const ProductsCreate = () => {
     setSelectedTaxes(updatedSelectedTaxes);
 
     const removedTax = selectedTaxes.find((tax) => tax.name === taxName);
+
     if (removedTax) {
-      setTaxes([...taxes, removedTax]);
+      setTaxes((prevTaxes) => [...prevTaxes, { ...removedTax }]);
     }
 
     setValue("tax", "");
