@@ -25,10 +25,14 @@ public class OrderService {
     private final OrderEngineService orderEngineService;
     private final SubscriptionService subscriptionService;
 
-    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
+    public OrderService(OrderRepository orderRepository,
+                        CustomerRepository customerRepository,
                         ItemRepository itemRepository,
-                        CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository,
-                        TaxRepository taxRepository, OrderEngineService orderEngineerService, SubscriptionService subscriptionService) {
+                        CalculatedTaxRepository calculatedTaxRepository,
+                        AssetRepository assetRepository,
+                        TaxRepository taxRepository, OrderEngineService orderEngineerService,
+                        SubscriptionService subscriptionService)
+    {
 
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
@@ -46,14 +50,28 @@ public class OrderService {
             Order order = new Order(orderDTO); //Esto hay que charlarlo y tomar la mejor desición
             asignarCustomerAOrder(orderDTO, order);
             order = orderRepository.save(order);
-            asignarOrderAListItems(order.getItems(), order);
-           orderEngineService.calculateOrderTotals(order);
+            asignarAssetsAItems(order.getItems(),orderDTO.getItemDTO());
+            orderEngineService.calculateOrderTotals(order);
             crearSubscripcion(order);
             orderRepository.save(order);
             return order.toOrderDTO();
         }
         throw new RuntimeException();
 
+    }
+    private void asignarAssetsAItems(List<Item> listItems, List<ItemDTO>listDTO) throws EmptyElementException
+    {
+        if(listDTO == null && listItems == null)
+        {
+            throw new  EmptyElementException("La lista de itemDTO es nula o la lista de items en el order es nula");
+        }
+        else
+        {
+            for(int j=0; j<listDTO.size(); j++)
+            {
+                    listItems.get(j).setAsset(assetRepository.findById(listDTO.get(j).getIdAsset()).get());
+            }
+        }
     }
     private void crearSubscripcion(Order order){
         for(Item item : order.getItems()){
@@ -83,11 +101,6 @@ public class OrderService {
             item.setAsset(asset);
         }
     }
-    private void asignarOrderAListItems(List<Item> list, Order order) {
-        for (int j = 0; j < list.size(); j++) {
-            list.get(j).setOrder(order);
-        }
-    }
     public List<OrderDTO> read() {
         return orderRepository.findAll().stream().map(Order::toOrderDTO).collect(Collectors.toList());
     }
@@ -97,10 +110,6 @@ public class OrderService {
             checkEmpty(orderDTO);
             actualizarPrimitivos(optionalOrder.get(), orderDTO);
             optionalOrder.get().setItems(updateItems(orderDTO.getItemDTO()));
-            asignarOrderAListItems(optionalOrder.get().getItems(), optionalOrder.get());
-            optionalOrder.get()
-                    .setCalculatedTaxes(listCalculatedTaxToCalculatedTaxDTO(orderDTO.getCalculatedTaxDTOS()));
-            asignarOrderAListCalculated(optionalOrder.get().getCalculatedTaxes(), optionalOrder.get());
             return orderRepository.save(optionalOrder.get()).toOrderDTO();
         }
         throw new EmptyElementException("La entrada que se quiere actualizarn o existe");
@@ -213,7 +222,9 @@ public class OrderService {
     // CREAR FUNCION QUE REFRESQUE LA INFORMACION
     public OrderDTO refresh(OrderDTO orderDTO) {
         Order order = new Order(orderDTO);
-        if ("calculate".equals(orderDTO.getAction())) {
+        actualizarPrimitivos(order,orderDTO);
+        order.setItems(updateItems(orderDTO.getItemDTO()));
+    if ("calculate".equals(orderDTO.getAction())) {
              orderEngineService.calculateOrderTotals(order);
         } else if ("customer".equals(orderDTO.getAction())) {
             updateCustomerInfo(orderDTO,order);
@@ -226,7 +237,6 @@ public class OrderService {
     private void updateCustomerInfo(OrderDTO orderDTO, Order order) {
         if (orderDTO.getCustomerID() != null) {
             Optional<Customer> optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
-
             if (optionalCustomer.isPresent()) {
                 Customer customer = optionalCustomer.get();
                 order.setCustomer(customer);

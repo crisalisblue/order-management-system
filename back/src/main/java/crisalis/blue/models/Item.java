@@ -68,6 +68,10 @@ public class Item {
         return itemDTO;
     }
     public Item (ItemDTO itemDTO) {
+        updateFromDto(itemDTO);
+    }
+
+    public void updateFromDto(ItemDTO itemDTO) {
         this.setDiscountAmount(itemDTO.getDiscountAmount());
         this.setItemPrice(itemDTO.getItemPrice());
         this.setItemQuantity(itemDTO.getItemQuantity());
@@ -75,6 +79,5 @@ public class Item {
         this.setWarrantyYears(itemDTO.getWarrantyYears());
         this.setTotalPrice(itemDTO.getTotalPrice());
         this.setWarrantyPrice(itemDTO.getWarrantyPrice());
-
     }
 }
