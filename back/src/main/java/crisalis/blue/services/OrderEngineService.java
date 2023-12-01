@@ -27,7 +27,9 @@ public class OrderEngineService {
         // Creo un total auxiliar
         BigDecimal auxTotal= BigDecimal.ZERO;
         // Creo un boolean para saber si tengo que aplicar descuento a los items que son productos
-        boolean descuento = siAplicaDescuento(order);
+        boolean descuento = false;
+        if(order.getCustomer() != null)
+            descuento = siAplicaDescuento(order);
         if(listItem != null)
         {
             // Recorro la lista de ítems
