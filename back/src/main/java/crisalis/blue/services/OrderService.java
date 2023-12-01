@@ -58,11 +58,10 @@ public class OrderService {
                             + asset.getNameAsset() + " Asignado");
                 }
             }
-
             order = orderRepository.save(order);
-            asignarAssetsAItems(order.getItems(), orderDTO.getItemDTO());
-            orderEngineService.calculateOrderTotals(order);
+            asignarAssetsAItems(order.getItems(),orderDTO.getItemDTO());
             crearSubscripcion(order);
+            orderEngineService.calculateOrderTotals(order);
             orderRepository.save(order);
             return order.toOrderDTO();
         }
@@ -75,7 +74,7 @@ public class OrderService {
             throw new EmptyElementException("La lista de itemDTO es nula o la lista de items en el order es nula");
         } else {
             for (int j = 0; j < listDTO.size(); j++) {
-                listItems.get(j).setAsset(assetRepository.findById(listDTO.get(j).getIdAsset()).get());
+                asignarAssetAItem(listDTO.get(j),listItems.get(j));
             }
         }
     }
@@ -185,12 +184,17 @@ public class OrderService {
     }
 
     private Item buscarOCrearItem(ItemDTO itemDTO) {
-        Optional<Item> optinalItem = itemRepository.findById(itemDTO.getIdItem());
-        if (optinalItem.isPresent()) {
-
-            return optinalItem.get();
-        } else
-            return itemRepository.save(new Item(itemDTO));
+        if (itemDTO != null) {
+            if (itemDTO.getIdItem() != null) {
+                Optional<Item> optinalItem = itemRepository.findById(itemDTO.getIdItem());
+                if (optinalItem.isPresent())
+                    return optinalItem.get();
+            } else
+                return itemRepository.save(new Item(itemDTO));
+        } else {
+            throw new EmptyElementException("Item dto es nulo ");
+        }
+    return null;
     }
 
     private void updateItem(Item item, ItemDTO itemDTO) {
@@ -244,9 +248,7 @@ public class OrderService {
     // CREAR FUNCION QUE REFRESQUE LA INFORMACION
     public OrderDTO refresh(OrderDTO orderDTO) {
         Order order = new Order(orderDTO);
-        // actualizarPrimitivos(order, orderDTO);
-        // order.setItems(updateItems(orderDTO.getItemDTO()));
-        order.setItems(createListItemDeItemDTO(orderDTO.getItemDTO()));
+        order.setItems(listIDTOtoListI(orderDTO.getItemDTO()));
         if ("calculate".equals(orderDTO.getAction())) {
 
             orderEngineService.calculateTotalAndTax(order);
@@ -255,7 +257,19 @@ public class OrderService {
         }
         return order.toOrderDTO();
     }
-
+    private List<Item>  listIDTOtoListI(List<ItemDTO> listDTO)
+    {
+        if(listDTO != null) {
+            List<Item> listItem = new ArrayList<>();
+            for (ItemDTO list : listDTO) {
+                Item item = new Item(list);
+                asignarAssetAItem(list,item);
+                listItem.add(item);
+            }
+            return listItem;
+        }
+        else throw new EmptyElementException("La lsita itemDTO ");
+    }
     private void updateCustomerInfo(OrderDTO orderDTO, Order order) {
         if (orderDTO.getCustomerID() != null) {
             Optional<Customer> optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());

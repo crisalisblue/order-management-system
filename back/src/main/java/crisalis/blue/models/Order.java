@@ -57,11 +57,13 @@ public class Order {
         orderDTO.setDateOrder(this.getDatesOrder());
         orderDTO.setTotalDiscount(this.getTotalDiscount());
         orderDTO.setTotalPrice(this.getTotalPrice());
-        if (this.getCustomer() != null) {
+        if(this.getCustomer() != null) {
             orderDTO.setCustomerID(this.getCustomer().getId());
             orderDTO.setCustomerName(this.getCustomer().getName());
         }
-        if (this.getItems() != null) {
+        orderDTO.setSubTotal(this.getSubTotal());
+        orderDTO.setActive(this.active);
+        if(this.getItems() != null) {
             orderDTO.setItemDTO(this.getItems().stream().map(Item::toItemDTO).collect(Collectors.toList()));
         }
         orderDTO.setSubTotal(this.getSubTotal());
