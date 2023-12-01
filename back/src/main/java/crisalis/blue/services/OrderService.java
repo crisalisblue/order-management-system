@@ -1,7 +1,6 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
-import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.*;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
@@ -23,21 +22,24 @@ public class OrderService {
     private final ItemRepository itemRepository;
     private final CalculatedTaxRepository calculatedTaxRepository;
     private final AssetRepository assetRepository;
-    private final OrderEngineerService orderEngineerService;
+    private final OrderEngineService orderEngineService;
     private final SubscriptionService subscriptionService;
 
-    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository,
+    public OrderService(OrderRepository orderRepository,
+                        CustomerRepository customerRepository,
                         ItemRepository itemRepository,
-                        CalculatedTaxRepository calculatedTaxRepository, AssetRepository assetRepository,
-                        TaxRepository taxRepository, OrderEngineerService orderEngineerService, SubscriptionService subscriptionService) {
-
+                        CalculatedTaxRepository calculatedTaxRepository,
+                        AssetRepository assetRepository,
+                        TaxRepository taxRepository, OrderEngineService orderEngineerService,
+                        SubscriptionService subscriptionService)
+    {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
         this.calculatedTaxRepository = calculatedTaxRepository;
         this.assetRepository = assetRepository;
         this.taxRepository = taxRepository;
-        this.orderEngineerService = orderEngineerService;
+        this.orderEngineService = orderEngineerService;
         this.subscriptionService = subscriptionService;
     }
 
@@ -56,19 +58,28 @@ public class OrderService {
             }
 
             order = orderRepository.save(order);
-            order.setItems(createListItemDeItemDTO(orderDTO.getItemDTO()));
-            asignarOrderAListItems(order.getItems(), order);
-           // order.setCalculatedTaxes(createCalculatedTaxToCalculatedTaxDTO(orderDTO.getCalculatedTaxDTOS()));
-            //asignarOrderAListCalculated(order.getCalculatedTaxes(), order);
-            orderEngineerService.calculateOrderTotals(order);
-            orderRepository.save(order);
-
+            asignarAssetsAItems(order.getItems(),orderDTO.getItemDTO());
+            orderEngineService.calculateOrderTotals(order);
             crearSubscripcion(order);
-
+            orderRepository.save(order);
             return order.toOrderDTO();
         }
         throw new RuntimeException();
 
+    }
+    private void asignarAssetsAItems(List<Item> listItems, List<ItemDTO>listDTO) throws EmptyElementException
+    {
+        if(listDTO == null && listItems == null)
+        {
+            throw new  EmptyElementException("La lista de itemDTO es nula o la lista de items en el order es nula");
+        }
+        else
+        {
+            for(int j=0; j<listDTO.size(); j++)
+            {
+                    listItems.get(j).setAsset(assetRepository.findById(listDTO.get(j).getIdAsset()).get());
+            }
+        }
     }
     private void crearSubscripcion(Order order){
         for(Item item : order.getItems()){
@@ -77,49 +88,20 @@ public class OrderService {
                 newSubscription.setCustomer(order.getCustomer());
                 newSubscription.setAsset(item.getAsset());
                 newSubscription.setStatus(Boolean.TRUE);
-
                 subscriptionService.createSubscription(newSubscription.toDTO());
             }
         }
     }
-
     private void asignarCustomerAOrder(OrderDTO orderDTO, Order order) {
         Optional<Customer> optionalCustomer = Optional.empty();
         optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
         optionalCustomer.ifPresent(order::setCustomer);
     }
-
-    private List<CalculatedTax> createCalculatedTaxToCalculatedTaxDTO(List<CalculatedTaxDTO> listCalculatedDTO) {
-        List<CalculatedTax> listCalculated = new ArrayList<>();
-        CalculatedTax calculatedTax = new CalculatedTax();
-        for (int j = 0; j < listCalculatedDTO.size(); j++) {
-            createCalculatedTax(listCalculatedDTO.get(j), calculatedTax);
-            listCalculated.add(calculatedTax);
-        }
-        return listCalculated;
-    }
-
-    private void createCalculatedTax(CalculatedTaxDTO calculatedTaxDTO, CalculatedTax calculatedTax) {
-        calculatedTax.setTax(taxRepository.findById(calculatedTaxDTO.getTaxID()).get());
-        calculatedTax.setTaxesAmount(calculatedTaxDTO.getTaxesAmount());
-    }
-
     private void asignarOrderAListCalculated(List<CalculatedTax> listCalculated, Order order) {
         for (int j = 0; j < listCalculated.size(); j++) {
             listCalculated.get(j).setOrder(order);
         }
     }
-
-    private List<Item> createListItemDeItemDTO(List<ItemDTO> itemDTOList) {
-        List<Item> listItem = new ArrayList<>();
-        for (int j = 0; j < itemDTOList.size(); j++) {
-            Item item = new Item(itemDTOList.get(j));
-            asignarAssetAItem(itemDTOList.get(j), item);
-            listItem.add(item);
-        }
-        return listItem;
-    }
-
     private void asignarAssetAItem(ItemDTO itemDTO, Item item) {
         if (itemDTO.getIdAsset() != null &&
                 assetRepository.existsById(itemDTO.getIdAsset())) {
@@ -127,27 +109,15 @@ public class OrderService {
             item.setAsset(asset);
         }
     }
-
-    private void asignarOrderAListItems(List<Item> list, Order order) {
-        for (int j = 0; j < list.size(); j++) {
-            list.get(j).setOrder(order);
-        }
-    }
-
     public List<OrderDTO> read() {
         return orderRepository.findAll().stream().map(Order::toOrderDTO).collect(Collectors.toList());
     }
-
     public OrderDTO update(OrderDTO orderDTO) {
         Optional<Order> optionalOrder = orderRepository.findById(orderDTO.getIdOrder());
         if (optionalOrder.isPresent()) {
             checkEmpty(orderDTO);
             actualizarPrimitivos(optionalOrder.get(), orderDTO);
             optionalOrder.get().setItems(updateItems(orderDTO.getItemDTO()));
-            asignarOrderAListItems(optionalOrder.get().getItems(), optionalOrder.get());
-            optionalOrder.get()
-                    .setCalculatedTaxes(listCalculatedTaxToCalculatedTaxDTO(orderDTO.getCalculatedTaxDTOS()));
-            asignarOrderAListCalculated(optionalOrder.get().getCalculatedTaxes(), optionalOrder.get());
             return orderRepository.save(optionalOrder.get()).toOrderDTO();
         }
         throw new EmptyElementException("La entrada que se quiere actualizarn o existe");
@@ -260,8 +230,10 @@ public class OrderService {
     // CREAR FUNCION QUE REFRESQUE LA INFORMACION
     public OrderDTO refresh(OrderDTO orderDTO) {
         Order order = new Order(orderDTO);
-        if ("calculate".equals(orderDTO.getAction())) {
-             orderEngineerService.calculateOrderTotals(order);
+        actualizarPrimitivos(order,orderDTO);
+        order.setItems(updateItems(orderDTO.getItemDTO()));
+    if ("calculate".equals(orderDTO.getAction())) {
+             orderEngineService.calculateOrderTotals(order);
         } else if ("customer".equals(orderDTO.getAction())) {
             updateCustomerInfo(orderDTO,order);
         }
@@ -273,7 +245,6 @@ public class OrderService {
     private void updateCustomerInfo(OrderDTO orderDTO, Order order) {
         if (orderDTO.getCustomerID() != null) {
             Optional<Customer> optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
-
             if (optionalCustomer.isPresent()) {
                 Customer customer = optionalCustomer.get();
                 order.setCustomer(customer);

@@ -30,6 +30,8 @@ public class ItemDTO {
     private BigDecimal totalPrice;
     @JsonProperty(value = "warrantyYears")
     private int warrantyYears;
+    @JsonProperty(value="warrantyPrice" )
+    private BigDecimal warrantyPrice;
 
 
 }
