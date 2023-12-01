@@ -1,6 +1,7 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
+import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.*;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
@@ -26,13 +27,12 @@ public class OrderService {
     private final SubscriptionService subscriptionService;
 
     public OrderService(OrderRepository orderRepository,
-                        CustomerRepository customerRepository,
-                        ItemRepository itemRepository,
-                        CalculatedTaxRepository calculatedTaxRepository,
-                        AssetRepository assetRepository,
-                        TaxRepository taxRepository, OrderEngineService orderEngineerService,
-                        SubscriptionService subscriptionService)
-    {
+            CustomerRepository customerRepository,
+            ItemRepository itemRepository,
+            CalculatedTaxRepository calculatedTaxRepository,
+            AssetRepository assetRepository,
+            TaxRepository taxRepository, OrderEngineService orderEngineerService,
+            SubscriptionService subscriptionService) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
@@ -46,19 +46,21 @@ public class OrderService {
     public OrderDTO create(OrderDTO orderDTO) {
         if (orderDTO != null) {
             checkEmpty(orderDTO);
-            Order order = new Order(orderDTO); //Esto hay que charlarlo y tomar la mejor desición
+            Order order = new Order(orderDTO); // Esto hay que charlarlo y tomar la mejor desición
             asignarCustomerAOrder(orderDTO, order);
 
-            //Compruebo si ya existe una Subscripcion para todos los assets dado
-            for (ItemDTO asset : orderDTO.getItemDTO()){
-                Subscription subComprobation = subscriptionService.getSubscriptionByAssetIdAndCustomerId(asset.getIdAsset(), orderDTO.getCustomerID());
+            // Compruebo si ya existe una Subscripcion para todos los assets dado
+            for (ItemDTO asset : orderDTO.getItemDTO()) {
+                Subscription subComprobation = subscriptionService
+                        .getSubscriptionByAssetIdAndCustomerId(asset.getIdAsset(), orderDTO.getCustomerID());
                 if (subComprobation != null) {
-                    throw new NotCreatedException("El customer: " +orderDTO.getCustomerName()+ " Ya tiene el asset: " +asset.getNameAsset()+ " Asignado");
+                    throw new NotCreatedException("El customer: " + orderDTO.getCustomerName() + " Ya tiene el asset: "
+                            + asset.getNameAsset() + " Asignado");
                 }
             }
 
             order = orderRepository.save(order);
-            asignarAssetsAItems(order.getItems(),orderDTO.getItemDTO());
+            asignarAssetsAItems(order.getItems(), orderDTO.getItemDTO());
             orderEngineService.calculateOrderTotals(order);
             crearSubscripcion(order);
             orderRepository.save(order);
@@ -67,22 +69,19 @@ public class OrderService {
         throw new RuntimeException();
 
     }
-    private void asignarAssetsAItems(List<Item> listItems, List<ItemDTO>listDTO) throws EmptyElementException
-    {
-        if(listDTO == null && listItems == null)
-        {
-            throw new  EmptyElementException("La lista de itemDTO es nula o la lista de items en el order es nula");
-        }
-        else
-        {
-            for(int j=0; j<listDTO.size(); j++)
-            {
-                    listItems.get(j).setAsset(assetRepository.findById(listDTO.get(j).getIdAsset()).get());
+
+    private void asignarAssetsAItems(List<Item> listItems, List<ItemDTO> listDTO) throws EmptyElementException {
+        if (listDTO == null && listItems == null) {
+            throw new EmptyElementException("La lista de itemDTO es nula o la lista de items en el order es nula");
+        } else {
+            for (int j = 0; j < listDTO.size(); j++) {
+                listItems.get(j).setAsset(assetRepository.findById(listDTO.get(j).getIdAsset()).get());
             }
         }
     }
-    private void crearSubscripcion(Order order){
-        for(Item item : order.getItems()){
+
+    private void crearSubscripcion(Order order) {
+        for (Item item : order.getItems()) {
             if (item.getAsset() instanceof Servicie) {
                 Subscription newSubscription = new Subscription();
                 newSubscription.setCustomer(order.getCustomer());
@@ -92,16 +91,19 @@ public class OrderService {
             }
         }
     }
+
     private void asignarCustomerAOrder(OrderDTO orderDTO, Order order) {
         Optional<Customer> optionalCustomer = Optional.empty();
         optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
         optionalCustomer.ifPresent(order::setCustomer);
     }
+
     private void asignarOrderAListCalculated(List<CalculatedTax> listCalculated, Order order) {
         for (int j = 0; j < listCalculated.size(); j++) {
             listCalculated.get(j).setOrder(order);
         }
     }
+
     private void asignarAssetAItem(ItemDTO itemDTO, Item item) {
         if (itemDTO.getIdAsset() != null &&
                 assetRepository.existsById(itemDTO.getIdAsset())) {
@@ -109,9 +111,11 @@ public class OrderService {
             item.setAsset(asset);
         }
     }
+
     public List<OrderDTO> read() {
         return orderRepository.findAll().stream().map(Order::toOrderDTO).collect(Collectors.toList());
     }
+
     public OrderDTO update(OrderDTO orderDTO) {
         Optional<Order> optionalOrder = orderRepository.findById(orderDTO.getIdOrder());
         if (optionalOrder.isPresent()) {
@@ -230,17 +234,15 @@ public class OrderService {
     // CREAR FUNCION QUE REFRESQUE LA INFORMACION
     public OrderDTO refresh(OrderDTO orderDTO) {
         Order order = new Order(orderDTO);
-        actualizarPrimitivos(order,orderDTO);
+        actualizarPrimitivos(order, orderDTO);
         order.setItems(updateItems(orderDTO.getItemDTO()));
-    if ("calculate".equals(orderDTO.getAction())) {
-             orderEngineService.calculateOrderTotals(order);
+        if ("calculate".equals(orderDTO.getAction())) {
+            orderEngineService.calculateOrderTotals(order);
         } else if ("customer".equals(orderDTO.getAction())) {
-            updateCustomerInfo(orderDTO,order);
+            updateCustomerInfo(orderDTO, order);
         }
         return order.toOrderDTO();
     }
-
-
 
     private void updateCustomerInfo(OrderDTO orderDTO, Order order) {
         if (orderDTO.getCustomerID() != null) {
