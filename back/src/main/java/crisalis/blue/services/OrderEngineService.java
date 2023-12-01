@@ -1,5 +1,6 @@
 package crisalis.blue.services;
 
+import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.*;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.OrderRepository;
@@ -10,33 +11,44 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class OrderEngineerService {
+public class OrderEngineService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private AssetRepository assetRepository;
-    public  void calculateOrderTotals(Order order) {
+    public  void calculateOrderTotals(Order order) throws EmptyElementException {
+        // Tomo los ítems del pedido
         List<Item> listItem = order.getItems();
+        // Creo una variable item auxiliar
         Item item = null;
+        // Creo un total auxiliar
         BigDecimal auxTotal= BigDecimal.ZERO;
+        // Creo un boolean para saber si tengo que aplicar descuento a los items que son productos
         boolean descuento = siAplicaDescuento(order);
-        for(int j=0; j<listItem.size();j++)
+        if(listItem != null)
         {
-            item = listItem.get(j);
-            item.setItemPrice(item.getItemPrice() != null ? item.getItemPrice() : BigDecimal.ZERO);
-            item.setSupportFee( item.getAsset() instanceof Servicie ?
-                    ((Servicie)item.getAsset()).getSupportFee() : BigDecimal.ZERO);
-            item.setItemQuantity(item.getItemQuantity() == 0? 1: item.getItemQuantity());
-            auxTotal.add
-                    (item.getItemPrice()
-                            .multiply(BigDecimal.valueOf(item.getItemQuantity()).add(item.getSupportFee())
-                            .add(item.getWarrantyPrice().multiply(BigDecimal.valueOf(item.getWarrantyYears())))));// Calcula el subtotal de de ítem
-            if(descuento) {
-                aplicarDescuento(item);
+            // Recorro la lista de ítems
+            for(int j=0; j<listItem.size();j++)
+            {
+                item = listItem.get(j);
+                item.setItemPrice(item.getItemPrice() != null ? item.getItemPrice() : BigDecimal.ZERO);
+                item.setSupportFee( item.getAsset() instanceof Servicie ?
+                        ((Servicie)item.getAsset()).getSupportFee() : BigDecimal.ZERO);
+                item.setItemQuantity(item.getItemQuantity() == 0? 1: item.getItemQuantity());
+                auxTotal = item.getItemPrice()
+                .multiply(BigDecimal.valueOf(item.getItemQuantity()))
+                                .add(item.getSupportFee())
+                                .add(item.getWarrantyPrice().multiply(BigDecimal.valueOf(item.getWarrantyYears())));// Calcula el subtotal de de ítem
+                if(descuento) {
+                    aplicarDescuento(item);
+                }
+                item.setTotalPrice(auxTotal);
+               order.setSubTotal(order.getSubTotal().add(item.getTotalPrice()));
             }
-            item.setTotalPrice(auxTotal);
+            aplicarImpuestos(order);
+            calcularTotalPriceOrder(order);
         }
-        aplicarImpuestos(order);
+        else throw new EmptyElementException("La lista de ítem enviada en la orden esta vacia ");
     }
 
     private boolean  siAplicaDescuento(Order order)
@@ -96,12 +108,25 @@ public class OrderEngineerService {
     }
     private CalculatedTax buscarOrderTax(Tax tax, List<CalculatedTax>listCT)
     {
-        for(int j=0;j<listCT.size(); j++)
-        {
-            if(listCT.get(j).getTax().getName().equals(tax.getName()))
-                return listCT.get(j);
+        if(listCT != null) {
+            for (int j = 0; j < listCT.size(); j++) {
+                if (listCT.get(j).getTax().getName().equals(tax.getName()))
+                    return listCT.get(j);
+            }
         }
         return null;
     }
-
+    private void calcularTotalPriceOrder(Order order)
+    {
+        List<CalculatedTax> listCT = order.getCalculatedTaxes();
+        BigDecimal total = BigDecimal.ZERO;
+        total = total.add(order.getSubTotal());
+        if(listCT != null)
+        {
+            for(int j=0; j<listCT.size();j++) {
+                total = total.add(listCT.get(j).getTaxesAmount());
+            }
+        }
+        order.setTotalPrice(total);
+    }
 }
