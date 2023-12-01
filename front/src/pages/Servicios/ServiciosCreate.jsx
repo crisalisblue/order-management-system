@@ -1,4 +1,4 @@
-import { createSingleProduct } from "../../api/productAPI.js";
+import { createSingleService } from "../../api/serviceAPI.js";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { getAllTaxes } from "../../api/taxAPI.js";
 import { SelectedTaxesTable } from "../../components/SelectedTaxesTable/SelectedTaxesTable.jsx";
 
-export const ProductsCreate = () => {
+export const ServiciosCreate = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm();
   const [taxes, setTaxes] = useState([]);
@@ -28,24 +28,24 @@ export const ProductsCreate = () => {
   const onSubmit = async (data) => {
     try {
       data.taxList = selectedTaxes;
-      data.type = "Product";
+      data.type = "Service";
       console.dir(data);
-      console.dir(await createSingleProduct(data));
+      console.dir(await createSingleService(data));
       Swal.fire({
         icon: "success",
-        title: "Producto creado",
-        text: "El producto se creó exitosamente.",
+        title: "Servicio creado",
+        text: "El servicio se creó exitosamente.",
       }).then((result) => {
         if (result.isConfirmed) {
-          navigate("/productos");
+          navigate("/servicios");
         }
       });
     } catch (error) {
       console.error(error);
       Swal.fire({
         icon: "error",
-        title: "Error al crear producto",
-        text: "Hubo un problema al crear el producto.",
+        title: "Error al crear servicio",
+        text: "Hubo un problema al crear el servicio.",
       });
     }
   };
@@ -54,6 +54,7 @@ export const ProductsCreate = () => {
 
   const handleTaxChange = (e) => {
     const selectedTaxName = e.target.value;
+
     const isTaxSelected = selectedTaxes.some(
       (tax) => tax.name === selectedTaxName
     );
@@ -61,7 +62,7 @@ export const ProductsCreate = () => {
     if (!isTaxSelected) {
       const selectedTax = taxes.find((tax) => tax.name === selectedTaxName);
       if (selectedTax) {
-        setSelectedTaxes((prevTaxes) => [...prevTaxes, selectedTax]);
+        setSelectedTaxes([...selectedTaxes, selectedTax]);
       }
 
       const updatedTaxes = taxes.filter((tax) => tax.name !== selectedTaxName);
@@ -81,7 +82,6 @@ export const ProductsCreate = () => {
     setSelectedTaxes(updatedSelectedTaxes);
 
     const removedTax = selectedTaxes.find((tax) => tax.name === taxName);
-
     if (removedTax) {
       setTaxes((prevTaxes) => [...prevTaxes, { ...removedTax }]);
     }
@@ -90,7 +90,7 @@ export const ProductsCreate = () => {
   };
 
   return (
-    <section id="productsCreate" className="w-5/6 prose min-w-full">
+    <section id="serviciosCreate" className="w-5/6 prose min-w-full">
       <form
         className="w-5/6 mx-auto p-6 bg-white rounded-md shadow-md"
         onSubmit={handleSubmit(onSubmit, onError)}
@@ -125,29 +125,42 @@ export const ProductsCreate = () => {
           />
         </div>
 
-        {taxes.length > 0 ? (
+        <div className="mb-4">
+          <label
+            htmlFor="supportFee"
+            className="block text-sm font-semibold text-gray-600"
+          >
+            Tarifa de Soporte:
+          </label>
+          <input
+            type="number"
+            id="supportFee"
+            {...register("supportFee")}
+            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+
+        {taxes.length > 0 && (
           <div className="mb-4">
             <label
               htmlFor="tax"
               className="block text-sm font-semibold text-gray-600"
             >
               Impuesto:
-              <select
-                id="tax"
-                className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                onChange={handleTaxChange}
-              >
-                <option value="">Seleccionar Impuesto</option>
-                {taxes.map((tax) => (
-                  <option key={tax.id} value={tax.name}>
-                    {tax.name}
-                  </option>
-                ))}
-              </select>
             </label>
+            <select
+              id="tax"
+              className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              onChange={handleTaxChange}
+            >
+              <option value="">Seleccionar Impuesto</option>
+              {taxes.map((tax) => (
+                <option key={tax.id} value={tax.name}>
+                  {tax.name}
+                </option>
+              ))}
+            </select>
           </div>
-        ) : (
-          <p>No hay impuestos disponibles</p>
         )}
 
         <SelectedTaxesTable
@@ -159,7 +172,7 @@ export const ProductsCreate = () => {
           type="submit"
           className="w-33 px-4 py-2 text-white bg-primary rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
         >
-          Agregar Producto
+          Agregar Servicio
         </button>
       </form>
     </section>

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { useDataFetching } from "../../api/API_Utils";
-import { getAllCustomers, getSingleCustomer } from "../../api/customerAPI";
-import { createSingleOrder, refreshOrder } from "../../api/orderAPI";
-import { getAllAssets } from "../../api/assetAPI";
+import { useDataFetching } from "../../api/API_Utils.js";
+import { getAllCustomers, getSingleCustomer } from "../../api/customerAPI.js";
+import { createSingleOrder, refreshOrder } from "../../api/orderAPI.js";
+import { getAllAssets } from "../../api/assetAPI.js";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
@@ -200,7 +200,7 @@ export const OrderCreate = () => {
   }
 
   return (
-    <main className={"w-6/7 p-2 rounded-md"}>
+    <>
       <header className="flex justify-between p-2 text-black rounded-t-md border-b-black bg-[#F1F1F1] ">
         <h6>{orderData.id ? "00000" + orderData.id : "00000"}</h6>
         <h6>{orderData.dateOrder ? orderData.dateOrder : "buscando fecha"}</h6>
@@ -289,7 +289,7 @@ export const OrderCreate = () => {
               </article>
             </section>
             <section className="">
-              <div className="max-h-70 overflow-y-auto scrollbar">
+              <div className="max-h-96 overflow-y-auto scrollbar">
                 <table className="table mt-3">
                   <thead className="bg-[#E6EFF3]">
                     {/* <th>ID</th> */}
@@ -347,11 +347,8 @@ export const OrderCreate = () => {
             </section>
           </section>
           <section className="w-1/2 flex flex-col justify-between">
-            <section className="max-h-60 overflow-y-scroll scrollbar m-2">
-              Cliente:{" "}
-              {dataRefresh.customerName
-                ? dataRefresh.customerName
-                : "Buscando nombre"}
+            <section className="max-h-96 overflow-y-auto scrollbar m-2">
+              Cliente: {dataRefresh.customerName ? 1 : "Buscando nombre"}
               <table className="table">
                 <thead className="bg-[#E6EFF3]">
                   <th>Item</th>
@@ -421,6 +418,6 @@ export const OrderCreate = () => {
           </button>
         </section>
       </form>
-    </main>
+    </>
   );
 };
