@@ -33,7 +33,6 @@ public class OrderService {
                         TaxRepository taxRepository, OrderEngineService orderEngineerService,
                         SubscriptionService subscriptionService)
     {
-
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
@@ -49,6 +48,15 @@ public class OrderService {
             checkEmpty(orderDTO);
             Order order = new Order(orderDTO); //Esto hay que charlarlo y tomar la mejor desición
             asignarCustomerAOrder(orderDTO, order);
+
+            //Compruebo si ya existe una Subscripcion para todos los assets dado
+            for (ItemDTO asset : orderDTO.getItemDTO()){
+                Subscription subComprobation = subscriptionService.getSubscriptionByAssetIdAndCustomerId(asset.getIdAsset(), orderDTO.getCustomerID());
+                if (subComprobation != null) {
+                    throw new NotCreatedException("El customer: " +orderDTO.getCustomerName()+ " Ya tiene el asset: " +asset.getNameAsset()+ " Asignado");
+                }
+            }
+
             order = orderRepository.save(order);
             asignarAssetsAItems(order.getItems(),orderDTO.getItemDTO());
             orderEngineService.calculateOrderTotals(order);
