@@ -126,7 +126,7 @@ export const CustomerCreate = () => {
                   <article className="flex gap-3 items-center">
                     <label className="text-black">Inicio actividades:</label>
                     <input
-                      type="date"
+                      type="month"
                       {...register("activityStartDate")}
                       className="border border-gray-400 rounded px-2 py-1"
                     />
