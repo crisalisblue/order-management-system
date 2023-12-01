@@ -42,8 +42,8 @@ public class OrderEngineService {
                 item.setItemQuantity(item.getItemQuantity() == 0? 1: item.getItemQuantity());
                 auxTotal = item.getItemPrice()
                 .multiply(BigDecimal.valueOf(item.getItemQuantity()))
-                                .add(item.getSupportFee())
-                                .add(item.getWarrantyPrice().multiply(BigDecimal.valueOf(item.getWarrantyYears())));// Calcula el subtotal de de ítem
+                                .add(item.getSupportFee());
+                                //.add(item.getWarrantyPrice().multiply(BigDecimal.valueOf(item.getWarrantyYears())));// Calcula el subtotal de de ítem
                 if(descuento) {
                     aplicarDescuento(item);
                 }
