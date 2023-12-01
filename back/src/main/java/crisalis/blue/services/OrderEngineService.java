@@ -4,6 +4,7 @@ import crisalis.blue.exceptions.custom.EmptyElementException;
 import crisalis.blue.models.*;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.OrderRepository;
+import crisalis.blue.repositories.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class OrderEngineService {
     private OrderRepository orderRepository;
     @Autowired
     private AssetRepository assetRepository;
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
     public  void calculateOrderTotals(Order order) throws EmptyElementException {
         // Tomo los ítems del pedido
         List<Item> listItem = order.getItems();
@@ -55,9 +58,13 @@ public class OrderEngineService {
     {
         Asset response = null;
         List<Item> listItem = order.getItems();
-        // Si tiene una subcripción activa aplico el descuento
-            //Me tiene que devolver el asset que encontro
-        // Tegno que guardar el servicio que habilito el descuento
+        List<Subscription > listSubcription = subscriptionRepository.findAllByCustomerId(order.getCustomer().getId());
+        for(Subscription list : listSubcription) {
+            if (list.getStatus())
+            {
+                response = list.getAsset();
+            }
+        }
         if(response == null)
         {
             for (int j=0; j< listItem.size();j++ )

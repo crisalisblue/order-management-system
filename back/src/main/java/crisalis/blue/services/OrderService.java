@@ -1,6 +1,7 @@
 package crisalis.blue.services;
 
 import crisalis.blue.exceptions.custom.EmptyElementException;
+import crisalis.blue.exceptions.custom.NotCreatedException;
 import crisalis.blue.exceptions.custom.ResourceNotFoundException;
 import crisalis.blue.models.*;
 import crisalis.blue.models.dto.CalculatedTaxDTO;
@@ -56,12 +57,11 @@ public class OrderService {
                     throw new NotCreatedException("El customer: " +orderDTO.getCustomerName()+ " Ya tiene el asset: " +asset.getNameAsset()+ " Asignado");
                 }
             }
-
             order = orderRepository.save(order);
             asignarAssetsAItems(order.getItems(),orderDTO.getItemDTO());
-            orderEngineService.calculateOrderTotals(order);
             crearSubscripcion(order);
             orderRepository.save(order);
+            orderEngineService.calculateOrderTotals(order);
             return order.toOrderDTO();
         }
         throw new RuntimeException();
@@ -181,12 +181,17 @@ public class OrderService {
     }
 
     private Item buscarOCrearItem(ItemDTO itemDTO) {
-        Optional<Item> optinalItem = itemRepository.findById(itemDTO.getIdItem());
-        if (optinalItem.isPresent()) {
-
-            return optinalItem.get();
-        } else
-            return itemRepository.save(new Item(itemDTO));
+        if (itemDTO != null) {
+            if (itemDTO.getIdItem() != null) {
+                Optional<Item> optinalItem = itemRepository.findById(itemDTO.getIdItem());
+                if (optinalItem.isPresent())
+                    return optinalItem.get();
+            } else
+                return itemRepository.save(new Item(itemDTO));
+        } else {
+            throw new EmptyElementException("Item dto es nulo ");
+        }
+    return null;
     }
 
     private void updateItem(Item item, ItemDTO itemDTO) {

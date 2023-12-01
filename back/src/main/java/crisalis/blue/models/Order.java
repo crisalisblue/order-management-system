@@ -61,8 +61,10 @@ public class Order {
         orderDTO.setDateOrder(this.getDatesOrder());
         orderDTO.setTotalDiscount(this.getTotalDiscount());
         orderDTO.setTotalPrice(this.getTotalPrice());
-        orderDTO.setCustomerID(this.getCustomer().getId());
-        orderDTO.setCustomerName(this.getCustomer().getName());
+        if(this.getCustomer() != null) {
+            orderDTO.setCustomerID(this.getCustomer().getId());
+            orderDTO.setCustomerName(this.getCustomer().getName());
+        }
         orderDTO.setSubTotal(this.getSubTotal());
         orderDTO.setActive(this.active);
         if(this.getItems() != null) {
