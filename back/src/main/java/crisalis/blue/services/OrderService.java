@@ -231,13 +231,25 @@ public class OrderService {
                 .toOrderDTO();
     }
 
+    private List<Item> createListItemDeItemDTO(List<ItemDTO> itemDTOList) {
+        List<Item> listItem = new ArrayList<>();
+        for (int j = 0; j < itemDTOList.size(); j++) {
+            Item item = new Item(itemDTOList.get(j));
+            asignarAssetAItem(itemDTOList.get(j), item);
+            listItem.add(item);
+        }
+        return listItem;
+    }
+
     // CREAR FUNCION QUE REFRESQUE LA INFORMACION
     public OrderDTO refresh(OrderDTO orderDTO) {
         Order order = new Order(orderDTO);
-        actualizarPrimitivos(order, orderDTO);
-        order.setItems(updateItems(orderDTO.getItemDTO()));
+        // actualizarPrimitivos(order, orderDTO);
+        // order.setItems(updateItems(orderDTO.getItemDTO()));
+        order.setItems(createListItemDeItemDTO(orderDTO.getItemDTO()));
         if ("calculate".equals(orderDTO.getAction())) {
-            orderEngineService.calculateOrderTotals(order);
+
+            orderEngineService.calculateTotalAndTax(order);
         } else if ("customer".equals(orderDTO.getAction())) {
             updateCustomerInfo(orderDTO, order);
         }
