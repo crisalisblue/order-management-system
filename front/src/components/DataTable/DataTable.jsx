@@ -20,6 +20,8 @@ const translation = {
   subTotal: "Subtotal",
   active: "Activo",
   customerName: "Nombre Cliente",
+  dni: "DNI",
+  cuit: "CUIT",
 };
 
 export const DataTable = ({
@@ -128,8 +130,8 @@ export const DataTable = ({
                   🛠
                 </Link>
                 <DeleteModal
-                  itemID={item.idOrder}
-                  onDelete={() => handleDelete(item.idOrder)}
+                  itemID={item.id}
+                  onDelete={() => handleDelete(item.id)}
                 ></DeleteModal>
               </td>
             </tr>

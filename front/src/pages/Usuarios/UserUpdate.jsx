@@ -90,25 +90,6 @@ export const UserUpdate = () => {
           Modificar
         </button>
       </form>
-      <article>
-        <h1>Rol</h1>
-        <table>
-          <thead>
-            <th>Rol</th>
-            <th>Seleccionado</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Administrador</td>
-              <input type="checkbox" name="" id="" />
-            </tr>
-            <tr>
-              <td>Usuario</td>
-              <input type="checkbox" name="" id="" />
-            </tr>
-          </tbody>
-        </table>
-      </article>
     </section>
   );
 };

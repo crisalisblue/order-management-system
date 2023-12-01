@@ -45,7 +45,7 @@ export const CustomerCreate = () => {
       <section className="w-5/6 p-5 m-auto bg-[#F1F1F1]">
         <section className="flex justify-center items-center gap-3 flex-col">
           <form
-            className="flex w-42 justify-evenly items-center gap-3 my-20 flex-col text-black"
+            className="flex w-44 justify-evenly items-center gap-3 my-20 flex-col text-black"
             onSubmit={handleSubmit(onSubmit)}
           >
             <section className="flex w-44 justify-evenly items-end gap-3 flex-col">

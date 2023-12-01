@@ -29,28 +29,61 @@ export const UserCreate = () => {
   };
 
   return (
-    <section id="userForm" className="bg-base-200 prose min-w-full">
+    <section id="userForm" className="w-5/6  prose min-w-full">
       <form
-        className="gap-4 p-4 flex flex-col"
+        className="w-5/6  mx-auto p-6 bg-white rounded-md shadow-md"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div>
-          <label htmlFor="name">Nombre:</label>
-          <input type="text" {...register("name")} />
+        <div className="mb-4">
+          <label
+            htmlFor="name"
+            className="block text-sm font-semibold text-gray-600"
+          >
+            Nombre:
+          </label>
+          <input
+            type="text"
+            id="name"
+            {...register("name")}
+            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          />
         </div>
 
-        <div>
-          <label htmlFor="username">Usuario:</label>
-          <input type="text" {...register("username")} />
+        <div className="mb-4">
+          <label
+            htmlFor="username"
+            className="block text-sm font-semibold text-gray-600"
+          >
+            Usuario:
+          </label>
+          <input
+            type="text"
+            id="username"
+            {...register("username")}
+            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          />
         </div>
 
-        <div>
-          <label htmlFor="password">Contraseña:</label>
-          <input type="password" {...register("password")} />
+        <div className="mb-4">
+          <label
+            htmlFor="password"
+            className="block text-sm font-semibold text-gray-600"
+          >
+            Contraseña:
+          </label>
+          <input
+            type="password"
+            id="password"
+            {...register("password")}
+            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          />
         </div>
 
-        <button className="btn bg-primary text-base-100" type="submit">
-          Agregar
+        <button
+          type="submit"
+          className="w-1/3 px-4 py-2 text-white bg-primary rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
+        >
+          Agregar Usuario
         </button>
       </form>
     </section>
