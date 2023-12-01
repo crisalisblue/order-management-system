@@ -20,7 +20,7 @@ export const SelectedTaxesTable = ({ selectedTaxes, onRemoveTax }) => {
             >
               <td className={"border border-gray-300 p-2"}>{tax.name}</td>
               <td className={"border border-gray-300 p-2"}>
-                {tax.percentage}%
+                %{tax.percentage}
               </td>
               <td className={"border border-gray-300 p-2"}>
                 <button

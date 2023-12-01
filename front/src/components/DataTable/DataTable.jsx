@@ -20,6 +20,8 @@ const translation = {
   subTotal: "Subtotal",
   active: "Activo",
   customerName: "Nombre Cliente",
+  dni: "DNI",
+  cuit: "CUIT",
 };
 
 export const DataTable = ({
