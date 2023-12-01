@@ -11,7 +11,7 @@ export const SelectedTaxesTable = ({ selectedTaxes, onRemoveTax }) => {
           </tr>
         </thead>
         <tbody>
-          {selectedTaxes.map((tax, index) => (
+          {selectedTaxes?.map((tax, index) => (
             <tr
               className={`${
                 index % 2 === 0 ? "bg-[#BCDEEB]" : "bg-[#DBE8EC]"
