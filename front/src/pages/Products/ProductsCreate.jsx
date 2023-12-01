@@ -29,6 +29,7 @@ export const ProductsCreate = () => {
     try {
       data.taxList = selectedTaxes;
       data.type = "Product";
+      console.dir(data);
       console.dir(await createSingleProduct(data));
       Swal.fire({
         icon: "success",
@@ -89,70 +90,78 @@ export const ProductsCreate = () => {
   };
 
   return (
-    <form
-      className={
-        "bg-[#F1F1F1] flex justify-evenly flex-wrap p-4 rounded-md drop-shadow-md w-5/6 mx-auto"
-      }
-      onSubmit={handleSubmit(onSubmit, onError)}
-    >
-      <div className={"flex flex-col w-1/2"}>
-        <label
-          className={"text-black text-xl my-5 flex justify-center items-center"}
-        >
-          Nombre
-          <input
-            className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4"
-            type="text"
-            {...register("name")}
-          />
-        </label>
-        <label
-          className={"text-black text-xl my-5 flex justify-center items-center"}
-        >
-          Precio Unitario
-          <input
-            className="bg-white rounded-md drop-shadow-md text-black w-1/3 mx-4"
-            type="number"
-            {...register("baseAmount")}
-          />
-        </label>
-        <input type="hidden" defaultValue={"Product"} {...register("type")} />
-        {taxes.length > 0 ? (
+    <section id="productsCreate" className="w-5/6 prose min-w-full">
+      <form
+        className="w-5/6 mx-auto p-6 bg-white rounded-md shadow-md"
+        onSubmit={handleSubmit(onSubmit, onError)}
+      >
+        <div className="mb-4">
           <label
-            className={
-              "text-black text-xl my-5 flex justify-center items-center"
-            }
+            htmlFor="name"
+            className="block text-sm font-semibold text-gray-600"
           >
-            Impuesto:
-            <select
-              className="bg-white rounded-md drop-shadow-md text-black w-1/3"
-              onChange={handleTaxChange}
-            >
-              <option value="">Seleccionar Impuesto</option>
-              {taxes.map((tax) => (
-                <option key={tax.id} value={tax.name}>
-                  {tax.name}
-                </option>
-              ))}
-            </select>
+            Nombre:
           </label>
+          <input
+            type="text"
+            id="name"
+            {...register("name")}
+            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="baseAmount"
+            className="block text-sm font-semibold text-gray-600"
+          >
+            Precio Unitario:
+          </label>
+          <input
+            type="number"
+            id="baseAmount"
+            {...register("baseAmount")}
+            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+
+        {taxes.length > 0 ? (
+          <div className="mb-4">
+            <label
+              htmlFor="tax"
+              className="block text-sm font-semibold text-gray-600"
+            >
+              Impuesto:
+              <select
+                id="tax"
+                className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                onChange={handleTaxChange}
+              >
+                <option value="">Seleccionar Impuesto</option>
+                {taxes.map((tax) => (
+                  <option key={tax.id} value={tax.name}>
+                    {tax.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
         ) : (
           <p>No hay impuestos disponibles</p>
         )}
-      </div>
-      <div className={"w-1/2"}>
+
         <SelectedTaxesTable
           selectedTaxes={selectedTaxes}
           onRemoveTax={removeTax}
         />
-      </div>
-      <input
-        className={
-          "bg-[#001F3D] rounded-md text-white p-2 w-fit mx-auto my-2 cursor-pointer"
-        }
-        type="submit"
-        value="Agregar Producto"
-      />
-    </form>
+
+        <button
+          type="submit"
+          className="w-33 px-4 py-2 text-white bg-primary rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
+        >
+          Agregar Producto
+        </button>
+      </form>
+    </section>
   );
 };

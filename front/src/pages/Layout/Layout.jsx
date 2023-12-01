@@ -14,7 +14,8 @@ export const Layout = () => {
       <main id={mainId} className="overflow-hidden">
         <Outlet />
       </main>
-      <footer className={"text-center text-black"}>
+      
+      <footer className={"text-center text-black "}>
         Finnegans Equipo Blue {new Date().getFullYear()}
       </footer>
     </>
