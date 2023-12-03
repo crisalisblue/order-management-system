@@ -23,3 +23,7 @@ export { ProductsUpdate } from "./Products/ProductsUpdate";
 export { ServiciosCreate } from "./Servicios/ServiciosCreate";
 export { ServiciosDelete } from "./Servicios/ServiciosDelete";
 export { ServiciosUpdate } from "./Servicios/ServiciosUpdate";
+export { Subscripciones } from "./Subscripciones/Subscripciones";
+export { SubscriptionCreate } from "./Subscripciones/SubscriptionCreate";
+export { SubscriptionDelete } from "./Subscripciones/SubscriptionDelete";
+export { SubscriptionUpdate } from "./Subscripciones/SubscriptionUpdate";
