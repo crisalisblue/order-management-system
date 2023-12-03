@@ -39,6 +39,9 @@ export const OrderCreate = () => {
   const [serviceList, setServiceList] = useState([]);
   const [productList, setProductList] = useState([]);
   const [filteredAssets, setFilteredAssets] = useState([]);
+  const [originalProductList, setOriginalProductList] = useState([]);
+  const [originalServiceList, setOriginalServiceList] = useState([]);
+
   const [searchInput, setSearchInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const [assetQuantities, setAssetQuantities] = useState({});
@@ -92,29 +95,31 @@ export const OrderCreate = () => {
   }
 
   useEffect(() => {
-    const fetchService = async () => {
-      try {
-        const servicesList = await getAllServices();
-        setServiceList(servicesList);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchService();
-  }, []);
-
-  useEffect(() => {
     const fetchProducts = async () => {
       try {
         const productsList = await getAllProducts();
         setProductList(productsList);
+        setOriginalProductList(productsList); // Nueva línea
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    const fetchService = async () => {
+      try {
+        const servicesList = await getAllServices();
+        setServiceList(servicesList);
+        setOriginalServiceList(servicesList); // Nueva línea
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchService();
   }, []);
 
   useEffect(() => {
@@ -130,14 +135,19 @@ export const OrderCreate = () => {
   }, [activeTab, assetsData]);
 
   useEffect(() => {
-    // Filter assets based on the searchInput
+    // Filter assets based on the searchInput and activeTab
     try {
-      const filtered = assetsData.filter((asset) =>
+      const originalList =
+        activeTab === "Product" ? originalProductList : originalServiceList;
+      const filtered = originalList.filter((asset) =>
         asset.name.toLowerCase().includes(searchInput.toLowerCase())
       );
+
       setFilteredAssets(filtered);
-    } catch (error) {}
-  }, [searchInput, assetsData]);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [searchInput, activeTab, originalProductList, originalServiceList]);
 
   //Función nueva - Cambia el id de cliente dentro de la lista de la orden a enviar al back
   const handleClientChangeWithClientId = async (event) => {
@@ -274,7 +284,7 @@ export const OrderCreate = () => {
   //Funcion nueva, remueve items de la orden
   const handleRemoveAsset = async (assetId) => {
     const indexToRemove = orderData.itemDTO.findIndex(
-      (item) => item.id === assetId
+      (item) => item.idAsset === assetId
     );
 
     if (indexToRemove !== -1) {
@@ -472,7 +482,7 @@ export const OrderCreate = () => {
                         <th> </th>
                       </thead>
                       <tbody>
-                        {productList.map((asset, index) => (
+                        {filteredAssets.map((asset, index) => (
                           <tr className="border-none" key={index}>
                             <td>{asset.name}</td>
                             <td>{asset.baseAmount}</td>
@@ -525,7 +535,7 @@ export const OrderCreate = () => {
                         <th> </th>
                       </thead>
                       <tbody>
-                        {serviceList.map((asset, index) => (
+                        {filteredAssets.map((asset, index) => (
                           <tr className="border-none" key={index}>
                             <td>{asset.name}</td>
                             <td>{asset.baseAmount}</td>
@@ -612,7 +622,9 @@ export const OrderCreate = () => {
                           <button
                             type="button"
                             className={"btn-xs bg-[#F1F1F1]"}
-                            onClick={() => handleRemoveAsset(selectedAsset.id)}
+                            onClick={() =>
+                              handleRemoveAsset(selectedAsset.idAsset)
+                            }
                           >
                             {" "}
                             -{" "}
