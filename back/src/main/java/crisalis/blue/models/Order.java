@@ -47,15 +47,14 @@ public class Order {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
     private List<CalculatedTax> calculatedTaxes;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "suscriptionAsset_id", referencedColumnName = "id")
     private Asset assetSuscription;
 
     public OrderDTO toOrderDTO() {
         OrderDTO orderDTO = new OrderDTO();
-        //ACA 1
         orderDTO.setId(this.getId());
-        //orderDTO.setIdOrder(this.getId());
         orderDTO.setDateOrder(this.getDatesOrder());
         orderDTO.setTotalDiscount(this.getTotalDiscount());
         orderDTO.setTotalPrice(this.getTotalPrice());
@@ -80,9 +79,7 @@ public class Order {
     }
 
     public Order(OrderDTO orderDTO) {
-        //ACA 2
         this.setId(orderDTO.getId());
-        //this.setId(orderDTO.getIdOrder());
         this.setDatesOrder(orderDTO.getDateOrder());
         this.setSubTotal(orderDTO.getSubTotal());
         this.setActive(orderDTO.getActive());
