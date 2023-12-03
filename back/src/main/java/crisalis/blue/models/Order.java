@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_order")
+    @Column(name = "id")
     private Long id;
     @Column(name = "totalDiscount")
     private BigDecimal totalDiscount;
