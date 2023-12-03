@@ -53,7 +53,9 @@ public class Order {
 
     public OrderDTO toOrderDTO() {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setIdOrder(this.getId());
+        //ACA 1
+        orderDTO.setId(this.getId());
+        //orderDTO.setIdOrder(this.getId());
         orderDTO.setDateOrder(this.getDatesOrder());
         orderDTO.setTotalDiscount(this.getTotalDiscount());
         orderDTO.setTotalPrice(this.getTotalPrice());
@@ -78,7 +80,9 @@ public class Order {
     }
 
     public Order(OrderDTO orderDTO) {
-        this.setId(orderDTO.getIdOrder());
+        //ACA 2
+        this.setId(orderDTO.getId());
+        //this.setId(orderDTO.getIdOrder());
         this.setDatesOrder(orderDTO.getDateOrder());
         this.setSubTotal(orderDTO.getSubTotal());
         this.setActive(orderDTO.getActive());

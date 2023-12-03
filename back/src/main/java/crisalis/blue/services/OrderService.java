@@ -116,7 +116,9 @@ public class OrderService {
     }
 
     public OrderDTO update(OrderDTO orderDTO) {
-        Optional<Order> optionalOrder = orderRepository.findById(orderDTO.getIdOrder());
+        //ACA 3
+        Optional<Order> optionalOrder = orderRepository.findById(orderDTO.getId());
+        //Optional<Order> optionalOrder = orderRepository.findById(orderDTO.getIdOrder());
         if (optionalOrder.isPresent()) {
             checkEmpty(orderDTO);
             actualizarPrimitivos(optionalOrder.get(), orderDTO);

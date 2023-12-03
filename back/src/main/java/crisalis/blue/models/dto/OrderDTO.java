@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderDTO {
 
 
-    private Long idOrder;
+    private Long id;
     @Temporal(TemporalType.DATE)
     private Date dateOrder;
     private BigDecimal totalDiscount;
