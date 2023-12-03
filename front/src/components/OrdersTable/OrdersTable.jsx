@@ -29,6 +29,7 @@ export const OrdersTable = () => {
         "customerID",
         "action",
         "active",
+        "totalDiscount",
       ]}
     />
   );
