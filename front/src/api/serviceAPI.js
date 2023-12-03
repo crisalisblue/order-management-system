@@ -3,8 +3,6 @@ const apiUrl = "http://localhost:8080/asset";
 export const getAllServices = async () => {
   try {
     const response = await axios.get(`${apiUrl}/readType?type=Service`);
-    console.dir(response);
-    console.dir(response.status);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -13,8 +11,8 @@ export const getAllServices = async () => {
 
 export const getSingleService = async (serviceID) => {
   try {
-    const response = await axios.get(`${apiUrl}?id=${serviceID}`);
-    return response.status;
+    const response = await axios.get(`${apiUrl}/read?id=${serviceID}`);
+    return response.data;
   } catch (error) {
     console.error(error);
   }
@@ -24,7 +22,7 @@ export const updateSingleService = async (data) => {
   console.dir(data);
   try {
     const response = await axios.put(`${apiUrl}/update`, data);
-    return response.status;
+    return response.data;
   } catch (error) {
     console.error(error);
   }
@@ -33,7 +31,7 @@ export const updateSingleService = async (data) => {
 export const deleteSingleService = async (serviceID) => {
   try {
     const response = await axios.delete(`${apiUrl}/delete?id=${serviceID}`);
-    return response.status;
+    return response;
   } catch (error) {
     console.error(error);
   }
@@ -44,7 +42,7 @@ export const createSingleService = async (data) => {
     console.dir(data);
     const response = await axios.post(`${apiUrl}/create`, data);
     console.dir(response);
-    return response.status;
+    return response;
   } catch (error) {
     console.error(error);
   }

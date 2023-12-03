@@ -32,14 +32,14 @@ public class OrderEngineService {
             descuento = siAplicaDescuento(order);
         if(listItem != null)
         {
+
             // Recorro la lista de ítems
-            for(int j=0; j<listItem.size();j++)
-            {
+            for (int j = 0; j < listItem.size(); j++) {
                 item = listItem.get(j);
                 item.setItemPrice(item.getItemPrice() != null ? item.getItemPrice() : BigDecimal.ZERO);
-                item.setSupportFee( item.getAsset() instanceof Servicie ?
-                        ((Servicie)item.getAsset()).getSupportFee() : BigDecimal.ZERO);
-                item.setItemQuantity(item.getItemQuantity() == 0? 1: item.getItemQuantity());
+                item.setSupportFee(item.getAsset() instanceof Servicie ? ((Servicie) item.getAsset()).getSupportFee()
+                        : BigDecimal.ZERO);
+                item.setItemQuantity(item.getItemQuantity() == 0 ? 1 : item.getItemQuantity());
                 auxTotal = item.getItemPrice()
                 .multiply(BigDecimal.valueOf(item.getItemQuantity()))
                                 .add(item.getSupportFee());
@@ -48,16 +48,15 @@ public class OrderEngineService {
                     aplicarDescuento(item);
                 }
                 item.setTotalPrice(auxTotal);
-               order.setSubTotal(order.getSubTotal().add(item.getTotalPrice()));
+                order.setSubTotal(order.getSubTotal().add(item.getTotalPrice()));
             }
             aplicarImpuestos(order);
             calcularTotalPriceOrder(order);
-        }
-        else throw new EmptyElementException("La lista de ítem enviada en la orden esta vacia ");
+        } else
+            throw new EmptyElementException("La lista de ítem enviada en la orden esta vacia ");
     }
 
-    private boolean  siAplicaDescuento(Order order)
-    {
+    private boolean siAplicaDescuento(Order order) {
         Asset response = null;
         List<Item> listItem = order.getItems();
         List<Subscription > listSubcription = subscriptionRepository.findAllByCustomerId(order.getCustomer().getId());
@@ -78,11 +77,11 @@ public class OrderEngineService {
                 }
             }
         }
-         order.setAssetSuscription(response); // le agrego el servicio que habilito el descuento
-         return !(response == null);
+        order.setAssetSuscription(response); // le agrego el servicio que habilito el descuento
+        return !(response == null);
     }
-    private void aplicarDescuento(Item item)
-    {
+
+    private void aplicarDescuento(Item item) {
         item.setDiscountAmount(item.getItemPrice().multiply(BigDecimal.valueOf(0.1)));
         item.setTotalPrice(item.getItemPrice().subtract(item.getDiscountAmount()));
     }
@@ -91,33 +90,32 @@ public class OrderEngineService {
         // Tomo la lista de los ítems
         List<Item> listItem = order.getItems();
         // Recorro la lista de los ítems
-        for(Item item:listItem)
-        {
-            // Del producto o servicio del ítem tomo la lista de impuestos aplicado que tiene
-            List<Tax>listTax = item.getAsset().getTaxList();
+        for (Item item : listItem) {
+            // Del producto o servicio del ítem tomo la lista de impuestos aplicado que
+            // tiene
+            List<Tax> listTax = item.getAsset().getTaxList();
             // Recorro la lista de impuestos del producto o servicio
-            for(int k=0; k<listTax.size();k++)
-            {
+            for (int k = 0; k < listTax.size(); k++) {
                 // tomo el impuesto de la lista
                 Tax tax = listTax.get(k);
                 // Me fijo si ya existe un registro que relacione el impuesto con este pedido
-                CalculatedTax calculatedTax = buscarOrderTax(tax,order.getCalculatedTaxes());
+                CalculatedTax calculatedTax = buscarOrderTax(tax, order.getCalculatedTaxes());
                 // Si no existe lo creo y lo agrego a la lista de calculatedTax de order
-                if(calculatedTax == null)
-                {
-                    calculatedTax = new CalculatedTax(order,tax);
+                if (calculatedTax == null) {
+                    calculatedTax = new CalculatedTax(order, tax);
                     order.getCalculatedTaxes().add(calculatedTax);
                 }
-                // Sumo a la item taxesAmount el monto que se le agrega al  aplicar el impuesto a este ítem
-                calculatedTax.setTaxesAmount(calculatedTax.getTaxesAmount().
-                        add(item.getTotalPrice().multiply(tax.getPercentage().divide(BigDecimal.valueOf(100)))));
+                // Sumo a la item taxesAmount el monto que se le agrega al aplicar el impuesto a
+                // este ítem
+                calculatedTax.setTaxesAmount(calculatedTax.getTaxesAmount()
+                        .add(item.getTotalPrice().multiply(tax.getPercentage().divide(BigDecimal.valueOf(100)))));
             }
         }
 
     }
-    private CalculatedTax buscarOrderTax(Tax tax, List<CalculatedTax>listCT)
-    {
-        if(listCT != null) {
+
+    private CalculatedTax buscarOrderTax(Tax tax, List<CalculatedTax> listCT) {
+        if (listCT != null) {
             for (int j = 0; j < listCT.size(); j++) {
                 if (listCT.get(j).getTax().getName().equals(tax.getName()))
                     return listCT.get(j);
@@ -125,17 +123,48 @@ public class OrderEngineService {
         }
         return null;
     }
-    private void calcularTotalPriceOrder(Order order)
-    {
+
+    private void calcularTotalPriceOrder(Order order) {
         List<CalculatedTax> listCT = order.getCalculatedTaxes();
         BigDecimal total = BigDecimal.ZERO;
         total = total.add(order.getSubTotal());
-        if(listCT != null)
-        {
-            for(int j=0; j<listCT.size();j++) {
+        if (listCT != null) {
+            for (int j = 0; j < listCT.size(); j++) {
                 total = total.add(listCT.get(j).getTaxesAmount());
             }
         }
         order.setTotalPrice(total);
+    }
+
+    public void calculateTotalAndTax(Order order) {
+        List<Item> listItem = order.getItems();
+        BigDecimal subtotal = BigDecimal.ZERO;
+        BigDecimal total = BigDecimal.ZERO;
+        BigDecimal discounts = BigDecimal.ZERO;
+        for (int j = 0; j < listItem.size(); j++) {
+            Item item = listItem.get(j);
+
+            if (order.getItems().get(j).getId() != null) {
+                Asset asset = assetRepository.findById(order.getItems().get(j).getId()).orElse(null);
+
+                if (asset != null) {
+                    item.setAsset(asset);
+                }
+
+                BigDecimal itemPrice = item.getItemPrice() != null ? item.getItemPrice() : BigDecimal.ZERO;
+                BigDecimal itemQuantity = BigDecimal.valueOf(item.getItemQuantity()) != null
+                        ? BigDecimal.valueOf(item.getItemQuantity())
+                        : BigDecimal.ZERO;
+
+                subtotal = subtotal.add(itemPrice.multiply(itemQuantity));
+                discounts = discounts.add(item.getDiscountAmount());
+
+                total = subtotal.subtract(discounts);
+
+                order.setSubTotal(subtotal);
+                order.setTotalPrice(total);
+                order.setTotalDiscount(discounts);
+            }
+        }
     }
 }

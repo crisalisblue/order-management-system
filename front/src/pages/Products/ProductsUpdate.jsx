@@ -13,40 +13,59 @@ export const ProductsUpdate = () => {
   const { register, handleSubmit, setValue } = useForm();
   const [taxes, setTaxes] = useState([]);
   const [selectedTaxes, setSelectedTaxes] = useState([]);
+  const [initialValues, setInitialValues] = useState({
+    taxList: selectedTaxes,
+    id: productID,
+  });
 
   const onError = (errors, e) => console.log(errors, e);
 
   useEffect(() => {
-    const fetchProductData = async () => {
+    const fetchData = async () => {
       try {
         const productData = await getSingleProduct(productID);
-        Object.keys(productData).forEach((key) => {
-          setValue(key, productData[key]);
+        setInitialValues({
+          name: productData.name,
+          baseAmount: productData.baseAmount,
+          taxList: productData.taxList,
+          id: productData.id || productID,
         });
+        setSelectedTaxes(productData.taxList);
+        setValue("name", productData.name);
+        setValue("baseAmount", productData.baseAmount);
       } catch (error) {
         console.error("Error fetching product data:", error);
       }
     };
 
-    fetchProductData();
+    fetchData();
   }, [productID, setValue]);
 
   useEffect(() => {
     const fetchTaxes = async () => {
       try {
-        const taxList = await getAllTaxes();
-        setTaxes(taxList);
+        const allTaxes = await getAllTaxes();
+        const productTaxNames = new Set(selectedTaxes.map((tax) => tax.name));
+
+        // Filtra las tasas que no están en la lista de tasas del producto
+        const filteredTaxes = allTaxes.filter(
+          (tax) => !productTaxNames.has(tax.name)
+        );
+
+        setTaxes(filteredTaxes);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchTaxes();
-  }, []);
+  }, [selectedTaxes]);
 
   const handleTaxChange = (e) => {
     const selectedTaxName = e.target.value;
-    const isTaxSelected = selectedTaxes.some((tax) => tax.name === selectedTaxName);
+    const isTaxSelected = selectedTaxes.some(
+      (tax) => tax.name === selectedTaxName
+    );
 
     if (!isTaxSelected) {
       const selectedTax = taxes.find((tax) => tax.name === selectedTaxName);
@@ -56,16 +75,15 @@ export const ProductsUpdate = () => {
 
       const updatedTaxes = taxes.filter((tax) => tax.name !== selectedTaxName);
       setTaxes(updatedTaxes);
-
-      setValue("taxId", selectedTaxName);
     } else {
       console.log(`El impuesto "${selectedTaxName}" ya está seleccionado.`);
-      setValue("taxId", "");
     }
   };
 
   const removeTax = (taxName) => {
-    const updatedSelectedTaxes = selectedTaxes.filter((tax) => tax.name !== taxName);
+    const updatedSelectedTaxes = selectedTaxes.filter(
+      (tax) => tax.name !== taxName
+    );
     setSelectedTaxes(updatedSelectedTaxes);
 
     const removedTax = selectedTaxes.find((tax) => tax.name === taxName);
@@ -73,14 +91,13 @@ export const ProductsUpdate = () => {
     if (removedTax) {
       setTaxes([...taxes, removedTax]);
     }
-
-    setValue("taxId", "");
   };
 
   const onSubmit = async (data, e) => {
-    data.id = productID;
     data.taxList = selectedTaxes;
     data.type = "Product";
+    data.id = Number(data.id);
+
     try {
       await updateSingleProduct(data);
       showSuccessAlert();
@@ -108,6 +125,10 @@ export const ProductsUpdate = () => {
     });
   };
 
+  if (!taxes.length && !selectedTaxes.length) {
+    return <div>Cargando impuestos...</div>;
+  }
+
   return (
     <section id="productsUpdate" className="w-5/6 prose min-w-full">
       <form
@@ -124,6 +145,7 @@ export const ProductsUpdate = () => {
           <input
             type="text"
             id="name"
+            defaultValue={initialValues.name}
             {...register("name")}
             className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
           />
@@ -139,37 +161,22 @@ export const ProductsUpdate = () => {
           <input
             type="number"
             id="baseAmount"
+            defaultValue={initialValues.baseAmount}
             {...register("baseAmount")}
             className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
-
+        <input
+          {...register("id", { value: initialValues.id })}
+          hidden
+          type="number"
+          value={initialValues.id}
+        />
         <div className="mb-4">
-          <label
-            htmlFor="warranty"
-            className="block text-sm font-semibold text-gray-600"
-          >
-            Garantía:
-          </label>
-          <input
-            type="text"
-            id="warranty"
-            {...register("warranty")}
-            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label
-            htmlFor="taxId"
-            className="block text-sm font-semibold text-gray-600"
-          >
-            Impuesto:
+          Impuesto:
+          {taxes.length > 0 ? (
             <select
-              id="taxId"
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
-              {...register("taxId")}
-              defaultValue={0}
               onChange={handleTaxChange}
             >
               <option value="">Seleccionar Impuesto</option>
@@ -179,10 +186,15 @@ export const ProductsUpdate = () => {
                 </option>
               ))}
             </select>
-          </label>
+          ) : (
+            <p>No hay impuestos disponibles</p>
+          )}
         </div>
 
-        <SelectedTaxesTable selectedTaxes={selectedTaxes} onRemoveTax={removeTax} />
+        <SelectedTaxesTable
+          selectedTaxes={selectedTaxes}
+          onRemoveTax={removeTax}
+        />
 
         <button
           type="submit"

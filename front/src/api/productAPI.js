@@ -3,8 +3,6 @@ const apiUrl = "http://localhost:8080/asset";
 export const getAllProducts = async () => {
   try {
     const response = await axios.get(`${apiUrl}/readType?type=Product`);
-    console.dir(response);
-    console.dir(response.status);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -12,8 +10,8 @@ export const getAllProducts = async () => {
 };
 export const getSingleProduct = async (productID) => {
   try {
-    const response = await axios.get(`${apiUrl}?id=${productID}`);
-    return response.status;
+    const response = await axios.get(`${apiUrl}/read?id=${productID}`);
+    return response.data;
   } catch (error) {
     console.error(error);
   }
