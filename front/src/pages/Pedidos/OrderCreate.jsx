@@ -3,6 +3,8 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useDataFetching } from "../../api/API_Utils";
 import { getAllCustomers, getSingleCustomer } from "../../api/customerAPI";
 import { createSingleOrder, refreshOrder } from "../../api/orderAPI";
+// import { useForm } from "react-hook-form";
+
 import { getAllAssets } from "../../api/assetAPI";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
@@ -24,11 +26,9 @@ export const OrderCreate = () => {
 
   const getCurrentDate = () => {
     const currentDate = new Date();
-    return `${currentDate.getDate().toString().padStart(2, "0")}-${(
-      currentDate.getMonth() + 1
-    )
+    return `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1)
       .toString()
-      .padStart(2, "0")}-${currentDate.getFullYear()}`;
+      .padStart(2, "0")}-${currentDate.getDate().toString().padStart(2, "0")}`;
   };
 
   let fecha = getCurrentDate();
@@ -53,23 +53,22 @@ export const OrderCreate = () => {
     subTotal: 0,
   });
 
-  const [dataRefresh, setDataRefresh] = useState({
-    dateOrder: "",
-    totalDiscount: 0,
-    totalPrice: 0,
-    subTotal: 0,
-    active: true,
-    customerID: 0,
-    customerName: "",
-    itemDTO: [],
-    calculatedTaxDTOS: [],
-    action: "",
-  });
-
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await createSingleOrder(dataRefresh);
+      let result = {
+        dateOrder: orderData.dateOrder,
+        totalDiscount: 0,
+        totalPrice: 0,
+        subTotal: 0,
+        active: true,
+        customerID: orderData.customerID,
+        customerName: "",
+        itemDTO: orderData.itemDTO,
+        calculatedTaxDTOS: orderData.calculatedTaxDTOS,
+        action: "",
+      };
+      await createSingleOrder(result);
       Swal.fire({
         icon: "success",
         title: "Pedido creado",
@@ -87,23 +86,6 @@ export const OrderCreate = () => {
       });
     }
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log("Order data:", orderData);
-        const result = await refreshOrder(orderData);
-
-        setDataRefresh(result);
-      } catch (error) {
-        console.error("Error al actualizar datos:", error);
-      }
-    };
-
-    fetchData();
-    console.log("DATA REFRESH:", dataRefresh);
-    // }
-  }, [orderData, customerData]);
 
   useEffect(() => {
     // Filter assets based on the activeTab
@@ -130,7 +112,6 @@ export const OrderCreate = () => {
   //Función nueva - Cambia el id de cliente dentro de la lista de la orden a enviar al back
   const handleClientChangeWithClientId = async (event) => {
     const selectedClientId = event.target.value;
-    console.log("Asset data: ", assetsData);
     try {
       const customerInfo = await getSingleCustomer(selectedClientId);
       console.log(customerInfo);
@@ -148,10 +129,6 @@ export const OrderCreate = () => {
         customerName: customerInfo.name,
         action: "customer",
       }));
-      // setOrderData((prevOrderData) => ({
-      //   ...prevOrderData,
-      //   action: "calculate",
-      // }));
     } catch (error) {
       console.error("Error al buscar el cliente:", error);
     }
@@ -282,7 +259,6 @@ export const OrderCreate = () => {
           calculatedTaxDTOS: accumulatedTaxes,
           subTotal: subtotal,
           totalPrice: total,
-          action: "calculate",
         };
       });
     }
@@ -308,6 +284,8 @@ export const OrderCreate = () => {
     // Navega a la página anterior
     navigate(-1);
   };
+
+  const onError = (errors, e) => console.log(errors, e);
 
   if (assetsError || customersError) {
     return <div>Error: {assetsError.message}</div>;
@@ -489,20 +467,27 @@ export const OrderCreate = () => {
                     <th>P/Unit.</th>
                     <th>Cant</th>
                     <th>Subtotal</th>
-                    {/* <th>Garantia</th>
-                    <th>Soporte</th> */}
+                    <th>Garantia</th>
+                    <th>Soporte</th>
                     <th></th>
                   </thead>
                   <tbody>
                     {orderData.itemDTO?.map((selectedAsset, index) => (
                       <tr className="border-none" key={index}>
                         <td>{selectedAsset.nameAsset}</td>
-                        <td>{selectedAsset.itemPrice}</td>
+                        <td>${selectedAsset.itemPrice}</td>
                         <td>{selectedAsset.itemQuantity || 0}</td>
                         {/* <td>{selectedAsset.totalPrice} </td>
                         <td>{selectedAsset.totalPrice} </td> */}
                         <td>
+                          $
                           {selectedAsset.itemPrice * selectedAsset.itemQuantity}
+                        </td>
+                        <td>{selectedAsset.warrantyYears}</td>
+                        <td>
+                          {selectedAsset.type == "BUS"
+                            ? selectedAsset.supportFee
+                            : "-"}
                         </td>
                         <td>
                           <button
