@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useDataFetching } from "../../api/API_Utils";
 import { getAllCustomers, getSingleCustomer } from "../../api/customerAPI";
+import { getAllServices } from "../../api/serviceAPI";
+import { getAllProducts } from "../../api/productAPI";
 import { createSingleOrder, refreshOrder } from "../../api/orderAPI";
 // import { useForm } from "react-hook-form";
 
@@ -34,6 +36,8 @@ export const OrderCreate = () => {
   let fecha = getCurrentDate();
 
   const [activeTab, setActiveTab] = useState("Product");
+  const [serviceList, setServiceList] = useState([]);
+  const [productList, setProductList] = useState([]);
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
@@ -88,6 +92,32 @@ export const OrderCreate = () => {
   }
 
   useEffect(() => {
+    const fetchService = async () => {
+      try {
+        const servicesList = await getAllServices();
+        setServiceList(servicesList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchService();
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productsList = await getAllProducts();
+        setProductList(productsList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
     // Filter assets based on the activeTab
     try {
       const filtered = assetsData.filter((asset) =>
@@ -137,57 +167,81 @@ export const OrderCreate = () => {
   const handleTabActive = () => {
     setActiveTab(activeTab === "Product" ? "Service" : "Product");
   };
-
-  //Agrega los items seleccionados a la orden nueva
   const handleAddAssetInOrder = async (asset) => {
     const quantity = assetQuantities[asset.id] || 1;
     const warranty = assetWarranties[asset.id] || 0;
-
-    // Calcula el impuesto en cada item
-    const taxes = asset.taxList.map((tax) => ({
-      id: tax.id,
-      name: tax.name,
-      percentage: tax.percentage,
-      amount: (asset.baseAmount * quantity * tax.percentage) / 100,
-    }));
+    const supportFee = asset.supportFee || 0;
 
     const newItem = {
       idAsset: asset.id,
       nameAsset: asset.name,
       orderDTO: {},
+      type: asset.type,
       itemPrice: asset.baseAmount,
       itemDitails: "Esto es una descripción",
       itemQuantity: quantity,
       discountAmount: 0,
-      totalPrice: asset.baseAmount * quantity,
+      totalPrice: (asset.baseAmount + supportFee) * quantity,
       warrantyYears: warranty,
-      taxes: taxes,
+      taxes: asset.taxList.map((tax) => ({
+        id: tax.id,
+        name: tax.name,
+        percentage: tax.percentage,
+        amount:
+          ((asset.baseAmount + supportFee) * quantity * tax.percentage) / 100,
+      })),
     };
 
-    // Accumula taxes based on tax name
     setOrderData((prevOrderData) => {
-      const accumulatedTaxes = prevOrderData.calculatedTaxDTOS || [];
-      taxes.forEach((tax) => {
-        const existingTaxIndex = accumulatedTaxes.findIndex(
-          (accTax) => accTax.taxID === tax.id
-        );
+      const existingItemIndex = prevOrderData.itemDTO.findIndex(
+        (item) => item.idAsset === asset.id
+      );
 
-        if (existingTaxIndex !== -1) {
-          accumulatedTaxes[existingTaxIndex].taxesAmount += tax.amount;
-        } else {
-          accumulatedTaxes.push({
-            taxID: tax.id,
-            taxName: tax.name,
-            taxesAmount: tax.amount,
-          });
-        }
-      });
+      const updatedItems = [...prevOrderData.itemDTO];
 
-      // Calcula el subtotal y total considerando impuestos
-      const subtotal = [...prevOrderData.itemDTO, newItem].reduce(
+      if (existingItemIndex !== -1 && asset.type === "Product") {
+        // Si el producto ya está en la lista y es un producto, suma las cantidades
+        const existingItem = updatedItems[existingItemIndex];
+        existingItem.itemQuantity += quantity;
+        existingItem.totalPrice += newItem.totalPrice;
+
+        // Actualiza impuestos
+        existingItem.taxes.forEach((tax, index) => {
+          tax.amount =
+            ((asset.baseAmount + supportFee) *
+              existingItem.itemQuantity *
+              tax.percentage) /
+            100;
+        });
+      } else {
+        // Si el producto no está en la lista o es un servicio, agrégalo
+        updatedItems.push(newItem);
+      }
+
+      // Recalcula totales
+      const subtotal = updatedItems.reduce(
         (acc, item) => acc + item.totalPrice,
         0
       );
+
+      const accumulatedTaxes = [];
+      updatedItems.forEach((item) => {
+        item.taxes.forEach((tax) => {
+          const existingTaxIndex = accumulatedTaxes.findIndex(
+            (accTax) => accTax.taxID === tax.id
+          );
+
+          if (existingTaxIndex !== -1) {
+            accumulatedTaxes[existingTaxIndex].taxesAmount += tax.amount;
+          } else {
+            accumulatedTaxes.push({
+              taxID: tax.id,
+              taxName: tax.name,
+              taxesAmount: tax.amount,
+            });
+          }
+        });
+      });
 
       const totalTaxAmount = accumulatedTaxes.reduce(
         (acc, tax) => acc + tax.taxesAmount,
@@ -198,8 +252,8 @@ export const OrderCreate = () => {
 
       return {
         ...prevOrderData,
+        itemDTO: updatedItems,
         calculatedTaxDTOS: accumulatedTaxes,
-        itemDTO: [...prevOrderData.itemDTO, newItem],
         subTotal: subtotal,
         totalPrice: total,
       };
@@ -214,6 +268,7 @@ export const OrderCreate = () => {
       ...assetWarranties,
       [asset.id]: 0,
     });
+    console.log("order data: ", orderData);
   };
 
   //Funcion nueva, remueve items de la orden
@@ -264,16 +319,20 @@ export const OrderCreate = () => {
     }
   };
 
-  //Cambiar cantidad de cantidad
+  // Cambiar cantidad de cantidad
   const handleQuantityChange = (assetId, quantity) => {
+    // Asegurarse de que quantity sea un número
+    quantity = parseInt(quantity, 10);
     setAssetQuantities((prevQuantities) => ({
       ...prevQuantities,
       [assetId]: quantity,
     }));
   };
 
-  //Cambiar cantidad de cantidad
+  // Cambiar cantidad de garantía
   const handleWarrantyChange = (assetId, years) => {
+    // Asegurarse de que years sea un número
+    years = parseInt(years, 10);
     setAssetWarranties((prevYears) => ({
       ...prevYears,
       [assetId]: years,
@@ -284,8 +343,6 @@ export const OrderCreate = () => {
     // Navega a la página anterior
     navigate(-1);
   };
-
-  const onError = (errors, e) => console.log(errors, e);
 
   if (assetsError || customersError) {
     return <div>Error: {assetsError.message}</div>;
@@ -404,58 +461,112 @@ export const OrderCreate = () => {
               </section>
               <section className="">
                 <div className="max-h-40 overflow-y-scroll scrollbar">
-                  <table className="table mt-3">
-                    <thead className="bg-[#E6EFF3]">
-                      <th>Nombre</th>
-                      <th>P/Unit.</th>
-                      <th>Cant</th>
-                      <th>Garantia</th>
-                      <th>Soporte</th>
-                      <th> </th>
-                    </thead>
+                  {activeTab === "Product" && (
+                    <table className="table mt-3">
+                      <thead className="bg-[#E6EFF3]">
+                        <th>Nombre</th>
+                        <th>P/Unit.</th>
+                        <th>Cant</th>
+                        <th>Garantia</th>
+                        {/* <th>Soporte</th> */}
+                        <th> </th>
+                      </thead>
+                      <tbody>
+                        {productList.map((asset, index) => (
+                          <tr className="border-none" key={index}>
+                            <td>{asset.name}</td>
+                            <td>{asset.baseAmount}</td>
+                            <td>
+                              <input
+                                className="w-10"
+                                type="number"
+                                min={1}
+                                value={assetQuantities[asset.id] || 1}
+                                onChange={(e) =>
+                                  handleQuantityChange(asset.id, e.target.value)
+                                }
+                              />
+                            </td>
+                            <td>
+                              <input
+                                className="w-10"
+                                type="number"
+                                min={0}
+                                value={assetWarranties[asset.id] || 0}
+                                onChange={(e) =>
+                                  handleWarrantyChange(asset.id, e.target.value)
+                                }
+                              />
+                            </td>
+                            {/* <td>0</td> */}
+                            <td>
+                              <button
+                                type="button"
+                                className={"btn-xs bg-[#F1F1F1]"}
+                                onClick={() => handleAddAssetInOrder(asset)}
+                              >
+                                +
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
 
-                    <tbody>
-                      {filteredAssets.map((asset, index) => (
-                        <tr className="border-none" key={index}>
-                          <td>{asset.name}</td>
-                          <td>{asset.baseAmount}</td>
-                          <td>
-                            <input
-                              className="w-10"
-                              type="number"
-                              min={1}
-                              value={assetQuantities[asset.id] || 1}
-                              onChange={(e) =>
-                                handleQuantityChange(asset.id, e.target.value)
-                              }
-                            />
-                          </td>
-                          <td>
-                            <input
-                              className="w-10"
-                              type="number"
-                              min={0}
-                              value={assetWarranties[asset.id] || 0}
-                              onChange={(e) =>
-                                handleWarrantyChange(asset.id, e.target.value)
-                              }
-                            />
-                          </td>
-                          <td>0</td>
-
-                          <td>
-                            <button
-                              type="button"
-                              className={"btn-xs bg-[#F1F1F1]"}
-                              onClick={() => handleAddAssetInOrder(asset)}
-                            >
-                              +
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  {activeTab === "Service" && (
+                    <table className="table mt-3">
+                      <thead className="bg-[#F0E3CD]">
+                        <th>Nombre</th>
+                        <th>Costo</th>
+                        {/* <th>Quantity</th> */}
+                        {/* <th>Warranty</th> */}
+                        <th>Soporte</th>
+                        <th> </th>
+                      </thead>
+                      <tbody>
+                        {serviceList.map((asset, index) => (
+                          <tr className="border-none" key={index}>
+                            <td>{asset.name}</td>
+                            <td>{asset.baseAmount}</td>
+                            <td>{asset.supportFee}</td>
+                            {/* <td>
+                              <input
+                                className="w-10"
+                                type="number"
+                                min={1}
+                                value={assetQuantities[asset.id] || 1}
+                                onChange={(e) =>
+                                  handleQuantityChange(asset.id, e.target.value)
+                                }
+                              />
+                            </td> */}
+                            {/* <td>
+                              <input
+                                className="w-10"
+                                type="number"
+                                min={0}
+                                value={assetWarranties[asset.id] || 0}
+                                onChange={(e) =>
+                                  handleWarrantyChange(asset.id, e.target.value)
+                                }
+                              />
+                            </td> */}
+                            {/* <td>0</td> */}
+                            <td>
+                              <button
+                                type="button"
+                                className={"btn-xs bg-[#F1F1F1]"}
+                                onClick={() => handleAddAssetInOrder(asset)}
+                              >
+                                +
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
                 </div>
               </section>
             </section>
@@ -468,7 +579,7 @@ export const OrderCreate = () => {
                     <th>Cant</th>
                     <th>Subtotal</th>
                     <th>Garantia</th>
-                    <th>Soporte</th>
+                    {/* <th>Soporte</th> */}
                     <th></th>
                   </thead>
                   <tbody>
@@ -476,19 +587,27 @@ export const OrderCreate = () => {
                       <tr className="border-none" key={index}>
                         <td>{selectedAsset.nameAsset}</td>
                         <td>${selectedAsset.itemPrice}</td>
-                        <td>{selectedAsset.itemQuantity || 0}</td>
+                        <td>
+                          {selectedAsset.type === "Service"
+                            ? "-"
+                            : selectedAsset.itemQuantity || 0}
+                        </td>
                         {/* <td>{selectedAsset.totalPrice} </td>
                         <td>{selectedAsset.totalPrice} </td> */}
                         <td>
                           $
                           {selectedAsset.itemPrice * selectedAsset.itemQuantity}
                         </td>
-                        <td>{selectedAsset.warrantyYears}</td>
                         <td>
+                          {selectedAsset.type === "Service"
+                            ? "-"
+                            : selectedAsset.warrantyYears}
+                        </td>
+                        {/* <td>
                           {selectedAsset.type == "BUS"
                             ? selectedAsset.supportFee
                             : "-"}
-                        </td>
+                        </td> */}
                         <td>
                           <button
                             type="button"
