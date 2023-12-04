@@ -65,12 +65,12 @@ public class SubscriptionService {
         return mySubscription.toDTO();
     }
 
-    public List<SubscriptionDTO> getAllSubscriptions() {
+    public List<ReturnSubscriptionDTO> getAllSubscriptions() {
 
         return this.subscriptionRepository
                 .findAll()
                 .stream()
-                .map(Subscription::toDTO)
+                .map(Subscription::toReturnDTO)
                 .collect(Collectors.toList());
     }
 
