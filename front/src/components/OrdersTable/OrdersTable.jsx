@@ -33,6 +33,7 @@ export const OrdersTable = () => {
         "totalDiscount",
       ]}
       columnOrder={["customerName", "dateOrder", "totalPrice", "subTotal"]}
+      edit={false}
     />
   );
 };

@@ -35,6 +35,7 @@ export const DataTable = ({
   deleteFunction,
   hiddenColumns,
   columnOrder = keysToShow,
+  edit = true,
 }) => {
   const navigate = useNavigate();
 
@@ -128,7 +129,7 @@ export const DataTable = ({
                 } p-1`}
               >
                 <Link
-                  className="no-underline"
+                  className={` no-underline ${edit === false ? "hidden" : ""} `}
                   to={`${editPath}/${item.id}/editar`}
                 >
                   🛠
