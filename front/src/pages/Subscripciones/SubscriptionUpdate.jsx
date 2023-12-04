@@ -102,10 +102,9 @@ export const SubscriptionUpdate = () => {
             <label
               htmlFor="customer"
               className="block text-sm font-semibold text-gray-600"
-            >
-              Cliente:
-            </label>
+            ></label>
             <select
+              hidden
               id="customer"
               {...register("customer")}
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
@@ -123,10 +122,9 @@ export const SubscriptionUpdate = () => {
             <label
               htmlFor="asset"
               className="block text-sm font-semibold text-gray-600"
-            >
-              Servicio:
-            </label>
+            ></label>
             <select
+              hidden
               id="asset"
               {...register("asset")}
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"

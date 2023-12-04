@@ -13,17 +13,10 @@ import lombok.*;
 public class Subscription {
 
     @Id
-    @SequenceGenerator(
-            name = "subscription_sequence",
-            sequenceName = "subscription_sequence",
-            allocationSize = 1,
-            initialValue = 1
+    @SequenceGenerator(name = "subscription_sequence", sequenceName = "subscription_sequence", allocationSize = 1, initialValue = 1
 
     )
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator = "subscription_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "subscription_sequence")
     @Column(name = "id")
     private Long id;
 
@@ -38,7 +31,7 @@ public class Subscription {
     @JoinColumn(name = "id_asset", referencedColumnName = "id")
     private Asset asset;
 
-    public SubscriptionDTO toDTO(){
+    public SubscriptionDTO toDTO() {
         SubscriptionDTO dto = new SubscriptionDTO();
         dto.setId(this.id);
         dto.setStatus(this.status);
@@ -47,13 +40,14 @@ public class Subscription {
         return dto;
     }
 
-    public ReturnSubscriptionDTO toReturnDTO(){
+    public ReturnSubscriptionDTO toReturnDTO() {
         ReturnSubscriptionDTO dto = new ReturnSubscriptionDTO();
         dto.setId(this.id);
-        //Determinando el boolean de status para devolver un string
-        if (this.status.equals(Boolean.TRUE)){
+        // Determinando el boolean de status para devolver un string
+
+        if (this.status) {
             dto.setStatus("Activo");
-        }else {
+        } else {
             dto.setStatus("Inactivo");
         }
         dto.setCustomer(this.customer.getName());

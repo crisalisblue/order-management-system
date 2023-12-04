@@ -126,7 +126,7 @@ export const SubscriptionCreate = () => {
             className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
           >
             <option value="">Estado</option>
-            <option value="true">Activo</option>f
+            <option value="true">Activo</option>
             <option value="false">Inactivo</option>
           </select>
         </div>

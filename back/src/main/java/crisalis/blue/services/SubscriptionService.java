@@ -60,6 +60,7 @@ public class SubscriptionService {
         Subscription mySubscription = subscriptionOptional.get();
 
         mySubscription.setStatus(subscription.getStatus());
+
         subscriptionRepository.save(mySubscription);
 
         return mySubscription.toDTO();

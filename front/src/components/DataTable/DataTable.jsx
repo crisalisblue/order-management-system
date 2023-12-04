@@ -22,6 +22,9 @@ const translation = {
   customerName: "Nombre Cliente",
   dni: "DNI",
   cuit: "CUIT",
+  customer: "Cliente",
+  asset: "Servicio",
+  status: "Estado",
 };
 
 export const DataTable = ({
@@ -31,6 +34,7 @@ export const DataTable = ({
   editPath,
   deleteFunction,
   hiddenColumns,
+  columnOrder = keysToShow,
 }) => {
   const navigate = useNavigate();
 
@@ -80,12 +84,12 @@ export const DataTable = ({
       <table className={"w-5/6 m-auto text-black"}>
         <thead className="min-w-full">
           <tr className={"bg-[#85B7CA] text-primary border-gray-500"}>
-            {keysToShow.map((key, index) =>
+            {columnOrder.map((key, index) =>
               hiddenColumns.includes(key) ? null : (
                 <th
                   key={index}
                   className={`text-center ${index === 0 ? "" : ""} ${
-                    index === keysToShow.length - 1 ? "" : ""
+                    index === columnOrder.length - 1 ? "" : ""
                   } p-1`}
                 >
                   {translation[key] || key}
@@ -103,12 +107,13 @@ export const DataTable = ({
               } drop-shadow-md p-1`}
               key={index}
             >
-              {keysToShow.map((key, idx) =>
+              {columnOrder.map((key, idx) =>
                 hiddenColumns.includes(key) ? null : (
                   <td
                     key={idx}
                     className={`text-center ${
-                      index === data.length - 1 && idx === keysToShow.length - 1
+                      index === data.length - 1 &&
+                      idx === columnOrder.length - 1
                         ? ""
                         : ""
                     } p-1 `}
@@ -123,8 +128,7 @@ export const DataTable = ({
                 } p-1`}
               >
                 <Link
-                  className="
-                no-underline"
+                  className="no-underline"
                   to={`${editPath}/${item.id}/editar`}
                 >
                   🛠

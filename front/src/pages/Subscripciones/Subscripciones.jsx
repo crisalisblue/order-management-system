@@ -18,13 +18,7 @@ export const Subscripciones = () => {
               ? "/subscripciones/nuevo"
               : "/subscripciones"
           }
-        >
-          <button className="float-right bg-primary text-base-100 hover:bg-gray-100 font-semibold py-1 px-2 border border-gray-400 rounded shadow">
-            {pathname === "/subscripciones"
-              ? "+ Agregar subscripcion"
-              : "Lista de subscripciones"}
-          </button>
-        </RouterLink>
+        ></RouterLink>
       </span>
 
       <Outlet />
