@@ -1,5 +1,5 @@
 import "./Home.css";
-
+import { Link as RouterLink } from "react-router-dom";
 export const Home = () => {
   return (
     <div className="home-container">
@@ -11,35 +11,35 @@ export const Home = () => {
       </div>
 
       <div className="feature-section">
-        <div className="feature">
+        <RouterLink className="feature" to="/clientes">
           <div className="feature-icon">&#128100;</div>
           <h2 className="feature-title">Clientes</h2>
           <p className="feature-description">Gestiona a tus clientes.</p>
-        </div>
+        </RouterLink>
 
-        <div className="feature">
+        <RouterLink className="feature" to="/productos">
           <div className="feature-icon">&#127828;</div>
           <h2 className="feature-title">Productos</h2>
           <p className="feature-description">
             Gestiona tu inventario de manera efectiva.
           </p>
-        </div>
+        </RouterLink>
 
-        <div className="feature">
+        <RouterLink className="feature" to="/servicios">
           <div className="feature-icon">&#9881;</div>
           <h2 className="feature-title">Servicios</h2>
           <p className="feature-description">
             Gestiona servicios excepcionales.
           </p>
-        </div>
+        </RouterLink>
 
-        <div className="feature">
+        <RouterLink className="feature" to="/pedidos">
           <div className="feature-icon">&#128722;</div>
           <h2 className="feature-title">Pedidos</h2>
           <p className="feature-description">
             Realiza un seguimiento de pedidos.
           </p>
-        </div>
+        </RouterLink>
       </div>
     </div>
   );

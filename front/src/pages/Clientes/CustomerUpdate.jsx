@@ -24,16 +24,14 @@ export const CustomerUpdate = () => {
         const data = await getSingleCustomer(id);
         setCustomer(data);
 
-        // Set initial values using setValue from react-hook-form
         setValue("type", data.type);
         setValue("name", data.name);
-        setValue("lastName", data.lastName);
+        setValue("lastName", data.lastName);  
         setValue("dni", data.dni);
         setValue("businessName", data.businessName);
         setValue("cuit", data.cuit);
         setValue("activityStartDate", data.activityStartDate);
         setValue("address", data.address);
-        // Add more fields as needed
       } catch (error) {
         console.error("Error fetching customer data:", error);
         showErrorAlert();
@@ -103,24 +101,24 @@ export const CustomerUpdate = () => {
           </div>
         </div>
 
-        {customer.type === "EMP" && (
+        {customer.type === "BUS" && (
           <div className="flex gap-3">
             <label className="text-black">Nombre Empresa:</label>
             <input type="text" {...register("businessName")} />
           </div>
         )}
 
-        {customer.type === "EMP" && (
+        {customer.type === "BUS" && (
           <div className="flex gap-3">
             <label className="text-black">Cuit:</label>
             <input type="text" {...register("cuit")} />
           </div>
         )}
 
-        {customer.type === "EMP" && (
+        {customer.type === "BUS" && (
           <div className="flex gap-3">
             <label className="text-black">Inicio actividades:</label>
-            <input type="text" {...register("activityStartDate")} />
+            <input type="date" {...register("activityStartDate")} />
           </div>
         )}
 

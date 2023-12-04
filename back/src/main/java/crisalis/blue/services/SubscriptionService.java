@@ -8,6 +8,7 @@ import crisalis.blue.models.Customer;
 import crisalis.blue.models.Person;
 import crisalis.blue.models.Subscription;
 import crisalis.blue.models.dto.CustomerDTO;
+import crisalis.blue.models.dto.ReturnSubscriptionDTO;
 import crisalis.blue.models.dto.SubscriptionDTO;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.CustomerRepository;
@@ -27,22 +28,21 @@ public class SubscriptionService {
     private final CustomerRepository customerRepository;
     private final AssetRepository assetRepository;
 
-
-    public SubscriptionDTO createSubscription(SubscriptionDTO sub) {
+    public ReturnSubscriptionDTO createSubscription(SubscriptionDTO sub) {
         try {
             Subscription newSubscription = new Subscription();
 
             newSubscription.setStatus(sub.getStatus());
-            //Asigno el cliente en base al id que me llego en "customer"
-            Optional <Customer> customer = customerRepository.findById(sub.getCustomer());
+            // Asigno el cliente en base al id que me llego en "customer"
+            Optional<Customer> customer = customerRepository.findById(sub.getCustomer());
             newSubscription.setCustomer(customer.get());
-            //Asigno el cliente en base al id que me llego en "asset"
+            // Asigno el cliente en base al id que me llego en "asset"
             Optional<Asset> asset = assetRepository.findById(sub.getAsset());
             newSubscription.setAsset(asset.get());
 
             subscriptionRepository.save(newSubscription);
 
-            return newSubscription.toDTO();
+            return newSubscription.toReturnDTO();
 
         } catch (Error e) {
             throw new NotCreatedException("Error al asociar la subscripcion");
@@ -53,24 +53,25 @@ public class SubscriptionService {
 
         Optional<Subscription> subscriptionOptional = subscriptionRepository.findById(subscription.getId());
 
-        if (!subscriptionOptional.isPresent()){
+        if (!subscriptionOptional.isPresent()) {
             throw new ResourceNotFoundException("No se encontro la Subscripcion.");
         }
-        //Instancio la subscripcion que se encuentra en la db
+        // Instancio la subscripcion que se encuentra en la db
         Subscription mySubscription = subscriptionOptional.get();
 
         mySubscription.setStatus(subscription.getStatus());
+
         subscriptionRepository.save(mySubscription);
 
         return mySubscription.toDTO();
     }
 
-    public List<SubscriptionDTO> getAllSubscriptions() {
+    public List<ReturnSubscriptionDTO> getAllSubscriptions() {
 
         return this.subscriptionRepository
                 .findAll()
                 .stream()
-                .map(Subscription::toDTO)
+                .map(Subscription::toReturnDTO)
                 .collect(Collectors.toList());
     }
 
@@ -81,7 +82,6 @@ public class SubscriptionService {
                         () -> new ResourceNotFoundException("Subscription not Found"))
                 .toDTO();
     }
-
 
     public String deleteSubscription(Long id) {
         try {
@@ -97,7 +97,7 @@ public class SubscriptionService {
         }
     }
 
-    public Subscription getSubscriptionByAssetIdAndCustomerId(Long id_asset, Long id_customer){
+    public Subscription getSubscriptionByAssetIdAndCustomerId(Long id_asset, Long id_customer) {
         return subscriptionRepository.findByAssetIdAndCustomerId(id_asset, id_customer).orElse(null);
     }
 }

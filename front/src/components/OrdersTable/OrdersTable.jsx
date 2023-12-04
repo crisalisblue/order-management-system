@@ -23,6 +23,7 @@ export const OrdersTable = () => {
       editPath="/pedidos"
       deleteFunction={deleteSingleOrder}
       hiddenColumns={[
+        "id",
         "itemDTO",
         "calculatedTaxDTOS",
         "idOrder",
@@ -31,6 +32,7 @@ export const OrdersTable = () => {
         "active",
         "totalDiscount",
       ]}
+      columnOrder={["customerName", "dateOrder", "totalPrice", "subTotal"]}
     />
   );
 };

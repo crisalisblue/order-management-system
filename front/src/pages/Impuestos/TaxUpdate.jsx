@@ -56,38 +56,48 @@ export const TaxUpdate = () => {
   }
 
   return (
-    <section id="taxForm" className="bg-base-200 prose min-w-full">
+    <section id="taxForm" className="w-5/6 prose min-w-full">
       <form
-        className="gap-4 p-4 flex flex-col"
+        className="w-5/6 mx-auto p-6 bg-white rounded-md shadow-md"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div>
-          <label htmlFor="name">Nombre:</label>
+        <div className="mb-4">
+          <label
+            htmlFor="name"
+            className="block text-sm font-semibold text-gray-600"
+          >
+            Nombre:
+          </label>
           <input
+            type="text"
             defaultValue={initialValues.name}
-            type="text"
             {...register("name")}
+            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
-        <div>
-          <label htmlFor="percentage">Porcentaje:</label>
+
+        <div className="mb-4">
+          <label
+            htmlFor="percentage"
+            className="block text-sm font-semibold text-gray-600"
+          >
+            Porcentaje:
+          </label>
           <input
+            type="text"
             defaultValue={initialValues.percentage}
-            type="text"
             {...register("percentage")}
+            className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
-        <div>
-          <label htmlFor="baseAmount">Monto fijo:</label>
-          <input
-            defaultValue={initialValues.baseAmount}
-            type="text"
-            {...register("baseAmount")}
-          />
-        </div>
+
         <input type="hidden" defaultValue={id} {...register("id")} />
-        <button className="btn bg-primary text-base-100" type="submit">
-          Modificar
+
+        <button
+          type="submit"
+          className="w-1/3 px-4 py-2 text-white bg-primary rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:border-blue-300"
+        >
+          Modificar Impuesto
         </button>
       </form>
     </section>

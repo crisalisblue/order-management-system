@@ -30,6 +30,16 @@ export const CustomersTable = () => {
       editPath="/clientes"
       deleteFunction={deleteSingleCustomer}
       hiddenColumns={["id"]}
-    ></DataTable>
+      columnOrder={[
+        "name",
+        "lastName",
+        "dni",
+        "cuit",
+        "address",
+        "businessName",
+        "cuit",
+        "activityStartDate",
+      ]}
+    />
   );
 };

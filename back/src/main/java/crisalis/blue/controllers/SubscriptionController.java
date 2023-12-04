@@ -1,6 +1,7 @@
 package crisalis.blue.controllers;
 
 import crisalis.blue.models.dto.CustomerDTO;
+import crisalis.blue.models.dto.ReturnSubscriptionDTO;
 import crisalis.blue.models.dto.SubscriptionDTO;
 import crisalis.blue.services.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
     @Autowired
-    public SubscriptionController(SubscriptionService subscriptionService) {this.subscriptionService = subscriptionService;}
+    public SubscriptionController(SubscriptionService subscriptionService) {
+        this.subscriptionService = subscriptionService;
+    }
 
     @PostMapping(value = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SubscriptionDTO createSubscription(@RequestBody SubscriptionDTO subscription) throws Exception {
+    public ReturnSubscriptionDTO createSubscription(@RequestBody SubscriptionDTO subscription) throws Exception {
         return this.subscriptionService.createSubscription(subscription);
     }
 
@@ -29,10 +32,9 @@ public class SubscriptionController {
     }
 
     @GetMapping(value = "list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<SubscriptionDTO> getAllSubscriptions() {
+    public List<ReturnSubscriptionDTO> getAllSubscriptions() {
         return this.subscriptionService.getAllSubscriptions();
     }
-
 
     @GetMapping(value = "read", produces = MediaType.APPLICATION_JSON_VALUE)
     public SubscriptionDTO getSubscriptionById(@RequestParam Long id) {
@@ -40,7 +42,7 @@ public class SubscriptionController {
     }
 
     @DeleteMapping(value = "delete")
-    public String deleteSubscription(@RequestParam Long id ) {
+    public String deleteSubscription(@RequestParam Long id) {
         return subscriptionService.deleteSubscription(id);
     }
 }

@@ -26,10 +26,13 @@ import {
   TaxUpdate,
   Products,
   NotFound,
+  Subscripciones,
   ProductsCreate,
   ProductsUpdate,
   ServiciosCreate,
   ServiciosUpdate,
+  SubscriptionCreate,
+  SubscriptionUpdate,
 } from "./pages";
 import { UsersTable } from "./components/UsersTable/UsersTable.jsx";
 import { TaxesTable } from "./components/TaxTable/TaxesTable.jsx";
@@ -39,6 +42,7 @@ import LogedinRoute from "./routes/LogedinRoute";
 import { ProductsTable } from "./components/ProductsTable/ProductsTable.jsx";
 import { OrdersTable } from "./components/OrdersTable/OrdersTable.jsx";
 import { ServicesTable } from "./components/ServicesTable/ServicesTable.jsx";
+import { SubscriptionsTable } from "./components/SubscriptionTable/SubscriptionsTable.jsx";
 
 export default function App() {
   return (
@@ -79,6 +83,11 @@ export default function App() {
               <Route path="nuevo" Component={TaxCreate} />
               <Route path=":id/editar" Component={TaxUpdate} />
               <Route path="" Component={TaxesTable} />
+            </Route>
+            <Route path="subscripciones" Component={Subscripciones}>
+              <Route path="nuevo" Component={SubscriptionCreate} />
+              <Route path=":id/editar" Component={SubscriptionUpdate} />
+              <Route path="" Component={SubscriptionsTable} />
             </Route>
           </Route>
         </Route>
