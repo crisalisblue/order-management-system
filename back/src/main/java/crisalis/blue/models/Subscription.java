@@ -1,5 +1,6 @@
 package crisalis.blue.models;
 
+import crisalis.blue.models.dto.ReturnSubscriptionDTO;
 import crisalis.blue.models.dto.SubscriptionDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -45,5 +46,18 @@ public class Subscription {
         dto.setAsset(this.asset.getId());
         return dto;
     }
-   
+
+    public ReturnSubscriptionDTO toReturnDTO(){
+        ReturnSubscriptionDTO dto = new ReturnSubscriptionDTO();
+        dto.setId(this.id);
+        //Determinando el boolean de status para devolver un string
+        if (this.status.equals(Boolean.TRUE)){
+            dto.setStatus("Activo");
+        }else {
+            dto.setStatus("Inactivo");
+        }
+        dto.setCustomer(this.customer.getName());
+        dto.setAsset(this.asset.getName());
+        return dto;
+    }
 }

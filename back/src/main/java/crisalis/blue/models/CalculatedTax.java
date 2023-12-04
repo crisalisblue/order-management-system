@@ -21,7 +21,7 @@ public class CalculatedTax {
     @JoinColumn(name="id_Tax")
     @ManyToOne(fetch = FetchType.LAZY)
     private Tax tax;
-    @JoinColumn(name ="id_Order")
+    @JoinColumn(name ="id_Order", referencedColumnName = "id")
     @ManyToOne
     private Order order;
     private BigDecimal taxesAmount;

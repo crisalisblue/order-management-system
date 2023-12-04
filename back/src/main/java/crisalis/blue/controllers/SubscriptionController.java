@@ -1,6 +1,7 @@
 package crisalis.blue.controllers;
 
 import crisalis.blue.models.dto.CustomerDTO;
+import crisalis.blue.models.dto.ReturnSubscriptionDTO;
 import crisalis.blue.models.dto.SubscriptionDTO;
 import crisalis.blue.services.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class SubscriptionController {
     public SubscriptionController(SubscriptionService subscriptionService) {this.subscriptionService = subscriptionService;}
 
     @PostMapping(value = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SubscriptionDTO createSubscription(@RequestBody SubscriptionDTO subscription) throws Exception {
+    public ReturnSubscriptionDTO createSubscription(@RequestBody SubscriptionDTO subscription) throws Exception {
         return this.subscriptionService.createSubscription(subscription);
     }
 

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_order")
+    @Column(name = "id")
     private Long id;
     @Column(name = "totalDiscount")
     private BigDecimal totalDiscount;
@@ -47,13 +47,14 @@ public class Order {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
     private List<CalculatedTax> calculatedTaxes;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "suscriptionAsset_id", referencedColumnName = "id")
     private Asset assetSuscription;
 
     public OrderDTO toOrderDTO() {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setIdOrder(this.getId());
+        orderDTO.setId(this.getId());
         orderDTO.setDateOrder(this.getDatesOrder());
         orderDTO.setTotalDiscount(this.getTotalDiscount());
         orderDTO.setTotalPrice(this.getTotalPrice());
@@ -78,7 +79,7 @@ public class Order {
     }
 
     public Order(OrderDTO orderDTO) {
-        this.setId(orderDTO.getIdOrder());
+        this.setId(orderDTO.getId());
         this.setDatesOrder(orderDTO.getDateOrder());
         this.setSubTotal(orderDTO.getSubTotal());
         this.setActive(orderDTO.getActive());

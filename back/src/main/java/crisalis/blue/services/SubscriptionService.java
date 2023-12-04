@@ -8,6 +8,7 @@ import crisalis.blue.models.Customer;
 import crisalis.blue.models.Person;
 import crisalis.blue.models.Subscription;
 import crisalis.blue.models.dto.CustomerDTO;
+import crisalis.blue.models.dto.ReturnSubscriptionDTO;
 import crisalis.blue.models.dto.SubscriptionDTO;
 import crisalis.blue.repositories.AssetRepository;
 import crisalis.blue.repositories.CustomerRepository;
@@ -27,7 +28,7 @@ public class SubscriptionService {
     private final CustomerRepository customerRepository;
     private final AssetRepository assetRepository;
 
-    public SubscriptionDTO createSubscription(SubscriptionDTO sub) {
+    public ReturnSubscriptionDTO createSubscription(SubscriptionDTO sub) {
         try {
             Subscription newSubscription = new Subscription();
 
@@ -41,7 +42,7 @@ public class SubscriptionService {
 
             subscriptionRepository.save(newSubscription);
 
-            return newSubscription.toDTO();
+            return newSubscription.toReturnDTO();
 
         } catch (Error e) {
             throw new NotCreatedException("Error al asociar la subscripcion");

@@ -27,8 +27,8 @@ public class Item {
     private Asset asset;
 
     @ManyToOne
-    @JoinColumn(name="id_order")
-    @JsonProperty(value = "idOrder")
+    @JoinColumn(name="id_order", referencedColumnName = "id")
+    @JsonProperty(value = "id")
     private Order order;
 
     // monto Item
