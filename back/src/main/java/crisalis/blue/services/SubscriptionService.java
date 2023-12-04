@@ -27,16 +27,15 @@ public class SubscriptionService {
     private final CustomerRepository customerRepository;
     private final AssetRepository assetRepository;
 
-
     public SubscriptionDTO createSubscription(SubscriptionDTO sub) {
         try {
             Subscription newSubscription = new Subscription();
 
             newSubscription.setStatus(sub.getStatus());
-            //Asigno el cliente en base al id que me llego en "customer"
-            Optional <Customer> customer = customerRepository.findById(sub.getCustomer());
+            // Asigno el cliente en base al id que me llego en "customer"
+            Optional<Customer> customer = customerRepository.findById(sub.getCustomer());
             newSubscription.setCustomer(customer.get());
-            //Asigno el cliente en base al id que me llego en "asset"
+            // Asigno el cliente en base al id que me llego en "asset"
             Optional<Asset> asset = assetRepository.findById(sub.getAsset());
             newSubscription.setAsset(asset.get());
 
@@ -53,10 +52,10 @@ public class SubscriptionService {
 
         Optional<Subscription> subscriptionOptional = subscriptionRepository.findById(subscription.getId());
 
-        if (!subscriptionOptional.isPresent()){
+        if (!subscriptionOptional.isPresent()) {
             throw new ResourceNotFoundException("No se encontro la Subscripcion.");
         }
-        //Instancio la subscripcion que se encuentra en la db
+        // Instancio la subscripcion que se encuentra en la db
         Subscription mySubscription = subscriptionOptional.get();
 
         mySubscription.setStatus(subscription.getStatus());
@@ -82,7 +81,6 @@ public class SubscriptionService {
                 .toDTO();
     }
 
-
     public String deleteSubscription(Long id) {
         try {
             subscriptionRepository.deleteById(id);
@@ -97,7 +95,7 @@ public class SubscriptionService {
         }
     }
 
-    public Subscription getSubscriptionByAssetIdAndCustomerId(Long id_asset, Long id_customer){
+    public Subscription getSubscriptionByAssetIdAndCustomerId(Long id_asset, Long id_customer) {
         return subscriptionRepository.findByAssetIdAndCustomerId(id_asset, id_customer).orElse(null);
     }
 }

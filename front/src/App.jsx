@@ -42,7 +42,7 @@ import LogedinRoute from "./routes/LogedinRoute";
 import { ProductsTable } from "./components/ProductsTable/ProductsTable.jsx";
 import { OrdersTable } from "./components/OrdersTable/OrdersTable.jsx";
 import { ServicesTable } from "./components/ServicesTable/ServicesTable.jsx";
-import { SubscriptionTable } from "./components/SubscriptionTable/SubscriptionTable.jsx";
+import { SubscriptionsTable } from "./components/SubscriptionTable/SubscriptionsTable.jsx";
 
 export default function App() {
   return (
@@ -87,7 +87,7 @@ export default function App() {
             <Route path="subscripciones" Component={Subscripciones}>
               <Route path="nuevo" Component={SubscriptionCreate} />
               <Route path=":id/editar" Component={SubscriptionUpdate} />
-              <Route path="" Component={SubscriptionTable} />
+              <Route path="" Component={SubscriptionsTable} />
             </Route>
           </Route>
         </Route>
