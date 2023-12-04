@@ -47,7 +47,7 @@ public class Order {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
     private List<CalculatedTax> calculatedTaxes;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "suscriptionAsset_id", referencedColumnName = "id")
     private Asset assetSuscription;
 
