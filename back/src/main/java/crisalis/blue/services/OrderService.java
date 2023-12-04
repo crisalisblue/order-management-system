@@ -59,7 +59,7 @@ public class OrderService {
                 }
             }
             order = orderRepository.save(order);
-            asignarAssetsAItems(order.getItems(),orderDTO.getItemDTO());
+            asignarAssetsAItems(order.getItems(), orderDTO.getItemDTO());
             crearSubscripcion(order);
             orderEngineService.calculateOrderTotals(order);
             orderRepository.save(order);
@@ -74,7 +74,7 @@ public class OrderService {
             throw new EmptyElementException("La lista de itemDTO es nula o la lista de items en el order es nula");
         } else {
             for (int j = 0; j < listDTO.size(); j++) {
-                asignarAssetAItem(listDTO.get(j),listItems.get(j));
+                asignarAssetAItem(listDTO.get(j), listItems.get(j));
             }
         }
     }
@@ -85,7 +85,7 @@ public class OrderService {
                 Subscription newSubscription = new Subscription();
                 newSubscription.setCustomer(order.getCustomer());
                 newSubscription.setAsset(item.getAsset());
-                newSubscription.setStatus(Boolean.TRUE);
+                newSubscription.setStatus(Boolean.FALSE);
                 subscriptionService.createSubscription(newSubscription.toDTO());
             }
         }
@@ -194,7 +194,7 @@ public class OrderService {
         } else {
             throw new EmptyElementException("Item dto es nulo ");
         }
-    return null;
+        return null;
     }
 
     private void updateItem(Item item, ItemDTO itemDTO) {
@@ -257,19 +257,20 @@ public class OrderService {
         }
         return order.toOrderDTO();
     }
-    private List<Item>  listIDTOtoListI(List<ItemDTO> listDTO)
-    {
-        if(listDTO != null) {
+
+    private List<Item> listIDTOtoListI(List<ItemDTO> listDTO) {
+        if (listDTO != null) {
             List<Item> listItem = new ArrayList<>();
             for (ItemDTO list : listDTO) {
                 Item item = new Item(list);
-                asignarAssetAItem(list,item);
+                asignarAssetAItem(list, item);
                 listItem.add(item);
             }
             return listItem;
-        }
-        else throw new EmptyElementException("La lsita itemDTO ");
+        } else
+            throw new EmptyElementException("La lsita itemDTO ");
     }
+
     private void updateCustomerInfo(OrderDTO orderDTO, Order order) {
         if (orderDTO.getCustomerID() != null) {
             Optional<Customer> optionalCustomer = customerRepository.findById(orderDTO.getCustomerID());
